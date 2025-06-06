@@ -48,9 +48,19 @@
                                 <h6 class="text-muted mb-0 fw-bold">Source</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->source ?? 'N/A' }}</p>
                             </div>
-                            <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
                                 <h6 class="text-muted mb-0 fw-bold">Leadcycle</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->lead_cycle ?? 'N/A' }}</p>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="text-muted mb-0 fw-bold">Status</h6>
+                                <p class="text-dark mb-0">
+                                    @if ( $enquiry->status == 'pending' )
+                                                <span class="badge badge-success-light">Pending</span>
+                                            @else
+                                                <span class="badge badge-danger-light">Completed</span>
+                                            @endif
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -114,7 +124,7 @@
                                         </div>
                                         <div class="card-body p-3">
                                             <!-- task details -->
-                                             <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span></p>
+                                             <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span></p>
 
                                             <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span></p>
                                         </div>
@@ -146,11 +156,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Remarks</label>
-                                    <textarea class="form-control" name="remarks" id="" rows="2"></textarea>
+                                    <textarea class="form-control" name="remarks" id="" rows="2" required></textarea>
                                 </div>
                                  <div class="mb-3">
                                     <label class="form-label fw-bold">Lead cycle</label>
-                                    <select class="form-select" name="lead_cycle" id="inter">
+                                    <select class="form-select" name="lead_cycle" id="inter" required>
                                         <option value="" selected disabled>Select Option</option>
                                         <option value="Enquiry Received">Enquiry Received</option>
                                         <option value="Initial Contact">Initial Contact</option>
@@ -180,7 +190,7 @@
 
                                  <div class="mb-3">
                                     <label class="form-label fw-bold">Callback</label>
-                                   <input type="date" class="form-control" name="callback" placeholder="">
+                                   <input type="date" class="form-control" name="callback" placeholder="" required>
                                 </div>
 
                                 <button type="submit" id="submitBtn" class="btn btn-primary w-100 mt-2">Submit</button>
@@ -205,35 +215,51 @@
         });
     });
 
-     $('#myForm').on('submit', function () {
-        $('#submitBtn').prop('disabled', true).text('Submitting...');
-    });
+    //  $('#myForm').on('submit', function () {
+    //     $('#submitBtn').prop('disabled', true).text('Submitting...');
+    // });
     </script>
     <script src="{{ asset('assets/js/disable.js') }}"></script>
 
-    @if (session('message'))
-        <div aria-live="polite" aria-atomic="true" class="position-relative" style="min-height: 100px;">
-            <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
-                <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert"
-                    aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body text-white">
-                            {{ session('message') }}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
+        {{-- SUCCESS TOAST --}}
+@if (session('message'))
+    <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 1100;">
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ session('message') }}
                     </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
             </div>
         </div>
+    </div>
+@endif
+
+{{-- ERROR TOAST --}}
+@if ($errors->has('message_error'))
+    <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 1100;">
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ $errors->first('message_error') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var toastEl = document.getElementById('successToast');
-                var toast = new bootstrap.Toast(toastEl);
-                toast.show();
+                // var toast = new bootstrap.Toast(toastEl);
+                // toast.show();
             });
         </script>
-    @endif
+
 
 @endsection()

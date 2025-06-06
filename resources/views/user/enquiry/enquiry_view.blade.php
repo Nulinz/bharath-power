@@ -48,9 +48,19 @@
                                 <h6 class="text-muted mb-0 fw-bold">Source</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->source ?? 'N/A' }}</p>
                             </div>
-                            <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
                                 <h6 class="text-muted mb-0 fw-bold">Leadcycle</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->lead_cycle ?? 'N/A' }}</p>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="text-muted mb-0 fw-bold">Status</h6>
+                                <p class="text-dark mb-0">
+                                      @if ( $enquiry->status == 'pending' )
+                                                <span class="badge badge-success-light">Pending</span>
+                                            @else
+                                                <span class="badge badge-danger-light">Completed</span>
+                                            @endif
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -114,7 +124,7 @@
                                         </div>
                                         <div class="card-body p-3">
                                             <!-- task details -->
-                                             <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span></p>
+                                             <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span></p>
 
                                             <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span></p>
                                         </div>
@@ -133,24 +143,24 @@
                             <h5 class="card-title text-dark">Task</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('user.enquiry.submit_task') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('user.enquiry.submit_task') }}" method="POST" id="myForm" enctype="multipart/form-data">
                                 @csrf
 
-                                <input type="text" name="enqid" value="{{ $enquiry->enq_id }}">
-                                <input type="text" name="enqno" value="{{ $enquiry->enq_no }}">
-                                <input type="text" name="pro_id" value="{{ $enquiry->product_category }}">
-                                <input type="text" name="user_id" value="{{ $user_id }}">
+                                <input type="hidden" name="enqid" value="{{ $enquiry->enq_id }}">
+                                <input type="hidden" name="enqno" value="{{ $enquiry->enq_no }}">
+                                <input type="hidden" name="pro_id" value="{{ $enquiry->product_category }}">
+                                <input type="hidden" name="user_id" value="{{ $user_id }}">
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Assigned Employee</label>
                                     <input type="test" disabled class="form-control" placeholder="" value="{{ $enquiry->assigned_user_name }}">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Remarks</label>
-                                    <textarea class="form-control" name="remarks" id="" rows="2"></textarea>
+                                    <textarea class="form-control" name="remarks" id="" rows="2" required></textarea>
                                 </div>
                                  <div class="mb-3">
                                     <label class="form-label fw-bold">Lead cycle</label>
-                                    <select class="form-select" name="lead_cycle" id="inter">
+                                    <select class="form-select" name="lead_cycle" id="inter" required>
                                         <option value="" selected disabled>Select Option</option>
                                         <option value="Enquiry Received">Enquiry Received</option>
                                         <option value="Initial Contact">Initial Contact</option>
@@ -167,12 +177,23 @@
                                     <input type="file" name="quote" class="form-control">
                                 </div>
 
-                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Callback</label>
-                                   <input type="date" class="form-control" name="callback" placeholder="">
+                            <div class="mb-3 inputs inter-det" style="display: none;">
+                                    <label class="form-label fw-bold">Purchase Group</label>
+                                      <select class="form-select" name="Purchase_group" id="inter">
+                                        <option selected disabled>Select Option</option>
+                                        <option value="Group1">Group 1</option>
+                                        <option value="Group2">Group 2</option>
+                                        <option value="Group3">Group 3</option>
+                                        <option value="Group4">Group 4</option>
+                                    </select>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary w-100 mt-2">Submit</button>
+                                 <div class="mb-3">
+                                    <label class="form-label fw-bold">Callback</label>
+                                   <input type="date" class="form-control" name="callback" placeholder="" required>
+                                </div>
+
+                                <button type="submit" id="submitBtn" class="btn btn-primary w-100 mt-2">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -181,7 +202,7 @@
         </div>
     </main>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
+<script src="{{ asset('assets/js/disable.js') }}"></script>
     <script>
     $(document).ready(function () {
         $('#inter').change(function () {
@@ -194,31 +215,47 @@
     });
     </script>
 
+  <script src="{{ asset('assets/js/disable.js') }}"></script>
 
-    @if (session('message'))
-        <div aria-live="polite" aria-atomic="true" class="position-relative" style="min-height: 100px;">
-            <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
-                <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert"
-                    aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body text-white">
-                            {{ session('message') }}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
+        {{-- SUCCESS TOAST --}}
+@if (session('message'))
+    <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 1100;">
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ session('message') }}
                     </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
             </div>
         </div>
+    </div>
+@endif
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var toastEl = document.getElementById('successToast');
-                var toast = new bootstrap.Toast(toastEl);
-                toast.show();
-            });
-        </script>
-    @endif
+{{-- ERROR TOAST --}}
+@if ($errors->has('message_error'))
+    <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 1100;">
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ $errors->first('message_error') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toastEl = document.getElementById('successToast');
+        // var toast = new bootstrap.Toast(toastEl);
+        // toast.show();
+    });
+</script>
 
 
 @endsection()

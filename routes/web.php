@@ -4,7 +4,7 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 // login show
-Route::get('/login', [LoginController::class, 'loginshow'])->name('login');
+Route::get('/', [LoginController::class, 'loginshow'])->name('login');
 // log validate
 Route::post('/logval', [LoginController::class, 'login'])->name('logval');
 // logout

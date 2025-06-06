@@ -18,7 +18,7 @@
                             <div class="row">
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Prodcut Name</label>
-                                    <input type="text" class="form-control" name="pro_name">
+                                    <input type="text" class="form-control" name="pro_name" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Prodcut Description</label>

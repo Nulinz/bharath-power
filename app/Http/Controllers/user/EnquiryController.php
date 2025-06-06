@@ -31,6 +31,7 @@ class EnquiryController extends Controller
 
                 $enq_no =    'ENQ' . rand(1000, 9999);
 
+                $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
 
                 $insert_id =   DB::table('enquiry')->insertGetId([
                         'enq_no' => $enq_no,
@@ -42,6 +43,7 @@ class EnquiryController extends Controller
                         'requirements' => $req->enq_requirements,
                         'contact' => $req->enq_contact,
                         'location' => $req->enq_location,
+                        'status' => $status,
                         'source' => $req->enq_source,
                         'assign_to' => $req->enq_assign_to,
                         'created_at' => now(),
@@ -61,9 +63,12 @@ class EnquiryController extends Controller
                         'enq_id' => $insert_id,
                         'enq_no' => $enq_no,
                         'product_id' => $req->enq_product,
+                        'purchase_group' => $req->Purchase_group,
                         'user_id'  => $req->enq_assign_to,
+                        'remarks' => 'Enquiry Created',
                         'lead_cycle' => $req->enq_lead_cycle,
                         'quote' => $filename,
+                        'status' => $status,
                         'created_at' => now(),
                         'updated_at' => now(),
                 ]);
@@ -105,6 +110,17 @@ class EnquiryController extends Controller
      public function store_quote(Request $req)
         {
 
+                // Stop if task already completed
+                $alreadyCompleted = DB::table('task')
+                        ->where('enq_id', $req->enqid)
+                        ->where('status', 'completed')
+                        ->exists();
+
+                if ($alreadyCompleted) {
+                        return back()->withErrors(['message_error' => 'Task already completed.']);
+                }
+
+
                 if ($req->hasFile('quote')) {
                         $image = $req->file('quote');
                         $filename = time() . '_' . $image->getClientOriginalName();
@@ -114,14 +130,18 @@ class EnquiryController extends Controller
                         $filename = null; // no file uploaded
                 }
 
+                // Set task status
+                $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
+
                 DB::table('task')->insert([
                         'enq_id' => $req->enqid,
                         'enq_no' => $req->enqno,
                         'product_id' => $req->pro_id,
                         'user_id' => $req->user_id,
-                        //  'name' => $req->enq_no,
+                        'status' => $status,
                         'remarks' => $req->remarks,
                         'lead_cycle' => $req->lead_cycle,
+                        'purchase_group' => $req->Purchase_group,
                         'quote' => $filename,
                         'callback' => $req->callback,
                         'created_at'  => now(),
@@ -132,6 +152,7 @@ class EnquiryController extends Controller
                         ->where('id', $req->enqid)
                         ->update([
                                 'lead_cycle' => $req->lead_cycle,
+                        'status' => $status,
                                 'updated_at' => now()
                  ]);
 

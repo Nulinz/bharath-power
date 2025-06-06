@@ -24,7 +24,8 @@ $leadCycleCounts = DB::table('enquiry')
 
         $todayTasks = DB::table('task')
             ->whereDate('callback', $today)
-            ->where('id', Auth::id())
+            ->where('user_id', Auth::id())
+            ->distinct()
             ->get();
 
         return view('user.dashboard.dashboard', ['leadCycleCounts' => $leadCycleCounts, 'todayTasks' => $todayTasks]);

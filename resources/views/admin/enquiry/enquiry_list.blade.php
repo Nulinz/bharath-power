@@ -29,6 +29,7 @@
                                                 <th>Qty</th>
                                                 <th>Contact Number</th>
                                                 <th>Location</th>
+                                                <th>Status</th>
                                                 <th>Date</th>
                                                 {{-- <th>Action</th> --}}
                                             </tr>
@@ -44,6 +45,13 @@
                                                 <td>{{ $eq->quantity }}</td>
                                                 <td>{{ $eq->contact }}</td>
                                                 <td>{{ $eq->location }}</td>
+                                                <td>
+                                                @if ( $eq->status == 'pending' )
+                                                    <span class="badge badge-success-light">Pending</span>
+                                                @else
+                                                    <span class="badge badge-danger-light">Completed</span>
+                                                @endif
+                                                </td>
                                                 <td>{{ date('d-m-Y',strtotime($eq->created_at)) }}</td>
                                                 {{-- <td><i class="fs-4 text-dark fa fa-external-link-alt"></i></td> --}}
                                             </tr>

@@ -32,6 +32,8 @@ class EnquiryController extends Controller
         {
                 $enq_no =    'ENQ' . rand(1000, 9999);
 
+                $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
+
                 $insert_id =   DB::table('enquiry')->insertGetId([
                         'enq_no' => $enq_no,
                         'name' => $req->enq_name,
@@ -43,6 +45,7 @@ class EnquiryController extends Controller
                         'contact' => $req->enq_contact,
                         'location' => $req->enq_location,
                         'source' => $req->enq_source,
+                        'status' => $status,
                         'assign_to' => $req->enq_assign_to,
                         'created_at' => now(),
                         'updated_at' => now(),
@@ -62,9 +65,11 @@ class EnquiryController extends Controller
                         'enq_no' => $enq_no,
                         'product_id' => $req->enq_product,
                         'purchase_group' => $req->Purchase_group,
+                        'remarks' => 'Enquiry Created',
                         'user_id'  => $req->enq_assign_to,
                         'lead_cycle' => $req->enq_lead_cycle,
                         'quote' => $filename,
+                        'status' => $status,
                         'created_at' => now(),
                         'updated_at' => now(),
                 ]);
@@ -99,19 +104,74 @@ class EnquiryController extends Controller
 
                 return view('admin.enquiry.enquiry_view', ['enquiry' => $view_eq, 'task' => $task, 'user_id' => $user_id]);
         }
-// task
+        // task
+        // public function store_quote(Request $req)
+        // {
+
+
+
+        //         if ($req->hasFile('quote')) {
+        //                 $image = $req->file('quote');
+        //                 $filename = time() . '_' . $image->getClientOriginalName();
+
+        //                 $image->move(public_path('assets/quote_files'), $filename);
+        //         } else {
+        //                 $filename = null;
+        //         }
+
+        //         DB::table('task')->insert([
+        //                 'enq_id' => $req->enqid,
+        //                 'enq_no' => $req->enqno,
+        //                 'product_id' => $req->pro_id,
+        //                 'user_id' => $req->user_id,
+        //                 'remarks' => $req->remarks,
+        //                 'lead_cycle' => $req->lead_cycle,
+        //                 'quote' => $filename,
+        //                 'purchase_group' => $req->Purchase_group,
+        //                 'callback' => $req->callback,
+        //                 'created_at'  => now(),
+        //                 'updated_at' => now(),
+        //         ]);
+
+        //         DB::table('enquiry')
+        //                 ->where('id', $req->enqid)
+        //                 ->update([
+        //                         'lead_cycle' => $req->lead_cycle,
+        //                         'updated_at' => now(),
+        //                 ]);
+
+        //         return redirect()->route('admin.enquiry.enquiry_view', ['id' => $req->enqid])->with([
+        //                 'status' => 'Success',
+        //                 'message' => 'Task updated successfully'
+        //         ]);
+
+        // }
+
+
         public function store_quote(Request $req)
         {
+                // Stop if task already completed
+                $alreadyCompleted = DB::table('task')
+                        ->where('enq_id', $req->enqid)
+                        ->where('status', 'completed')
+                        ->exists();
 
-                if ($req->hasFile('quote')) {
-                        $image = $req->file('quote');
-                        $filename = time() . '_' . $image->getClientOriginalName();
-
-                        $image->move(public_path('assets/quote_files'), $filename);
-                } else {
-                        $filename = null;
+                if ($alreadyCompleted) {
+                        return back()->withErrors(['message_error' => 'Task already completed.']);
                 }
 
+                // Handle file
+                $filename = null;
+                if ($req->hasFile('quote')) {
+                        $file = $req->file('quote');
+                        $filename = time() . '_' . $file->getClientOriginalName();
+                        $file->move(public_path('assets/quote_files'), $filename);
+                }
+
+                // Set task status
+                $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
+
+                // Insert task
                 DB::table('task')->insert([
                         'enq_id' => $req->enqid,
                         'enq_no' => $req->enqno,
@@ -122,23 +182,22 @@ class EnquiryController extends Controller
                         'quote' => $filename,
                         'purchase_group' => $req->Purchase_group,
                         'callback' => $req->callback,
-                        'created_at'  => now(),
+                        'status' => $status,
+                        'created_at' => now(),
                         'updated_at' => now(),
                 ]);
 
-                DB::table('enquiry')
-                        ->where('id', $req->enqid)
-                        ->update([
-                                'lead_cycle' => $req->lead_cycle,
-                                'updated_at' => now(),
-                        ]);
-
-                return redirect()->route('admin.enquiry.enquiry_view', ['id' => $req->enqid])->with([
-                        'status' => 'Success',
-                        'message' => 'Task updated successfully'
+                // Update enquiry
+                DB::table('enquiry')->where('id', $req->enqid)->update([
+                        'lead_cycle' => $req->lead_cycle,
+                        'status' => $status,
+                        'updated_at' => now(),
                 ]);
 
+                return redirect()->route('admin.enquiry.enquiry_view', ['id' => $req->enqid])
+                        ->with(['status' => 'Success', 'message' => 'Task updated successfully']);
         }
+
 
         public function show_task($id) {}
 }

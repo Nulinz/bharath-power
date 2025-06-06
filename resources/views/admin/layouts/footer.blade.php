@@ -3,7 +3,7 @@
 					<div class="row text-muted">
 						<div class="col-md-12 text-center">
 							<p class="mb-0">
-								<a href="https://adminkit.io/" target="_blank" class="text-muted"><strong>Drivers Deck</strong></a>&copy;
+								<a href="https://adminkit.io/" target="_blank" class="text-muted"><strong>Barath Power</strong></a>&copy;
 								<script>
 									document.write(new Date().getFullYear());
 								</script>

@@ -22,12 +22,12 @@
                                 <input type="hidden" name="user_id" value="{{ Auth::id(); }}">
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Name</label>
-                                    <input type="text" name="enq_name" class="form-control" placeholder="">
+                                    <input type="text" name="enq_name" class="form-control" placeholder="" required>
                                 </div>
 
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Product Category</label>
-                                    <select class="form-select" name="enq_product" id="">
+                                    <select class="form-select" name="enq_product" id="" required>
                                         <option  selected disabled>Select Option</option>
                                         @foreach ($products as $product)
                                             <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -37,11 +37,11 @@
 
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Qty</label>
-                                    <input type="text" name="enq_qty" class="form-control" placeholder="">
+                                    <input type="text" name="enq_qty" class="form-control" placeholder="" required>
                                 </div>
                              <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Lead cycle</label>
-                                    <select class="form-select" name="enq_lead_cycle" id="inter">
+                                    <select class="form-select" name="enq_lead_cycle" id="inter" required>
                                         <option selected disabled>Select Option</option>
                                         <option value="Enquiry Received">Enquiry Received</option>
                                         <option value="Initial Contact">Initial Contact</option>
@@ -71,20 +71,20 @@
 
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Requirement</label>
-                                    <input type="text" name="enq_requirements" class="form-control" placeholder="">
+                                    <input type="text" name="enq_requirements" class="form-control" placeholder="" required>
                                 </div>
 
                                 <div class="mb-3 col-md-3">
                                   <label class="form-label fw-bold">Contact Number</label>
-                                   <input type="text" name="enq_contact" class="form-control" placeholder="" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                   <input type="text" name="enq_contact" class="form-control" placeholder="" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                                </div>
                                   <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Location</label>
-                                    <input type="text" name="enq_location" class="form-control" placeholder="">
+                                    <input type="text" name="enq_location" class="form-control" placeholder="" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Source</label>
-                                    <select class="form-select" name="enq_source" id="">
+                                    <select class="form-select" name="enq_source" id="" required>
                                         <option value="" selected disabled>Select Option</option>
                                         <option value="Indiamart">Indiamart</option>
                                         <option value="Existing customers">Existing customers</option>
@@ -94,7 +94,7 @@
 
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Assign To</label>
-                                    <select class="form-select" name="enq_assign_to" id="">
+                                    <select class="form-select" name="enq_assign_to" id="" required>
                                         <option selected disabled>Select Option</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id  }}">{{ $user->name; }}</option>
