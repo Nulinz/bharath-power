@@ -97,9 +97,29 @@ class EnquiryController extends Controller
                         ->first();
 
 
-                $task = DB::table('task')
-                        ->where('enq_id', $id)
+                // $task = DB::table('task')
+                //         ->where('enq_id', $id)
+                //         ->get();
+
+                // $task = DB::table('task')
+                //         ->leftJoin('users', 'task.created_by', '=', 'users.id')
+                //         ->where('task.enq_id', $id)
+                //         ->select('task.*', 'users.name as created_by_name')
+                //         ->get();
+
+                // $task = DB::table('task')
+                //         ->leftJoin('users', 'task.created_by', '=', 'users.id')
+                //         ->where('task.enq_id', $id)
+                //         ->select('task.*', 'users.name as created_by_name')
+                //         ->get();
+
+                $task = DB::table('task as t')
+                        ->leftJoin('users as u', 't.created_by', '=', 'u.id')
+                        ->where('t.enq_id', $id)
+                        ->select('t.*', 'u.name as created_by_name')
                         ->get();
+
+
 
                 $user_id = Auth::id();
 

@@ -98,8 +98,10 @@ class EnquiryController extends Controller
                         ->first();
 
 
-                $task = DB::table('task')
-                        ->where('enq_id', $id)
+                $task = DB::table('task as t')
+                        ->leftJoin('users as u', 't.created_by', '=', 'u.id')
+                        ->where('t.enq_id', $id)
+                        ->select('t.*', 'u.name as created_by_name')
                         ->get();
 
                 $user_id = Auth::id();
@@ -196,6 +198,8 @@ class EnquiryController extends Controller
                         'status' => $status,
                         'updated_at' => now(),
                 ]);
+
+
 
                 return redirect()->route('admin.enquiry.enquiry_view', ['id' => $req->enqid])
                         ->with(['status' => 'Success', 'message' => 'Task updated successfully']);

@@ -127,6 +127,11 @@
                                              <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span></p>
 
                                             <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span></p>
+
+                                            <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span></p>
+
+
+
                                         </div>
                                     </li>
                                 @endforeach
