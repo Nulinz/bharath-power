@@ -33,12 +33,16 @@
                                 <p class="text-dark mb-0">{{ $enquiry->product_name ?? 'N/A' }}</p>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <h6 class="text-muted mb-0 fw-bold">Requirement</h6>
+                                <h6 class="text-muted mb-0 fw-bold">Remarks</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->requirements ?? 'N/A' }}</p>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <h6 class="text-muted mb-0 fw-bold">Quantity</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->quantity ?? 'N/A' }}</p>
+                            </div>
+                             <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="text-muted mb-0 fw-bold">Capacity</h6>
+                                <p class="text-dark mb-0">{{ $enquiry->enq_capacity ?? 'N/A' }}</p>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <h6 class="text-muted mb-0 fw-bold">Location</h6>
@@ -51,6 +55,14 @@
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <h6 class="text-muted mb-0 fw-bold">Leadcycle</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->lead_cycle ?? 'N/A' }}</p>
+                            </div>
+                             <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="text-muted mb-0 fw-bold">Referred Name</h6>
+                                <p class="text-dark mb-0">{{ $enquiry->enq_ref_name ?? 'N/A' }}</p>
+                            </div>
+                             <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="text-muted mb-0 fw-bold">Reference Contact</h6>
+                                <p class="text-dark mb-0">{{ $enquiry->enq_ref_contact 	 ?? 'N/A' }}</p>
                             </div>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="text-muted mb-0 fw-bold">Status</h6>

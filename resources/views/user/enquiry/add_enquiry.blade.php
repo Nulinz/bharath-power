@@ -39,6 +39,12 @@
                                     <label class="form-label fw-bold">Qty</label>
                                     <input type="text" name="enq_qty" class="form-control" placeholder="" required>
                                 </div>
+
+                                <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">Capacity</label>
+                                    <input type="text" name="enq_capacity" class="form-control" placeholder="" required>
+                                </div>
+
                              <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Lead cycle</label>
                                     <select class="form-select" name="enq_lead_cycle" id="inter" required>
@@ -70,7 +76,7 @@
                                 </div>
 
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Requirement</label>
+                                    <label class="form-label fw-bold">Remakrs</label>
                                     <input type="text" name="enq_requirements" class="form-control" placeholder="">
                                 </div>
 
@@ -81,6 +87,14 @@
                                   <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Location</label>
                                     <input type="text" name="enq_location" class="form-control" placeholder="" required>
+                                </div>
+                                  <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">Referred by Name</label>
+                                    <input type="text" name="enq_ref_name" class="form-control" placeholder="" required>
+                                </div>
+                                  <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">Reference Contact</label>
+                                    <input type="text" name="enq_ref_contact" class="form-control" placeholder=""  maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Source</label>

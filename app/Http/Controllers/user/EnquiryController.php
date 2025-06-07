@@ -38,6 +38,7 @@ class EnquiryController extends Controller
                         'name' => $req->enq_name,
                         'product_category' => $req->enq_product,
                         'quantity' => $req->enq_qty,
+                        'enq_capacity' => $req->enq_capacity,
                         'lead_cycle' => $req->enq_lead_cycle,
                         'upload_quote' => $req->enq_quote,
                         'requirements' => $req->enq_requirements,
@@ -45,6 +46,8 @@ class EnquiryController extends Controller
                         'location' => $req->enq_location,
                         'status' => $status,
                         'source' => $req->enq_source,
+                        'enq_ref_name' => $req->enq_ref_name,
+                        'enq_ref_contact' => $req->enq_ref_contact,
                         'assign_to' => $req->enq_assign_to,
                         'created_by' => Auth::id(),
                         'created_at' => now(),
@@ -94,6 +97,7 @@ class EnquiryController extends Controller
                                 'enq.id as enq_id',
                                 'pro.name as product_name'
                         )
+                        ->orderBy('created_at', 'DESC')
                         ->first();
 
 
@@ -117,6 +121,7 @@ class EnquiryController extends Controller
                         ->leftJoin('users as u', 't.created_by', '=', 'u.id')
                         ->where('t.enq_id', $id)
                         ->select('t.*', 'u.name as created_by_name')
+                        ->orderBy('created_at', 'DESC')
                         ->get();
 
 
