@@ -16,12 +16,14 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
 
 // dashboard
 Route::get('/dashboard','DashboardController@dashboard')->name('dashboard.dashboard');
-// enquiry
-// Route::get('/show_not', 'DashboardController@dashboard_noti')->name('dashboard_noti');
-// Route::get('/dashboard_noti', 'DashboardController@dashboard_noti')->name('admin.dashboard.dashboard');
 
-// enquiry_list
-Route::get('/enquiry_list','EnquiryController@enquiry_list')->name('enquiry.enquiry_list');
+    // enquiry
+    // Route::get('/show_not', 'DashboardController@dashboard_noti')->name('dashboard_noti');
+    // Route::get('/dashboard_noti', 'DashboardController@dashboard_noti')->name('admin.dashboard.dashboard');
+    // view task dash
+    Route::get('/admin/enquiry/view/{id}', 'EnquiryController@enquiry_view')->name('admin.enquiry.enquiry_view');
+    // enquiry_list
+    Route::get('/enquiry_list', 'EnquiryController@enquiry_list')->name('enquiry.enquiry_list');
 // add enquiry
 Route::get('/add_enquiry','EnquiryController@add_enquiry')->name('enquiry.add_enquiry');
 
@@ -68,6 +70,8 @@ Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->gr
 
 // dashboard
 Route::get('/dashboard','DashboardController@dashboard')->name('dashboard.dashboard');
+    // view task dash
+    Route::get('/user/enquiry/view/{id}', 'EnquiryController@enquiry_view')->name('user.enquiry.enquiry_view');
 // enquiry
 Route::get('/enquiry_list','EnquiryController@enquiry_list')->name('enquiry.enquiry_list');
 // add enquiry

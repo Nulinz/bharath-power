@@ -46,6 +46,7 @@ class EnquiryController extends Controller
                         'status' => $status,
                         'source' => $req->enq_source,
                         'assign_to' => $req->enq_assign_to,
+                        'created_by' => Auth::id(),
                         'created_at' => now(),
                         'updated_at' => now(),
                 ]);
@@ -69,6 +70,7 @@ class EnquiryController extends Controller
                         'lead_cycle' => $req->enq_lead_cycle,
                         'quote' => $filename,
                         'status' => $status,
+                        'created_by' => Auth::id(),
                         'created_at' => now(),
                         'updated_at' => now(),
                 ]);
@@ -144,6 +146,7 @@ class EnquiryController extends Controller
                         'purchase_group' => $req->Purchase_group,
                         'quote' => $filename,
                         'callback' => $req->callback,
+                        'created_by' => Auth::id(),
                         'created_at'  => now(),
                         'updated_at' => now(),
                 ]);
@@ -162,4 +165,37 @@ class EnquiryController extends Controller
                 ]);
         }
 
+
+        public function enquiry_view($id)
+        {
+                // Fetch enquiry with related user and product info
+                $enquiry = DB::table('enquiry as enq')
+                        ->leftJoin('users as ur', 'enq.assign_to', '=', 'ur.id')
+                        ->leftJoin('products as pro', 'enq.product_category', '=', 'pro.id')
+                        ->where('enq.id', $id)
+                        ->select(
+                                'enq.*',
+                                'ur.name as assigned_user_name',
+                                'pro.id as product_id',
+                                'pro.name as product_name',
+                                'enq.id as enq_id'
+                        )
+                        ->first();
+
+                // Get all tasks related to this enquiry
+                $tasks = DB::table('task')
+                        ->leftJoin('users', 'task.created_by', '=', 'users.id')
+                        ->where('task.enq_id', $id)
+                        ->select('task.*', 'users.name as created_by_name')
+                        ->orderBy('task.updated_at', 'desc')
+                        ->get();
+
+                // Optional: check if user is allowed to view this enquiry
+                if (!$enquiry || ($enquiry->assign_to !== Auth::id() && Auth::user()->role !== 'admin')) {
+                        abort(403, 'Unauthorized');
+                }
+
+                // Return the view with the enquiry and task data
+                return view('user.enquiry.enquiry_view', compact('enquiry', 'tasks'));
+        }
 }

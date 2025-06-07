@@ -152,8 +152,17 @@
                                     </tr>
                                 </thead>
                                 <tbody class="">
-                                    @foreach ($todayTasks as $task)
+                                    {{-- @foreach ($todayTasks as $task)
                                         <tr >
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $task->enq_no }}</td>
+                                            <td>{{ $task->lead_cycle }}</td>
+                                            <td>{{ $task->remarks }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($task->callback)) }}</td>
+                                        </tr>
+                                    @endforeach --}}
+                                     @foreach ($todayTasks as $task)
+                                        <tr style="cursor: pointer;" onclick="window.location='{{ route('user.enquiry.enquiry_view', $task->enq_id) }}'">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $task->enq_no }}</td>
                                             <td>{{ $task->lead_cycle }}</td>

@@ -86,9 +86,17 @@
                                     <label class="form-label fw-bold">Source</label>
                                     <select class="form-select" name="enq_source" id="" required>
                                         <option value="" selected disabled>Select Option</option>
-                                        <option value="Indiamart">Indiamart</option>
-                                        <option value="Existing customers">Existing customers</option>
-                                        <option value="Other source">Other sources</option>
+                                        <option value="Existing Customer">Existing Customer</option>
+                                        <option value="Customer reference">Customer reference</option>
+                                        <option value="India Mart">India Mart</option>
+                                        <option value="Exhibhition">Exhibhition</option>
+                                        <option value="Website">Website</option>
+                                        <option value="Telemarketing">Telemarketing</option>
+                                        <option value="Advertisement">Advertisement</option>
+                                        <option value="Tender">Tender</option>
+                                        <option value="Empanelled Channel">Empanelled Channel</option>
+                                        <option value="Instagram">Instagram</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
 
