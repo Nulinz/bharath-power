@@ -15,20 +15,23 @@
                             {{-- Acting driver Details --}}
                             <div class="card mb-3">
                                 <div class="d-flex align-items-center justify-content-between border-bottom p-3">
-                                    <h5 class="card-title mb-0">Enquiry Driver</h5>
-                                    <a href="{{ route('admin.enquiry.add_enquiry') }}" class="btn btn-primary btn-md">Add Enquiry</a>
+                                    <h5 class="card-title mb-0">Enquiry</h5>
+                                    <a href="{{ route('admin.enquiry.add_enquiry') }}" class="btn btn-primary btn-md"><i class="align-middle fa fa-fw fa-plus"></i> Add Enquiry</a>
                                 </div>
                                 <div class="card-body">
                                     <table id="datatables-reponsive" class="table table-striped" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Enq number</th>
+                                                <th>Enq no</th>
                                                 <th>Name</th>
+                                                 <th>Contact</th>
+                                                <th>Address</th>
+                                                <th>Group</th>
                                                 <th>Product</th>
                                                 <th>Qty</th>
-                                                <th>Contact Number</th>
-                                                <th>Location</th>
+                                                <th>Assig to</th>
+                                                <th>Lead Cycle</th>
                                                 <th>Status</th>
                                                 <th>Date</th>
                                                 {{-- <th>Action</th> --}}
@@ -41,15 +44,22 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $eq->enq_no }}</td>
                                                 <td>{{ $eq->name }}</td>
+                                                 <td>{{ $eq->contact }}</td>
+                                                <td>{{ $eq->enq_address }}</td>
+                                                <td>{{ $eq->group_name }}</td>
                                                 <td>{{ $eq->product_name }}</td>
                                                 <td>{{ $eq->quantity }}</td>
-                                                <td>{{ $eq->contact }}</td>
-                                                <td>{{ $eq->location }}</td>
+                                                <td>{{ $eq->usr_name }}</td>
+                                                <td>{{ $eq->lead_cycle }}</td>
                                                 <td>
-                                                @if ( $eq->status == 'pending' )
-                                                    <span class="badge badge-success-light">Pending</span>
-                                                @else
-                                                    <span class="badge badge-danger-light">Completed</span>
+
+                                                @if ($eq->status === 'completed')
+                                                     <span class="badge badge-success-light">Completed</span>
+                                                @elseif ($eq->status === 'cancelled')
+                                                    <span class="badge badge-danger-light">Cancelled</span>
+                                                 @else
+                                                    <span class="badge badge-warning-light">Pending</span>
+
                                                 @endif
                                                 </td>
                                                 <td>{{ date('d-m-Y',strtotime($eq->created_at)) }}</td>
@@ -60,6 +70,10 @@
                                     </table>
                                 </div>
                             </div>
+
+
+
+
                         </div>
                     </div>
             </div>

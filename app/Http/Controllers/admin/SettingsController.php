@@ -10,29 +10,34 @@ class SettingsController extends Controller
 {
   public function settings()
   {
+
     $users = DB::table('users')->get();
-    $products = DB::table('products')->get();
-    return view('admin.settings.settings', ['users' => $users, 'products' => $products]);
+    $groups = DB::table('products_group')->get();
+
+    $products = DB::table('products')
+      ->leftJoin('products_group', 'products.group_id', '=', 'products_group.id')
+      ->select('products.*', 'products_group.group_name as group_name') // update this if needed
+      ->get();
+
+    return view('admin.settings.settings', [
+      'users' => $users,
+      'products' => $products,
+      'groups' => $groups
+    ]);
   }
-
-  //  public function product_view(){
-
-
-  //     return view('admin.settings.settings', []);
-  // }
 
   public function add_product()
   {
-    return view('admin.settings.add_product');
+    $add_group = DB::table('products_group')->get();
+
+    return view('admin.settings.add_product', ['add_group' => $add_group]);
   }
 
   public function product_store(Request $request)
 
   {
-
-    // dd($request);
-
     DB::table('products')->insert([
+      'group_id' => $request->group_id,
       'name' => $request->pro_name,
       'desc'  => $request->pro_desc,
       'status'  => $request->pro_status,
@@ -40,7 +45,7 @@ class SettingsController extends Controller
       'updated_at' => now(),
     ]);
 
-    return redirect()->route('admin.settings.settings', ['tab' => 'Products'])->with([
+    return redirect()->route('admin.settings.settings')->with([
       'status' => 'success',
       'message' => 'Created Product',
     ]);
@@ -50,9 +55,14 @@ class SettingsController extends Controller
   public function edit_product($id)
   {
 
-    $products = DB::table('products')->where('id', $id)->first();
+    $product = DB::table('products')
+      ->join('products_group', 'products.group_id', '=', 'products_group.id')
+      ->select('products.*', 'products_group.group_name')
+      ->where('products.id', $id)
+      ->first();
 
-    return view('admin.settings.edit_product', ['products' => $products]);
+    $productGroups = DB::table('products_group')->get();
+    return view('admin.settings.edit_product', compact('product', 'productGroups'));
   }
 
   // update product
@@ -60,6 +70,7 @@ class SettingsController extends Controller
   {
 
     DB::table('products')->where('id', $request->edit_id)->update([
+      'group_id' => $request->group_id,
       'name' => $request->name,
       'desc'  => $request->desc,
       'status'  => $request->status,
@@ -92,24 +103,26 @@ class SettingsController extends Controller
       'updated_at' => now(),
     ]);
 
-    return redirect()->route('admin.settings.settings', ['tab' => 'Users'])->with([
+    return redirect()->route('admin.settings.settings')->with([
       'status' => 'Success',
       'message' => 'User created successfully'
     ]);
   }
 
-  public function users_edit($id){
+  public function users_edit($id)
+  {
 
     $user_data  = DB::table('users')->where('id', $id)->first();
 
-    return view('admin.settings.edit_user', ['user_data' => $user_data] );
+    return view('admin.settings.edit_user', ['user_data' => $user_data]);
   }
 
 
-   public function users_update(Request $req){
+  public function users_update(Request $req)
+  {
 
-     DB::table('users')->where('id', $req->user_id)->update([
-       'name' => $req->user_name,
+    DB::table('users')->where('id', $req->user_id)->update([
+      'name' => $req->user_name,
       'designation' => $req->user_desig,
       'contact_number' => $req->user_contact,
       'email' => $req->user_mail,
@@ -123,7 +136,54 @@ class SettingsController extends Controller
       'status' => 'Success',
       'message' => 'User updated successfully'
     ]);
-
   }
 
+  public function add_group()
+  {
+    return view('admin.settings.add_pro_group');
+  }
+
+  public function store_group(Request $req)
+  {
+    DB::table('products_group')->insert([
+      'group_name' => $req->group_name,
+      'desc' => $req->group_desc,
+      'status' => $req->group_status,
+      'created_at' => now(),
+      'updated_at' => now(),
+    ]);
+
+    return redirect()->route('admin.settings.settings')->with([
+      'status' => 'Success',
+      'message' => 'Product group created successfully'
+    ]);
+  }
+
+  // edit group
+  public function group_edit($id)
+  {
+    $group_edi = DB::table('products_group')->where('id', $id)->first();
+
+    return view('admin.settings.edit_group', ['group_edi' => $group_edi]);
+  }
+
+  // group update
+  public function group_update(Request $req)
+  {
+    DB::table('products_group')->where('id', $req->group_id)->update([
+      'group_name' => $req->group_name,
+      'desc' => $req->group_desc,
+      'status' => $req->group_status,
+      'updated_at' => now(),
+    ]);
+
+    // dd($req);
+
+    return redirect()->route('admin.settings.settings')->with([
+      'status' => 'Success',
+      'message' => 'Prodcut Group Update'
+    ]);
+
+    // return view('admin.settings.edit_group');
+  }
 }

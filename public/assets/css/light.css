@@ -2192,6 +2192,7 @@ progress {
 .table-striped>tbody>tr:nth-of-type(odd)>* {
     --bs-table-color-type: var(--bs-table-striped-color);
     --bs-table-bg-type: var(--bs-table-striped-bg);
+        /* --bs-table-bg-type: red; */
 }
 
 .table-active {
@@ -4927,7 +4928,7 @@ fieldset:disabled .btn {
     --bs-card-border-width: 0;
     --bs-card-border-color: transparent;
     --bs-card-border-radius: 0.5rem;
-    --bs-card-box-shadow: ;
+    --bs-card-box-shadow: box-shadow: 0 2px 6px 0 rgba(136, 148, 171, 0.2), 0 24px 20px -24px rgba(71, 82, 107, 0.1);
     --bs-card-inner-border-radius: 0.5rem;
     --bs-card-cap-padding-y: 1rem;
     --bs-card-cap-padding-x: 1.25rem;
@@ -36049,4 +36050,46 @@ body[data-theme="colored"] .simplebar-scrollbar:before {
     background-color: #fff !important;
     border: 1px solid black !important;
     transition: 0.5s ease-in-out;
+}
+table tr td {
+    font-size: 0.95rem !important;
+    font-weight: 400;
+}
+
+table tbody tr {
+    border-bottom: 2px solid #ccc;
+}
+
+table thead tr {
+    background-color: #000000cc;
+    /* background: linear-gradient(90deg, rgb(21 22 23), rgb(19 19 20) 50%, #00000099); */
+}
+
+table {
+    padding-top: 10px;
+}
+
+
+table thead th {
+    color: #fff !important;
+    font-weight: 400;
+}
+
+.odd {
+    /* background-color: #7ce6ff26 !important; */
+}
+
+.odd>td {
+    /* color: #fff !important; */
+}
+
+.tl-bg {
+    background: #FD1D1D;
+    background: linear-gradient(90deg, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%);
+    /* background: RGBA(12, 97, 166, 1);
+    background: linear-gradient(90deg, rgba(12, 97, 166, 1) 5%, rgba(63, 131, 179, 1) 56%, rgba(32, 227, 241, 1) 100%); */
+    /* background: #0C61A6;
+    background: linear-gradient(90deg, rgba(12, 97, 166, 1) 20%, rgba(116, 63, 179, 1) 55%, rgba(241, 32, 194, 1) 100%); */
+    /* background: #E00B91;
+    background: linear-gradient(90deg, rgba(224, 11, 145, 1) 5%, rgba(236, 63, 109, 1) 26%, rgba(251, 154, 40, 1) 100%); */
 }

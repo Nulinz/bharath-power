@@ -12,9 +12,19 @@ class EnquiryController extends Controller
         //        list of enquiry
         public function enquiry_list()
         {
+
                 $enquiry = DB::table('enquiry as eq')
                         ->join('products as pt', 'eq.product_category', '=', 'pt.id')
-                        ->select('eq.*', 'pt.name as product_name')
+                        ->join('users as us', 'eq.assign_to', '=', 'us.id')
+                        ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
+                        ->select('eq.*', 'pt.name as product_name', 'us.name as usr_name', 'pg.group_name as group_name')
+                        ->where(function ($query) {
+                                $query->whereIn('eq.status', ['completed', 'cancelled'])
+                                        ->whereMonth('eq.created_at', date('m'))
+                                        ->whereYear('eq.created_at', date('Y'));
+                        })
+                        ->orWhere('eq.status', 'pending')
+                        ->orderBy('eq.created_at', 'DESC')
                         ->get();
 
                 return view('admin.enquiry.enquiry_list', ['enquiry' => $enquiry]);
@@ -24,7 +34,8 @@ class EnquiryController extends Controller
         {
                 $users = DB::table('users')->where('user_status', 'Active')->get();
                 $products = DB::table('products')->where('status', 'Active')->get();
-                return view('admin.enquiry.add_enquiry', ['users' => $users, 'products' => $products]);
+                $add_group = DB::table('products_group')->where('status', 'Active')->get();
+                return view('admin.enquiry.add_enquiry', ['users' => $users, 'products' => $products, 'add_group' => $add_group]);
         }
 
 
@@ -37,14 +48,17 @@ class EnquiryController extends Controller
                 $insert_id =   DB::table('enquiry')->insertGetId([
                         'enq_no' => $enq_no,
                         'name' => $req->enq_name,
+                        'enq_pro_group' => $req->enq_pro_group,
                         'product_category' => $req->enq_product,
                         'quantity' => $req->enq_qty,
                         'enq_capacity' => $req->enq_capacity,
+                        'enq_uom' => $req->enq_uom,
                         'lead_cycle' => $req->enq_lead_cycle,
                         'upload_quote' => $req->enq_quote,
                         'requirements' => $req->enq_requirements,
                         'contact' => $req->enq_contact,
                         'location' => $req->enq_location,
+                        'enq_address' => $req->enq_address,
                         'source' => $req->enq_source,
                         'enq_ref_name' => $req->enq_ref_name,
                         'enq_ref_contact' => $req->enq_ref_contact,
@@ -73,6 +87,7 @@ class EnquiryController extends Controller
                         'user_id'  => $req->enq_assign_to,
                         'lead_cycle' => $req->enq_lead_cycle,
                         'quote' => $filename,
+                        'value' =>  $req->quote_value,
                         'status' => $status,
                         'created_by' => Auth::id(),
                         'created_at' => now(),
@@ -90,13 +105,15 @@ class EnquiryController extends Controller
                 $view_eq = DB::table('enquiry as enq')
                         ->leftJoin('users as ur', 'enq.assign_to', '=', 'ur.id')
                         ->leftJoin('products as pro', 'enq.product_category', '=', 'pro.id')
+                        ->leftJoin('products_group as pg', 'pg.id', '=', 'enq.enq_pro_group')
                         ->where('enq.id', $id)
                         ->select(
                                 'enq.*',
                                 'ur.name as assigned_user_name',
                                 'pro.id as product_id',
                                 'enq.id as enq_id',
-                                'pro.name as product_name'
+                        'pro.name as product_name',
+                        'pg.group_name as group_name'
                         )
                         ->orderBy('created_at', 'DESC')
                         ->first();
@@ -113,56 +130,13 @@ class EnquiryController extends Controller
 
                 return view('admin.enquiry.enquiry_view', ['enquiry' => $view_eq, 'task' => $task, 'user_id' => $user_id]);
         }
-        // task
-        // public function store_quote(Request $req)
-        // {
-
-
-
-        //         if ($req->hasFile('quote')) {
-        //                 $image = $req->file('quote');
-        //                 $filename = time() . '_' . $image->getClientOriginalName();
-
-        //                 $image->move(public_path('assets/quote_files'), $filename);
-        //         } else {
-        //                 $filename = null;
-        //         }
-
-        //         DB::table('task')->insert([
-        //                 'enq_id' => $req->enqid,
-        //                 'enq_no' => $req->enqno,
-        //                 'product_id' => $req->pro_id,
-        //                 'user_id' => $req->user_id,
-        //                 'remarks' => $req->remarks,
-        //                 'lead_cycle' => $req->lead_cycle,
-        //                 'quote' => $filename,
-        //                 'purchase_group' => $req->Purchase_group,
-        //                 'callback' => $req->callback,
-        //                 'created_at'  => now(),
-        //                 'updated_at' => now(),
-        //         ]);
-
-        //         DB::table('enquiry')
-        //                 ->where('id', $req->enqid)
-        //                 ->update([
-        //                         'lead_cycle' => $req->lead_cycle,
-        //                         'updated_at' => now(),
-        //                 ]);
-
-        //         return redirect()->route('admin.enquiry.enquiry_view', ['id' => $req->enqid])->with([
-        //                 'status' => 'Success',
-        //                 'message' => 'Task updated successfully'
-        //         ]);
-
-        // }
-
 
         public function store_quote(Request $req)
         {
                 // Stop if task already completed
                 $alreadyCompleted = DB::table('task')
                         ->where('enq_id', $req->enqid)
-                        ->where('status', 'completed')
+                        ->whereIn('status', ['completed', 'cancelled'])
                         ->exists();
 
                 if ($alreadyCompleted) {
@@ -170,15 +144,30 @@ class EnquiryController extends Controller
                 }
 
                 // Handle file
-                $filename = null;
                 if ($req->hasFile('quote')) {
                         $file = $req->file('quote');
                         $filename = time() . '_' . $file->getClientOriginalName();
                         $file->move(public_path('assets/quote_files'), $filename);
+                } else {
+                        $filename = null;
+                }
+
+                if ($req->hasFile('cancel_upload')) {
+                        $file = $req->file('cancel_upload');
+                        $filename = time() . '_' . $file->getClientOriginalName();
+                        $file->move(public_path('assets/quote_files'), $filename);
+                } else {
+                        $filename = null;
                 }
 
                 // Set task status
-                $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
+                if ($req->lead_cycle === 'Final Decision') {
+                        $status = 'completed';
+                } elseif ($req->lead_cycle === 'Cancelled') {
+                        $status = 'cancelled';
+                } else {
+                        $status = 'pending';
+                }
 
                 // Insert task
                 DB::table('task')->insert([
@@ -189,8 +178,11 @@ class EnquiryController extends Controller
                         'remarks' => $req->remarks,
                         'lead_cycle' => $req->lead_cycle,
                         'quote' => $filename,
+                        'cancel_reason' => $req->cancel,
+                        'cancel_upload' => $req->cancel_upload,
                         'purchase_group' => $req->Purchase_group,
                         'callback' => $req->callback,
+                        'value' => $req->quote_value,
                         'status' => $status,
                         'created_by' => Auth::id(),
                         'created_at' => now(),
@@ -203,8 +195,6 @@ class EnquiryController extends Controller
                         'status' => $status,
                         'updated_at' => now(),
                 ]);
-
-
 
                 return redirect()->route('admin.enquiry.enquiry_view', ['id' => $req->enqid])
                         ->with(['status' => 'Success', 'message' => 'Task updated successfully']);

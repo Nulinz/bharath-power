@@ -3,25 +3,31 @@
     <main class="content">
         <div class="container-fluid p-0">
             <div class="row mb-2 mb-xl-3">
-                <div class="col-auto d-none d-sm-block">
+               <div class="d-flex align-items-center justify-content-between mb-2 mb-xl-3">
+                <div class="">
                     <h3><strong>Dashboard</strong></h3>
                 </div>
+
+                <p class="fw-bold fs-4 mb-0"><span>Total Enquiry: </span>{{ $totalEnquiries }}</p>
+            </div>
             </div>
             {{-- basic cards --}}
-            <div class="row">
+
+             <div class="row">
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill">
                         <div class="card-body cd-aft">
                             <a href="" class="text-decoration-none">
-                                <div class="row">
-                                    <div class="col mb-2">
+                                  <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
                                         <h5 class="card-title mb-0">Enquiry Received</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Enquiry Received'] ?? 0 }}</h1>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    {{-- <h3 class="mt-2 mb-0 pb-0 fw-bold"> 53,252</h3> --}}
-                                    <h1 class="mt-1 mb-0">{{ $leadCycleCounts['Enquiry Received'] ?? 0 }}</h1>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/cover-letter.png') }}" height="55px" alt="">
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -30,15 +36,17 @@
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill">
-                        <div class="card-body cd-aft">
+                        <div class="card-body cd-aft" style="border-color: #cd0ef8; ">
                             <a href="" class="text-decoration-none">
-                                <div class="row">
-                                    <div class="col mb-2">
+                                 <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
                                         <h5 class="card-title mb-0">Initial Contact</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Initial Contact'] ?? 0 }}</h1>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <h1 class="mt-1 mb-0">{{ $leadCycleCounts['Initial Contact'] ?? 0 }}</h1>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/contact-information.png') }}" height="55px" alt="">
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -47,15 +55,18 @@
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill">
-                        <div class="card-body cd-aft">
+                        <div class="card-body cd-aft" style="border-color: #0ebaf8; ">
                             <a href="" class="text-decoration-none">
-                                <div class="row">
-                                    <div class="col mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
                                         <h5 class="card-title mb-0">Requirement Gathering</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Requirement Gathering'] ?? 0 }}</h1>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <h1 class="mt-1 mb-0">{{ $leadCycleCounts['Requirement Gathering'] ?? 0 }}</h1>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/requirement.png') }}" height="55px"
+                                            alt="">
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -64,16 +75,17 @@
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill">
-                        <div class="card-body cd-aft">
+                        <div class="card-body cd-aft" style="border-color: #59ffc3; ">
                             <a href="" class="text-decoration-none">
-                                <div class="row">
-                                    <div class="col mb-2">
-                                        <h5 class="card-title mb-0">Product & Specification</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
+                                        <h5 class="card-title mb-0">Product & Specs</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Product Selection'] ?? 0 }}</h1>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <h1 class="mt-1 mb-0">{{ $leadCycleCounts['Product Selection'] ?? 0 }}
-                                    </h1>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/inspection.png') }}" height="55px" alt="">
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -81,15 +93,17 @@
                 </div>
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill">
-                        <div class="card-body cd-aft">
+                        <div class="card-body cd-aft" style="border-color: #c58208; ">
                             <a href="" class="text-decoration-none">
-                                <div class="row">
-                                    <div class="col mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
                                         <h5 class="card-title mb-0">Quotation Preparation</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Quotation'] ?? 0 }}</h1>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <h1 class="mt-1 mb-0">{{ $leadCycleCounts['Quotation'] ?? 0 }}</h1>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/quotation.png') }}" height="55px" alt="">
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -98,15 +112,17 @@
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill">
-                        <div class="card-body cd-aft">
+                        <div class="card-body cd-aft" style="border-color: #f8a50e; ">
                             <a href="" class="text-decoration-none">
-                                <div class="row">
-                                    <div class="col mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
                                         <h5 class="card-title mb-0">Follow-up</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Follow-up'] ?? 0 }}</h1>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <h1 class="mt-1 mb-0">{{ $leadCycleCounts['Follow-up'] ?? 0 }}</h1>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/events.png') }}" height="55px" alt="">
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -114,23 +130,47 @@
                 </div>
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill">
-                        <div class="card-body cd-aft">
+                        <div class="card-body cd-aft" style="border-color: #ede93ad6; ">
                             <a href="" class="text-decoration-none">
-                                <div class="row">
-                                    <div class="col mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
                                         <h5 class="card-title mb-0">Final Decision</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Final Decision'] ?? 0 }}</h1>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <h1 class="mt-1 mb-0">{{ $leadCycleCounts['Final Decision'] ?? 0 }}</h1>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/decision-making.png') }}" height="55px"
+                                            alt="">
+                                    </div>
                                 </div>
                             </a>
                         </div>
                     </div>
                 </div>
+
+                  <div class="col-12 col-md-6 col-xl-3 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body cd-aft" style="border-color: #ede93ad6; ">
+                            <a href="" class="text-decoration-none">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
+                                        <h5 class="card-title text-dark mb-0">Cancelled</h5>
+                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Cancelled'] ?? 0 }}</h1>
+                                    </div>
+
+                                    <div class="">
+                                        <img src="{{ asset('assets/icons/file.png') }}" height="55px"
+                                            alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
 
             </div>
-
 
             <div class="row">
                 <div class="col-lg-12">
@@ -143,12 +183,13 @@
                             <table id="datatables-reponsive" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                          <th>#</th>
                                         <th>Enquiry No</th>
                                         <th>Lead Cycle</th>
-                                        <th>Remarks</th>
+                                        <th>Assig to</th>
+                                        <th style="width:20%;">Remarks</th>
+                                        <th>Status</th>
                                         <th>Callback</th>
-
                                     </tr>
                                 </thead>
                                 <tbody class="">
@@ -162,11 +203,23 @@
                                         </tr>
                                     @endforeach --}}
                                      @foreach ($todayTasks as $task)
-                                        <tr style="cursor: pointer;" onclick="window.location='{{ route('user.enquiry.enquiry_view', $task->enq_id) }}'">
+                                        <tr style="cursor: pointer;"
+                                            onclick="window.location='{{ route('admin.enquiry.enquiry_view', $task->enq_id) }}'">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $task->enq_no }}</td>
                                             <td>{{ $task->lead_cycle }}</td>
+                                            <td>{{ $task->assign_to }}</td>
                                             <td>{{ $task->remarks }}</td>
+                                            <td>
+                                                @if ($task->status === 'completed')
+                                                     <span class="badge badge-success-light">Completed</span>
+                                                @elseif ($task->status === 'cancelled')
+                                                    <span class="badge badge-danger-light">Cancelled</span>
+                                                 @else
+                                                    <span class="badge badge-warning-light">Pending</span>
+
+                                                @endif
+                                            </td>
                                             <td>{{ date('d-m-Y', strtotime($task->callback)) }}</td>
                                         </tr>
                                     @endforeach

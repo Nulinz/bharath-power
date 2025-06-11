@@ -25,6 +25,16 @@
                                     <input type="text" name="enq_name" class="form-control" placeholder="" required>
                                 </div>
 
+                                  {{-- <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">Product Group</label>
+                                    <select class="form-select" name="enq_pro_group" id="" required>
+                                        <option  selected disabled>Select Option</option>
+                                        @foreach ($add_group as $ag)
+                                            <option value="{{ $ag->id }}">{{ $ag->group_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Product Category</label>
                                     <select class="form-select" name="enq_product" id="" required>
@@ -33,11 +43,37 @@
                                             <option value="{{ $product->id }}">{{ $product->name }}</option>
                                         @endforeach
                                     </select>
+                                </div> --}}
+
+
+                                   <!-- Product Group Dropdown -->
+                                   <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">Product Group</label>
+                                <select class="form-select"  name="enq_pro_group" id="enq_pro_group" required>
+                                    <option selected disabled>Select Option</option>
+                                    @foreach ($add_group as $ag)
+                                        <option value="{{ $ag->id }}">{{ $ag->group_name }}</option>
+                                    @endforeach
+                                </select>
+                                   </div>
+
+                                <!-- Product Category Dropdown -->
+                                <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">Product Category</label>
+                                <select class="form-select" name="enq_product" id="enq_product" required>
+                                    <option selected disabled>Select Option</option>
+                                </select>
                                 </div>
+
 
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Qty</label>
                                     <input type="text" name="enq_qty" class="form-control" placeholder="" required>
+                                </div>
+
+                                <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">UOM</label>
+                                    <input type="text" name="enq_uom" class="form-control" placeholder="" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Capacity</label>
@@ -62,6 +98,11 @@
                                     <input type="file" name="enq_quote" class="form-control">
                                 </div>
 
+                                 <div class="mb-3  col-md-3 inter-det" style="display: none;">
+                                    <label class="form-label fw-bold">Quote Value</label>
+                                    <input type="text" name="quote_value" class="form-control">
+                                </div>
+
                                   <div class="mb-3 col-md-3 inputs inter-det" style="display: none;">
                                     <label class="form-label fw-bold">Purchase Group</label>
                                       <select class="form-select" name="Purchase_group" id="inter">
@@ -82,6 +123,10 @@
                                   <label class="form-label fw-bold">Contact Number</label>
                                    <input type="text" name="enq_contact" class="form-control" placeholder="" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                                </div>
+                                <div class="mb-3 col-md-3">
+                                    <label class="form-label fw-bold">Address</label>
+                                    <textarea class="form-control" name="enq_address" id=""  rows="1"></textarea>
+                                </div>
                                   <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Location</label>
                                     <input type="text" name="enq_location" class="form-control" placeholder="" required>
@@ -155,5 +200,23 @@
     });
 
     </script>
+
+<script>
+    $('#enq_pro_group').change(function () {
+        var groupId = $(this).val();
+
+        $('#enq_product').html('<option selected disabled>Loading...</option>');
+
+        $.get('/get-products/' + groupId, function (data) {
+            var options = '<option selected disabled>Select Option</option>';
+            data.forEach(function (product) {
+                options += '<option value="' + product.id + '">' + product.name + '</option>';
+            });
+            $('#enq_product').html(options);
+        });
+    });
+</script>
+
+
     <script src="{{ asset('assets/js/disable.js') }}"></script>
 @endsection()

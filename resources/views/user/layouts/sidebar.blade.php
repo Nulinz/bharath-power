@@ -12,26 +12,6 @@
 
 				<ul class="sidebar-nav">
 
-					{{-- <li class="sidebar-item">
-						<a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="layout"></i> <span class="align-middle">Pages</span>
-						</a>
-						<ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class='sidebar-link' href='pages-settings.html'>Settings</a></li>
-							<li class="sidebar-item"><a class='sidebar-link' href='pages-projects.html'>Projects <span
-										class="sidebar-badge badge bg-primary">Pro</span></a></li>
-							<li class="sidebar-item"><a class='sidebar-link' href='pages-clients.html'>Clients <span
-										class="sidebar-badge badge bg-primary">Pro</span></a></li>
-							<li class="sidebar-item"><a class='sidebar-link' href='pages-orders.html'>Orders <span
-										class="sidebar-badge badge bg-primary">Pro</span></a></li>
-							<li class="sidebar-item"><a class='sidebar-link' href='pages-pricing.html'>Pricing <span
-										class="sidebar-badge badge bg-primary">Pro</span></a></li>
-							<li class="sidebar-item"><a class='sidebar-link' href='pages-chat.html'>Chat <span
-										class="sidebar-badge badge bg-primary">Pro</span></a></li>
-							<li class="sidebar-item"><a class='sidebar-link' href='pages-blank.html'>Blank Page</a></li>
-						</ul>
-					</li> --}}
-
 					<li class="sidebar-item {{ Route::is('user.dashboard.dashboard') ? 'active' : '' }}">
 						<a class='sidebar-link fw-semibold' href='{{ route('user.dashboard.dashboard') }}'>
 							<i class="align-middle" data-feather="grid"></i> <span class="align-middle fw-semibold">Dashboard</span>
@@ -40,7 +20,13 @@
 
 					<li class="sidebar-item {{ Route::is('user.enquiry.enquiry_list') ? 'active' : '' }}">
 						<a class='sidebar-link fw-semibold' href='{{ route('user.enquiry.enquiry_list') }}'>
-							<i class="align-middle" data-feather="grid"></i> <span class="align-middle fw-semibold">Enquiry</span>
+							<i class="align-middle" data-feather="file-text"></i> <span class="align-middle fw-semibold">Enquiry</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item {{ Route::is('user.reports.index') ? 'active' : ''}}">
+						<a class='sidebar-link fw-semibold' href='{{ route('user.reports.index') }}'>
+							<i class="align-middle" data-feather="clipboard"></i> <span class="align-middle fw-semibold">Report</span>
 						</a>
 					</li>
 				</ul>

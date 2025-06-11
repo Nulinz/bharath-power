@@ -5,7 +5,7 @@
         <div class="container-fluid p-0">
             <div class="row mb-2 mb-xl-3">
                 <div class="col-auto d-none d-sm-block">
-                    <h3><strong>Add Prodcut</strong></h3>
+                    <h3><strong>Add Product Group</strong></h3>
                 </div>
             </div>
 
@@ -13,31 +13,20 @@
                 {{-- report tabs --}}
                 <div class="card">
                     <div class="card-body">
-                            <form action="{{ route('admin.pro_store') }}" method="POST"  id="myForm">
+                            <form action="{{ route('admin.store_product_group') }}" method="POST"  id="myForm">
                                 @csrf
                             <div class="row">
-
-                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Prodcut Name</label>
-                                    <select name="group_id" id="" class="form-control">
-                                        <option value="" selected disabled>Select</option>
-                                        @foreach ($add_group as $ag )
-                                            <option value="{{ $ag->id }}">{{ $ag->group_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Prodcut Name</label>
-                                    <input type="text" class="form-control" name="pro_name" required>
+                                    <label class="form-label fw-bold">Group Name</label>
+                                    <input type="text" class="form-control" name="group_name" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Prodcut Description</label>
-                                    <input type="text" class="form-control" name="pro_desc">
+                                    <input type="text" class="form-control" name="group_desc">
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Status</label>
-                                    <select class="form-select" name="pro_status" id="" required>
+                                    <select class="form-select" name="group_status" id="" required>
                                         <option value="" selected disabled>Select Option</option>
                                         <option value="Active">Active</option>
                                         <option value="Inactive">Inactive</option>

@@ -21,15 +21,22 @@
 
 					<li class="sidebar-item {{ Route::is('admin.enquiry.enquiry_list') ? 'active' : '' }}">
 						<a class='sidebar-link fw-semibold' href='{{ route('admin.enquiry.enquiry_list') }}'>
-							<i class="align-middle" data-feather="grid"></i> <span class="align-middle fw-semibold">Enquiry</span>
+							<i class="align-middle" data-feather="file-text"></i> <span class="align-middle fw-semibold">Enquiry</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item {{ Route::is('admin.reports.index') ? 'active' : ''}}">
+						<a class='sidebar-link fw-semibold' href='{{ route('admin.reports.index') }}'>
+							<i class="align-middle" data-feather="clipboard"></i> <span class="align-middle fw-semibold">Report</span>
 						</a>
 					</li>
 
 					<li class="sidebar-item {{ Route::is('admin.settings.settings') ? 'active' : ''}}">
-						<a class='sidebar-link fw-semibold' href='{{ route('admin.settings.settings', ['tab' => 'Products']) }}'>
+						<a class='sidebar-link fw-semibold' href='{{ route('admin.settings.settings') }}'>
 							<i class="align-middle" data-feather="settings"></i> <span class="align-middle fw-semibold">Settings</span>
 						</a>
 					</li>
+
 				</ul>
 			</div>
 		</nav>

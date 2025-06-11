@@ -14,7 +14,10 @@
                 <div class="col-md-12 col-xl-12">
 
                     <div class="nav nav-tabs" role="tablist">
-                        <a class="active" data-bs-toggle="tab" href="#Products" role="tab" aria-selected="true">
+                        <a class="active" data-bs-toggle="tab" href="#Pro_group" role="tab" aria-selected="false" tabindex="-1">
+                            Product Group
+                        </a>
+                        <a data-bs-toggle="tab" href="#Products" role="tab" aria-selected="true">
                             Products
                         </a>
                         <a data-bs-toggle="tab" href="#Users" role="tab" aria-selected="false" tabindex="-1">
@@ -62,6 +65,10 @@
 
                     <div class="tab-pane fade" id="Users" role="tabpanel">
                         @include('admin.settings.user_list')
+                    </div>
+
+                     <div class="tab-pane fade" id="Pro_group" role="tabpanel">
+                        @include('admin.settings.product_group')
                     </div>
                     </div>
 

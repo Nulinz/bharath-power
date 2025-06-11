@@ -9,52 +9,43 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-     public function dashboard(){
-
-
+    public function dashboard()
+    {
 
         $leadCycleCounts = DB::table('enquiry')
             ->select('lead_cycle', DB::raw('COUNT(*) AS total'))
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
             ->where('assign_to', Auth::id())
             ->groupBy('lead_cycle')
             ->pluck('total', 'lead_cycle');
 
+        $totalEnquiries = DB::table('enquiry')
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->where('assign_to', Auth::id())
+            ->count();
 
-        // $today = date('Y-m-d');
-
-        // $todayTasks = DB::table('task')
-        //     ->whereDate('callback', $today)
-        //     ->where('user_id', Auth::id())
-        //     ->get();
 
         $userId = Auth::id();
         $today = date('Y-m-d');
 
-        // Get lead cycle counts for the current user
-        // $leadCycleCounts = DB::table('enquiry')
-        //     ->select('lead_cycle', DB::raw('COUNT(*) AS total'))
-        //     ->where('assign_to', $userId)
-        //     ->groupBy('lead_cycle')
-        //     ->pluck('total', 'lead_cycle');
-
         // Get today's tasks based on enquiries assigned to this user
         $todayTasks = DB::table('task')
             ->join('enquiry', 'task.enq_id', '=', 'enquiry.id')
+            ->leftJoin('users', 'task.user_id', '=', 'users.id')
             ->where('enquiry.assign_to', $userId)
             ->where(function ($query) use ($today) {
                 $query->whereDate('task.created_at', $today)
                     ->orWhereDate('task.updated_at', $today);
             })
-            ->select('task.*', 'enquiry.enq_no', 'enquiry.name as enquiry_name')
+            ->select('task.*', 'enquiry.enq_no', 'enquiry.name as enquiry_name',  'users.name as assign_to')
             ->get();
 
         return view('user.dashboard.dashboard', [
             'leadCycleCounts' => $leadCycleCounts,
-            'todayTasks' => $todayTasks
+            'todayTasks' => $todayTasks,
+            'totalEnquiries' => $totalEnquiries
         ]);
-
-
-
-        // return view('user.dashboard.dashboard', ['leadCycleCounts' => $leadCycleCounts, 'todayTasks' => $todayTasks]);
     }
 }
