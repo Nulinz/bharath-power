@@ -186,7 +186,7 @@
                                           <th>#</th>
                                         <th>Enquiry No</th>
                                         <th>Lead Cycle</th>
-                                        <th>Assig to</th>
+                                        <th>Assign to</th>
                                         <th style="width:20%;">Remarks</th>
                                         <th>Status</th>
                                         <th>Callback</th>
@@ -204,7 +204,7 @@
                                     @endforeach --}}
                                      @foreach ($todayTasks as $task)
                                         <tr style="cursor: pointer;"
-                                            onclick="window.location='{{ route('admin.enquiry.enquiry_view', $task->enq_id) }}'">
+                                            onclick="window.location='{{ route('user.enquiry.enquiry_view', $task->enq_id) }}'">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $task->enq_no }}</td>
                                             <td>{{ $task->lead_cycle }}</td>

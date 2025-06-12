@@ -93,7 +93,7 @@
 
                     <div class="card">
                         <div class="card-header border-bottom pb-1">
-                            <h5 class="card-title text-dark">Quotation Details</h5>
+                            <h5 class="card-title text-dark">File Details</h5>
                         </div>
                         <div class="card-body">
                             @foreach ($task as $t)
@@ -113,6 +113,21 @@
                                         </a>
                                     </article>
                                 @endif
+
+                                 @if ($t->cancel_upload)
+                                  <article
+                                        class="d-flex justify-content-between align-items-center my-2 border p-2 bg-light rounded-3 qc-card">
+                                        <div>
+                                            <h5 class="card-title text-muted fw-bold mb-0">{{ $t->cancel_upload }}</h5>
+                                            <p class="mb-0">
+                                                <small>{{ \Carbon\Carbon::parse($t->created_at)->format('d/m/Y') }}</small>
+                                            </p>
+                                        </div>
+                                        <a href="{{ asset('assets/quote_files/' . $t->quote) }}" target="_blank">
+                                            <i class="text-success fs-3 fa fa-fw fa-download"></i>
+                                        </a>
+                                    </article>
+                                  @endif
                             @endforeach
 
                         </div>

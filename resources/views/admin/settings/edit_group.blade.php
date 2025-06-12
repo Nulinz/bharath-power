@@ -5,7 +5,7 @@
         <div class="container-fluid p-0">
             <div class="row mb-2 mb-xl-3">
                 <div class="col-auto d-none d-sm-block">
-                    <h3><strong>Edit Prodcut Group</strong></h3>
+                    <h3><strong>Edit Product Group</strong></h3>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                                     <input type="text" class="form-control" name="group_name" value="{{ $group_edi->group_name }}" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Prodcut Description</label>
+                                    <label class="form-label fw-bold">Product Description</label>
                                     <input type="text" class="form-control" name="group_desc" value="{{ $group_edi->desc }}">
                                 </div>
                                 <div class="mb-3 col-md-3">

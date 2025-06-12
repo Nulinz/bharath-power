@@ -14,6 +14,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/get-products/{group_id}', function ($group_id) {
     return DB::table('products')
         ->where('group_id', $group_id)
+        ->where('status', 'Active')
         ->select('id', 'name')
         ->get();
 });

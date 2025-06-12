@@ -35,10 +35,11 @@ class DashboardController extends Controller
             ->join('enquiry', 'task.enq_id', '=', 'enquiry.id')
             ->leftJoin('users', 'task.user_id', '=', 'users.id')
             ->where('enquiry.assign_to', $userId)
-            ->where(function ($query) use ($today) {
-                $query->whereDate('task.created_at', $today)
-                    ->orWhereDate('task.updated_at', $today);
-            })
+            ->whereDate('task.callback', $today)
+            // ->where(function ($query) use ($today) {
+            //     $query->whereDate('task.created_at', $today)
+            //         ->orWhereDate('task.updated_at', $today);
+            // })
             ->select('task.*', 'enquiry.enq_no', 'enquiry.name as enquiry_name',  'users.name as assign_to')
             ->get();
 

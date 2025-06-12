@@ -1,6 +1,6 @@
 <div class="card mb-3">
                                 <div class="m-3 mb-0 pb-3 d-flex align-items-center justify-content-between border-bottom">
-                                    <h5 class="card-title mb-0">Products Group</h5>
+                                    <h5 class="card-title mb-0">Product Group</h5>
                                     <a class="btn btn-primary" href="{{ route('admin.settings.add_pro_group') }}"><i
                                             class="align-middle fa fa-fw fa-plus"></i>Add Group</a>
                                 </div>

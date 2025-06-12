@@ -5,7 +5,7 @@
         <div class="container-fluid p-0">
             <div class="row mb-2 mb-xl-3">
                 <div class="col-auto d-none d-sm-block">
-                    <h3><strong>Edit Prodcut</strong></h3>
+                    <h3><strong>Edit Product</strong></h3>
                 </div>
             </div>
 
@@ -36,13 +36,13 @@
 
                                 <!-- Other fields -->
                                 <div class="mb-3 col-md-3">
-                                     <label class="form-label fw-bold">Prodcut</label>
+                                     <label class="form-label fw-bold">Product</label>
                                     <input type="text" name="name" class="form-control" value="{{ $product->name }}"
                                         required>
                                 </div>
 
                                 <div class="mb-3 col-md-3">
-                                       <label class="form-label fw-bold">Prodcut Description</label>
+                                       <label class="form-label fw-bold">Product Description</label>
                                     <input type="text" name="desc" class="form-control" value="{{ $product->desc }}"
                                         required>
                                 </div>

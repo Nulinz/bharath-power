@@ -15,6 +15,7 @@
                                                 <th>Designation</th>
                                                 <th>Contact Number</th>
                                                 <th>Password</th>
+                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>

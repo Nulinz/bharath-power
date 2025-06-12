@@ -18,7 +18,7 @@
                             <div class="row">
 
                                  <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Prodcut Name</label>
+                                    <label class="form-label fw-bold">Product Name</label>
                                     <select name="group_id" id="" class="form-control">
                                         <option value="" selected disabled>Select</option>
                                         @foreach ($add_group as $ag )
@@ -28,11 +28,11 @@
                                 </div>
 
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Prodcut Name</label>
+                                    <label class="form-label fw-bold">Product Name</label>
                                     <input type="text" class="form-control" name="pro_name" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Prodcut Description</label>
+                                    <label class="form-label fw-bold">Product Description</label>
                                     <input type="text" class="form-control" name="pro_desc">
                                 </div>
                                 <div class="mb-3 col-md-3">

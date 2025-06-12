@@ -187,7 +187,7 @@
                                         <th>#</th>
                                         <th>Enquiry No</th>
                                         <th>Lead Cycle</th>
-                                        <th>Assig to</th>
+                                        <th>Assign to</th>
                                         <th style="width:20%;">Remarks</th>
                                         <th>Status</th>
                                         <th>Callback</th>

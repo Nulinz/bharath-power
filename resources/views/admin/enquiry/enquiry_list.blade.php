@@ -30,7 +30,7 @@
                                                 <th>Group</th>
                                                 <th>Product</th>
                                                 <th>Qty</th>
-                                                <th>Assig to</th>
+                                                <th>Assign to</th>
                                                 <th>Lead Cycle</th>
                                                 <th>Status</th>
                                                 <th>Date</th>

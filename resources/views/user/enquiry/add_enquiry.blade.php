@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Capacity</label>
-                                    <input type="text" name="enq_capacity" class="form-control" placeholder="" required>
+                                    <input type="text" name="enq_capacity" class="form-control" placeholder="">
                                 </div>
                              <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Lead cycle</label>
@@ -105,7 +105,7 @@
                                </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Address</label>
-                                    <textarea class="form-control" name="enq_address" id=""  rows="1"></textarea>
+                                    <textarea class="form-control" name="enq_address" id=""  rows="1" required></textarea>
                                 </div>
                                   <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Location</label>
@@ -113,11 +113,11 @@
                                 </div>
                                  <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Referred by Name</label>
-                                    <input type="text" name="enq_ref_name" class="form-control" placeholder="" required>
+                                    <input type="text" name="enq_ref_name" class="form-control" placeholder="">
                                 </div>
                                   <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Reference Contact</label>
-                                    <input type="text" name="enq_ref_contact" class="form-control" placeholder=""  maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                                    <input type="text" name="enq_ref_contact" class="form-control" placeholder=""  maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Source</label>

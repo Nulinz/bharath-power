@@ -59,7 +59,12 @@
                     </div> --}}
 
                     <div class="tab-content mt-3">
-                    <div class="tab-pane fade show active" id="Products" role="tabpanel">
+
+                    <div class="tab-pane fade show active" id="Pro_group" role="tabpanel">
+                        @include('admin.settings.product_group')
+                    </div>
+
+                    <div class="tab-pane fade" id="Products" role="tabpanel">
                         @include('admin.settings.products_list')
                     </div>
 
@@ -67,9 +72,7 @@
                         @include('admin.settings.user_list')
                     </div>
 
-                     <div class="tab-pane fade" id="Pro_group" role="tabpanel">
-                        @include('admin.settings.product_group')
-                    </div>
+
                     </div>
 
                 </div>

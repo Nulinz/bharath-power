@@ -174,11 +174,11 @@ class EnquiryController extends Controller
                 }
 
                 if ($req->hasFile('cancel_upload')) {
-                        $file = $req->file('cancel_upload');
-                        $filename = time() . '_' . $file->getClientOriginalName();
-                        $file->move(public_path('assets/quote_files'), $filename);
+                        $can_file = $req->file('cancel_upload');
+                        $can_filename = time() . '_' . $can_file->getClientOriginalName();
+                        $can_file->move(public_path('assets/quote_files'), $can_filename);
                 } else {
-                        $filename = null;
+                        $can_filename = null;
                 }
 
                 // Set task status
@@ -199,7 +199,7 @@ class EnquiryController extends Controller
                         'lead_cycle' => $req->lead_cycle,
                         'quote' => $filename,
                         'cancel_reason' => $req->cancel,
-                        'cancel_upload' => $req->cancel_upload,
+                        'cancel_upload' => $can_filename,
                         'purchase_group' => $req->Purchase_group,
                         'callback' => $req->callback,
                         'value' => $req->quote_value,
