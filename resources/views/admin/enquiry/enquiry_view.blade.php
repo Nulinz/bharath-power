@@ -150,7 +150,7 @@
                                             <div class="tl-bg d-flex justify-content-between align-items-center p-2">
                                                 <strong class="text-white">{{ $tak->lead_cycle }}</strong>
                                                 <span
-                                                    class="text-white text-sm fw-normal">{{ date('d-m-Y', strtotime($tak->created_at)) }}</span>
+                                                    class="text-white text-sm fw-bold">{{ date('d-m-Y', strtotime($tak->created_at)) }}</span>
                                             </div>
                                             <div class="card-body p-3">
                                                 <!-- task details -->
