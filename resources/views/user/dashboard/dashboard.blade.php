@@ -12,17 +12,16 @@
             </div>
             </div>
             {{-- basic cards --}}
-
-             <div class="row">
+   <div class="row">
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft">
+                    <div class="card flex-fill" style="background-color: #ff015d">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                   <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
-                                        <h5 class="card-title mb-0">Enquiry Received</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Enquiry Received'] ?? 0 }}</h1>
+                                        <h5 class="card-title text-white mb-0">Enquiry Received</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Enquiry Received'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -35,13 +34,13 @@
                 </div>
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft" style="border-color: #cd0ef8; ">
+                    <div class="card flex-fill" style="background-color: #fec000;">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                  <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
-                                        <h5 class="card-title mb-0">Initial Contact</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Initial Contact'] ?? 0 }}</h1>
+                                        <h5 class="card-title text-white mb-0">Initial Contact</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Initial Contact'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -54,13 +53,13 @@
                 </div>
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft" style="border-color: #0ebaf8; ">
+                    <div class="card flex-fill" style="background-color: #11a9b4">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
-                                        <h5 class="card-title mb-0">Requirement Gathering</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Requirement Gathering'] ?? 0 }}</h1>
+                                        <h5 class="card-title text-white mb-0">Requirement Gathering</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Requirement Gathering'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -74,13 +73,13 @@
                 </div>
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft" style="border-color: #59ffc3; ">
+                    <div class="card flex-fill" style="background-color: #683ab7;">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
-                                        <h5 class="card-title mb-0">Product & Specs</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Product Selection'] ?? 0 }}</h1>
+                                        <h5 class="card-title text-white mb-0">Product & Specs</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Product Selection'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -92,13 +91,13 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft" style="border-color: #c58208; ">
+                    <div class="card flex-fill" style="background-color: #0a813c;">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
-                                        <h5 class="card-title mb-0">Quotation Preparation</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Quotation'] ?? 0 }}</h1>
+                                        <h5 class="card-title text-white mb-0">Quotation Preparation</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Quotation'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -111,13 +110,13 @@
                 </div>
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft" style="border-color: #f8a50e; ">
+                    <div class="card flex-fill"  style="background-color: #1a4e89;">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
-                                        <h5 class="card-title mb-0">Follow-up</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Follow-up'] ?? 0 }}</h1>
+                                        <h5 class="card-title text-white mb-0">Follow-up</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Follow-up'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -129,13 +128,13 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft" style="border-color: #ede93ad6; ">
+                    <div class="card flex-fill"  style="background-color: #ed3799;">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
-                                        <h5 class="card-title mb-0">Final Decision</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Final Decision'] ?? 0 }}</h1>
+                                        <h5 class="card-title text-white mb-0">Final Decision</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Final Decision'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -148,14 +147,14 @@
                     </div>
                 </div>
 
-                  <div class="col-12 col-md-6 col-xl-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body cd-aft" style="border-color: #ede93ad6; ">
+                 <div class="col-12 col-md-6 col-xl-3 d-flex">
+                    <div class="card flex-fill"  style="background-color: #e7522d;">
+                        <div class="card-body">
                             <a href="" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="mb-2">
-                                        <h5 class="card-title text-dark mb-0">Cancelled</h5>
-                                        <h1 class="mt-2 mb-0">{{ $leadCycleCounts['Cancelled'] ?? 0 }}</h1>
+                                    <div class="mb-2 ">
+                                        <h5 class="card-title text-white mb-0">Cancelled</h5>
+                                        <h1 class="mt-2 mb-0 text-white">{{ $leadCycleCounts['Cancelled'] ?? 0 }}</h1>
                                     </div>
 
                                     <div class="">
@@ -167,6 +166,7 @@
                         </div>
                     </div>
                 </div>
+
 
 
 
