@@ -5,9 +5,9 @@
 
     <main class="content">
         <div class="container-fluid p-0">
-            <div class="row mb-2 mb-xl-3">
-                <div class="col-auto d-none d-sm-block">
-                    <h3><strong>Report</strong></h3>
+            <div class="row mb-xl-3 mb-2">
+                <div class="d-none d-sm-block col-auto">
+                    <h3><strong>Lead Management Report</strong></h3>
                 </div>
             </div>
 
@@ -61,26 +61,29 @@
                                 </div>
 
                                 <div class="flex-fill d-flex align-self-end gap-2">
-                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter" aria-hidden="true"></i></button>
-                                    <a href="{{ route('user.reports.index') }}" class="btn btn-secondary w-100"><i class="fa fa-undo"></i></a>
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter"
+                                            aria-hidden="true"></i></button>
+                                    <a href="{{ route('user.reports.index') }}" class="btn btn-secondary w-100"><i
+                                            class="fa fa-undo"></i></a>
                                 </div>
                             </form>
                         </div>
 
                         <div class="card-body">
 
-                            <table class="table table-striped" id="datatables-reponsive">
+                            <table class="table-striped table" id="datatables-reponsive">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Enq no</th>
                                         <th>Name</th>
                                         <th>Contact</th>
-                                        <th>Address</th>
-                                        <th>Group</th>
+                                        {{-- <th>Address</th> --}}
+                                        {{-- <th>Group</th> --}}
                                         <th>Product</th>
                                         <th>Qty</th>
-                                        <th>Assig to</th>
+                                        <th>UOM</th>
+                                        <th>Assign to</th>
                                         <th>Lead Cycle</th>
                                         <th>Status</th>
                                         <th>Date</th>
@@ -94,10 +97,11 @@
                                             <td>{{ $eq->enq_no }}</td>
                                             <td>{{ $eq->name }}</td>
                                             <td>{{ $eq->contact }}</td>
-                                            <td>{{ $eq->enq_address }}</td>
-                                            <td>{{ $eq->group_name }}</td>
+                                            {{-- <td>{{ $eq->enq_address }}</td> --}}
+                                            {{-- <td>{{ $eq->group_name }}</td> --}}
                                             <td>{{ $eq->product_name }}</td>
                                             <td>{{ $eq->quantity }}</td>
+                                            <td>{{ $eq->enq_uom }}</td>
                                             <td>{{ $eq->usr_name }}</td>
                                             <td>{{ $eq->lead_cycle }}</td>
                                             <td>
@@ -133,26 +137,60 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const startDate = "{{ request('start_date') ?? '' }}";
+            const endDate = "{{ request('end_date') ?? '' }}";
+            // const productGroup = "{{ $groups[request('product_group')] ?? 'All' }}";
+            // const product = "{{ $products[request('product_id')] ?? 'All' }}";
+            // const assignedTo = "{{ $users[request('assign_to')] ?? 'All' }}";
+            // const enqNo = "{{ request('enq_no') ?? 'All' }}";
+
+            let
+                filterInfo = `
+                    Start Date: ${startDate || 'All'} | 
+                    End Date: ${endDate || 'All'}`;
+            // Product Group: ${productGroup} | 
+            // Product: ${product} | 
+            // Assigned To: ${assignedTo} | 
+            // Enquiry No: ${enqNo}`;
+
             $('#datatables-reponsive').DataTable({
                 responsive: true,
                 ordering: false,
-                dom: 'Bfrtip', // IMPORTANT: required for button layout
+                dom: 'Bfrtip',
                 buttons: [{
                         extend: 'excelHtml5',
                         className: 'btn btn-success',
-                        text: 'Export to Excel'
+                        text: 'Export to Excel',
+                        messageTop: filterInfo
                     },
                     {
                         extend: 'pdfHtml5',
                         className: 'btn btn-danger',
                         text: 'Export to PDF',
                         orientation: 'landscape',
-                        pageSize: 'A4'
+                        pageSize: 'A4',
+                        customize: function(doc) {
+                            // Add filter info
+                            doc.content.splice(0, 0, {
+                                text: filterInfo,
+                                margin: [0, 0, 0, 12],
+                                fontSize: 10
+                            });
+
+                            // Equal column widths
+                            const table = doc.content.find(item => item.table);
+                            if (table) {
+                                const colCount = table.table.body[0].length;
+                                table.table.widths = Array(colCount).fill(
+                                    '*'); // makes all columns equal width
+                            }
+                        }
                     }
                 ]
             });
         });
     </script>
+
 
 
 @endsection()

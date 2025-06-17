@@ -18,7 +18,7 @@
                             <div class="row">
 
                                  <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Product Name</label>
+                                    <label class="form-label fw-bold">Product Group</label>
                                     <select name="group_id" id="" class="form-control">
                                         <option value="" selected disabled>Select</option>
                                         @foreach ($add_group as $ag )

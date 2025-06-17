@@ -37,6 +37,9 @@
 
 						<div class="card">
 							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<img src="{{ asset('assets/images/bp_logo.jpeg') }}" class="mx-auto" height="90" class="barnd" alt="bp_logo">
+								</div>
 								<div class="m-sm-3">
 								@if ($errors->any())
 									<div class="alert alert-danger">

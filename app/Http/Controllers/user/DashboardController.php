@@ -12,18 +12,40 @@ class DashboardController extends Controller
     public function dashboard()
     {
 
+        // $leadCycleCounts = DB::table('enquiry')
+        //     ->select('lead_cycle', DB::raw('COUNT(*) AS total'))
+        //     ->where(function ($query) {
+        //         $query->whereIn('enquiry.status', ['completed', 'cancelled'])
+        //             ->whereMonth('enquiry.created_at', date('m'))
+        //             ->whereYear('enquiry.created_at', date('Y'));
+        //     })
+        //     ->where('assign_to', Auth::id())
+        //     ->orWhere('enquiry.status', 'pending')
+        //     ->groupBy('lead_cycle')
+        //     ->pluck('total', 'lead_cycle');
+
+
         $leadCycleCounts = DB::table('enquiry')
             ->select('lead_cycle', DB::raw('COUNT(*) AS total'))
-            ->whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'))
             ->where('assign_to', Auth::id())
+            ->where(function ($query) {
+                $query->whereIn('enquiry.status', ['completed', 'cancelled'])
+                    ->whereMonth('enquiry.created_at', date('m'))
+                    ->whereYear('enquiry.created_at', date('Y'))
+                    ->orWhere('enquiry.status', 'pending'); // still under assign_to
+            })
             ->groupBy('lead_cycle')
             ->pluck('total', 'lead_cycle');
 
+
         $totalEnquiries = DB::table('enquiry')
-            ->whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'))
+            ->where(function ($query) {
+                $query->whereIn('enquiry.status', ['completed', 'cancelled'])
+                    ->whereMonth('enquiry.created_at', date('m'))
+                    ->whereYear('enquiry.created_at', date('Y'));
+            })
             ->where('assign_to', Auth::id())
+            ->orWhere('enquiry.status', 'pending')
             ->count();
 
 
@@ -36,10 +58,6 @@ class DashboardController extends Controller
             ->leftJoin('users', 'task.user_id', '=', 'users.id')
             ->where('enquiry.assign_to', $userId)
             ->whereDate('task.callback', $today)
-            // ->where(function ($query) use ($today) {
-            //     $query->whereDate('task.created_at', $today)
-            //         ->orWhereDate('task.updated_at', $today);
-            // })
             ->select('task.*', 'enquiry.enq_no', 'enquiry.name as enquiry_name',  'users.name as assign_to')
             ->get();
 

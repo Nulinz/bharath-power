@@ -7,7 +7,7 @@
                                 <div class="card-body">
                                     <div class="">
                                     </div>
-                                    <table id="datatables-reponsive" class="table table-striped" style="width:100%">
+                                    <table id="datatables-reponsive-three" class="table table-striped" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>#</th>

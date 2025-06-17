@@ -19,7 +19,7 @@
                         <form action="{{ route('user.enquiry.store') }}" method="POST" id="myForm" enctype="multipart/form-data">
                             @csrf
                              <div class="row">
-                                <input type="hidden" name="user_id" value="{{ Auth::id(); }}">
+                                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Name</label>
                                     <input type="text" name="enq_name" class="form-control" placeholder="" required>
@@ -39,7 +39,7 @@
 
                                 <!-- Product Category Dropdown -->
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Product Category</label>
+                                    <label class="form-label fw-bold">Product</label>
                                 <select class="form-select" name="enq_product" id="enq_product" required>
                                     <option selected disabled>Select Option</option>
                                 </select>
@@ -62,13 +62,19 @@
                              <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Lead cycle</label>
                                     <select class="form-select" name="enq_lead_cycle" id="inter" required>
-                                        <option selected disabled>Select Option</option>
+                                       <option selected disabled>Select Option</option>
                                         <option value="Enquiry Received">Enquiry Received</option>
                                         <option value="Initial Contact">Initial Contact</option>
                                         <option value="Requirement Gathering">Requirement Gathering</option>
                                         <option value="Product Selection">Product & Specification Selection</option>
+                                        <option value="Quotation Preparation">Quotation Prepartion</option>
                                         <option value="Quotation">Quotation Submission</option>
                                         <option value="Follow-up">Follow-up</option>
+                                        <option value="Order confimred">Order confirmed</option>
+                                        <option value="Material supplied partially">Material supplied – partially </option>
+                                        <option value="Material supplied final/full">Material supplied – final/full</option>
+                                        <option value="Payment received partial">Payment received partial </option>
+                                        <option value="Payment received final/full">Payment received final/full </option>
                                         <option value="Final Decision">Final Decision</option>
                                     </select>
                                 </div>
@@ -142,7 +148,7 @@
                                     <select class="form-select" name="enq_assign_to" id="" required>
                                         <option selected disabled>Select Option</option>
                                         @foreach ($users as $user)
-                                            <option value="{{ $user->id  }}">{{ $user->name; }}</option>
+                                            <option value="{{ $user->id  }}">{{ $user->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

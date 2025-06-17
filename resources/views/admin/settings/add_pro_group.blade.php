@@ -17,11 +17,11 @@
                                 @csrf
                             <div class="row">
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Group Name</label>
+                                    <label class="form-label fw-bold">Product Group Name</label>
                                     <input type="text" class="form-control" name="group_name" required>
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <label class="form-label fw-bold">Product Description</label>
+                                    <label class="form-label fw-bold">Product Group Description</label>
                                     <input type="text" class="form-control" name="group_desc">
                                 </div>
                                 <div class="mb-3 col-md-3">

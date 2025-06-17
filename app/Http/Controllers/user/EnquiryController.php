@@ -128,8 +128,8 @@ class EnquiryController extends Controller
                                 'ur.name as assigned_user_name',
                                 'pro.id as product_id',
                                 'enq.id as enq_id',
-                        'pro.name as product_name',
-                        'pg.group_name as group_name'
+                                'pro.name as product_name',
+                                'pg.group_name as group_name'
                         )
                         ->orderBy('created_at', 'DESC')
                         ->first();
@@ -143,9 +143,23 @@ class EnquiryController extends Controller
 
 
 
+                // $user_id = Auth::id();
+
+                // return view('user.enquiry.enquiry_view', ['enquiry' => $view_eq, 'task' => $task, 'user_id' => $user_id]);
+
                 $user_id = Auth::id();
 
-                return view('user.enquiry.enquiry_view', ['enquiry' => $view_eq, 'task' => $task, 'user_id' => $user_id]);
+                $add_group = DB::table('products_group')->where('status', 'Active')->get();
+
+                $users = DB::table('users')->where('user_status', 'Active')->get();
+
+                return view('user.enquiry.enquiry_view', [
+                        'enquiry' => $view_eq,
+                        'task' => $task,
+                        'user_id' => $user_id,
+                        'users' => $users,
+                        'add_group' => $add_group
+                ]);
         }
 
         //     task
@@ -213,7 +227,7 @@ class EnquiryController extends Controller
                         ->where('id', $req->enqid)
                         ->update([
                                 'lead_cycle' => $req->lead_cycle,
-                        'status' => $status,
+                                'status' => $status,
                                 'updated_at' => now()
                         ]);
 
@@ -255,5 +269,60 @@ class EnquiryController extends Controller
 
                 // Return the view with the enquiry and task data
                 return view('user.enquiry.enquiry_view', compact('enquiry', 'tasks'));
+        }
+
+
+        public function update(Request $req, $id)
+        {
+                DB::table('enquiry')->where('id', $id)->update([
+                        'name' => $req->name,
+                        'contact' => $req->contact,
+                        'enq_pro_group' => $req->enq_pro_group,
+                        'product_category' => $req->enq_product,
+                        'requirements' => $req->requirements,
+                        'quantity' => $req->quantity,
+                        'enq_uom' => $req->enq_uom,
+                        'enq_capacity' => $req->enq_capacity,
+                        'enq_address' => $req->enq_address,
+                        'location' => $req->location,
+                        'source' => $req->source,
+                        'enq_ref_name' => $req->enq_ref_name,
+                        'enq_ref_contact' => $req->enq_ref_contact,
+                        'updated_at' => now(),
+                ]);
+
+
+                return redirect()->back()->with('message', 'Enquiry updated successfully.');
+        }
+
+        public function showByLeadCycle($cycle)
+        {
+                $enquiries = DB::table('enquiry as eq')
+                        ->join('products as pt', 'eq.product_category', '=', 'pt.id')
+                        ->join('users as us', 'eq.assign_to', '=', 'us.id')
+                        ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
+                        ->where('eq.assign_to', Auth::id()) // Only assigned to logged-in user
+                        ->where('eq.lead_cycle', $cycle)    // Match specific lead cycle
+                        ->select(
+                                'eq.id',
+                                'eq.enq_no',
+                                'eq.name',
+                                'eq.contact',
+                                'eq.enq_address',
+                                'eq.quantity',
+                                'eq.lead_cycle',
+                                'eq.status',
+                                'eq.created_at',
+                                'pt.name as product_name',
+                                'pg.group_name',
+                                'us.name as usr_name'
+                        )
+                        ->orderByDesc('eq.created_at')
+                        ->get();
+
+                return view('user.enquiry.byCycle', [
+                        'cycle'     => $cycle,
+                        'enquiries' => $enquiries,
+                ]);
         }
 }

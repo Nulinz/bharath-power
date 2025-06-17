@@ -108,6 +108,14 @@
                     .columns.adjust()
                     .responsive.recalc();
             });
+             $("#datatables-reponsive-three").DataTable({
+                responsive: true,
+                ordering: false,
+                lengthMenu: [
+                    [5, 10, 25, 50, -1],
+                    ["5", "10", "25", "50", "All"]
+                ]
+            });
         });
     </script>
 

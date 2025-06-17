@@ -43,6 +43,8 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
     Route::get('{id}/view_enquiry', 'EnquiryController@view_enquiry')->name('enquiry.enquiry_view');
     // add task
     Route::post('/submit_task', 'EnquiryController@store_quote')->name('enquiry.submit_task');
+    // update enquiry
+    Route::post('/enquiry/update/{id}', 'EnquiryController@update')->name('enquiry.update');
 
     // settings
     // Route::get('/settings/{tab?}','SettingsController@settings')->name('settings.settings');
@@ -79,6 +81,9 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
 
     // reports
     Route::get('/reports', 'ReportsController@view_report')->name('reports.index');
+
+
+    Route::get('/enquiries/lead-cycle/{cycle}', 'EnquiryController@showByLeadCycle')->name('enquiry.byCycle');
 });
 
 // user group
@@ -100,6 +105,8 @@ Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->gr
     Route::post('/submit_task', 'EnquiryController@store_quote')->name('enquiry.submit_task');
     // view enquiry
     Route::get('{id}/view_enquiry', 'EnquiryController@view_enquiry')->name('enquiry.enquiry_view');
+    // update enquiry
+    Route::post('/enquiry/update/{id}', 'EnquiryController@update')->name('enquiry.update');
 
     // settings
     Route::get('/settings', 'SettingsController@settings')->name('settings.settings');
@@ -113,4 +120,5 @@ Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->gr
     // reports
     Route::get('/reports', 'ReportController@view_report')->name('reports.index');
 
+    Route::get('/enquiries/lead-cycle/{cycle}', 'EnquiryController@showByLeadCycle')->name('enquiry.byCycle');
 });

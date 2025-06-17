@@ -4,6 +4,8 @@
             <i class="hamburger align-self-center"></i>
         </a>
 
+        <h2 class="position-absolute start-50 translate-middle-x mb-0" style="color:#064cb1;">Bharath Power Engineer</h2>
+
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
                 <li class="nav-item dropdown">
@@ -17,7 +19,7 @@
                         {{-- <a data-bs-toggle="modal" class="dropdown-item" data-bs-target="#centeredModal"><i
                                 class="align-middle me-1" data-feather="help-circle"></i> Change Password</a> --}}
                         <a class="dropdown-item" href="{{ route('logout') }}"><i
-                                class="align-middle me-2 fa fa-fw fa-sign-out-alt"></i> Log out</a>
+                                class="fa fa-fw fa-sign-out-alt me-2 align-middle"></i> Log out</a>
                     </div>
                 </li>
             </ul>
@@ -33,17 +35,19 @@
                 </div>
                 <div class="modal-body">
                     <form action="" method="post">
-                        <div class="mb-3 col-md-12">
+                        <div class="col-md-12 mb-3">
                             <label class="form-label fw-bold">Old Password</label>
-							<input type="text" name="" id="" class="form-control" minlength="6">
+                            <input type="text" name="" id="" class="form-control" minlength="6">
                         </div>
-						<div class="mb-3 col-md-12">
+                        <div class="col-md-12 mb-3">
                             <label class="form-label fw-bold">New Password</label>
-							<input type="text" name="" id="" class="form-control" minlength="6" data-toggle="tooltip" data-placement="top"  title="Password needs to be at least 6 characters long">
+                            <input type="text" name="" id="" class="form-control" minlength="6"
+                                data-toggle="tooltip" data-placement="top"
+                                title="Password needs to be at least 6 characters long">
                         </div>
-						<div class="mb-3 col-md-12">
+                        <div class="col-md-12 mb-3">
                             <label class="form-label fw-bold">Confirm Password</label>
-							<input type="text" name="" id="" class="form-control" minlength="6">
+                            <input type="text" name="" id="" class="form-control" minlength="6">
                         </div>
                         <div class="modal-footer border-0 p-0">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -55,11 +59,11 @@
         </div>
     </div>
     <!-- END primary modal -->
-<script>
-     document.addEventListener('DOMContentLoaded', function () {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
+            tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
             })
 
         });
