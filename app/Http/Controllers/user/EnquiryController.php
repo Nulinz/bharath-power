@@ -204,11 +204,13 @@ class EnquiryController extends Controller
                         $status = 'pending';
                 }
 
+                $newAssignee = $req->filled('assign_to') ? $req->assign_to : $req->user_id;
+
                 DB::table('task')->insert([
                         'enq_id' => $req->enqid,
                         'enq_no' => $req->enqno,
                         'product_id' => $req->pro_id,
-                        'user_id' => $req->user_id,
+                        'user_id' =>  $newAssignee,
                         'remarks' => $req->remarks,
                         'lead_cycle' => $req->lead_cycle,
                         'quote' => $filename,
@@ -226,6 +228,7 @@ class EnquiryController extends Controller
                 DB::table('enquiry')
                         ->where('id', $req->enqid)
                         ->update([
+                                'assign_to' => $newAssignee,
                                 'lead_cycle' => $req->lead_cycle,
                                 'status' => $status,
                                 'updated_at' => now()

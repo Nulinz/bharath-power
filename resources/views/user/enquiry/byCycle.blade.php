@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('user.layouts.app')
 @section('title', 'Enquiry List')
 @section('content')
     <main class="content">

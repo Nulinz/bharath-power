@@ -382,7 +382,7 @@
                                     <select class="form-select" name="lead_cycle" id="inter" required>
                                         <option selected disabled>Select Option</option>
                                         <option value="Enquiry Received">Enquiry Received</option>
-                                        <option value="Re-assigend">Re-assigend</option>
+                                        {{-- <option value="Re-assigend">Re-assigend</option> --}}
                                         <option value="Initial Contact">Initial Contact</option>
                                         <option value="Requirement Gathering">Requirement Gathering</option>
                                         <option value="Product Selection">Product & Specification Selection</option>

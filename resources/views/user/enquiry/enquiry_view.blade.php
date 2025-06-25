@@ -99,7 +99,7 @@
                     <div class="modal fade" id="editEnquiryModal" tabindex="-1" aria-labelledby="editEnquiryModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog modal-lg">
-                            <form action="{{ route('admin.enquiry.update', $enquiry->id) }}" method="POST">
+                            <form action="{{ route('user.enquiry.update', $enquiry->id) }}" method="POST">
                                 @csrf
                                 @method('POST') {{-- Change to PUT if needed --}}
                                 <div class="modal-content">

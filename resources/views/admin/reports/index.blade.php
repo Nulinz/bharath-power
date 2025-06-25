@@ -168,19 +168,19 @@
         document.addEventListener("DOMContentLoaded", function() {
             const startDate = "{{ request('start_date') ?? '' }}";
             const endDate = "{{ request('end_date') ?? '' }}";
-            // const productGroup = "{{ $groups[request('product_group')] ?? 'All' }}";
-            // const product = "{{ $products[request('product_id')] ?? 'All' }}";
-            // const assignedTo = "{{ $users[request('assign_to')] ?? 'All' }}";
-            // const enqNo = "{{ request('enq_no') ?? 'All' }}";
+            const productGroup = "{{ $groups[request('product_group')] ?? 'All' }}";
+            const product = "{{ $products[request('product_id')] ?? 'All' }}";
+            const assignedTo = "{{ $users[request('assign_to')] ?? 'All' }}";
+            const enqNo = "{{ request('enq_no') ?? 'All' }}";
 
             let
                 filterInfo = `Filters:
-            Start Date: ${startDate || 'All'} | 
-            End Date: ${endDate || 'All'}`;
-            // Product Group: ${productGroup} | 
-            // Product: ${product} | 
-            // Assigned To: ${assignedTo} | 
-            // Enquiry No: ${enqNo}`;
+Start Date: ${startDate || 'All'} | 
+End Date: ${endDate || 'All'} | 
+Product Group: ${productGroup} | 
+Product: ${product} | 
+Assigned To: ${assignedTo} | 
+Enquiry No: ${enqNo}`;
 
             $('#datatables-reponsive').DataTable({
                 responsive: true,
@@ -190,16 +190,18 @@
                         extend: 'excelHtml5',
                         className: 'btn btn-success',
                         text: 'Export to Excel',
+                        title: 'Lead Management Report', // ✅ This sets the Excel title
                         messageTop: filterInfo
                     },
                     {
                         extend: 'pdfHtml5',
                         className: 'btn btn-danger',
                         text: 'Export to PDF',
+                        title: 'Lead Management Report', // ✅ This sets the PDF title
                         orientation: 'landscape',
                         pageSize: 'A4',
                         customize: function(doc) {
-                            // Add filter info
+                            // Add filter info to PDF top
                             doc.content.splice(0, 0, {
                                 text: filterInfo,
                                 margin: [0, 0, 0, 12],
@@ -210,8 +212,7 @@
                             const table = doc.content.find(item => item.table);
                             if (table) {
                                 const colCount = table.table.body[0].length;
-                                table.table.widths = Array(colCount).fill(
-                                    '*'); // makes all columns equal width
+                                table.table.widths = Array(colCount).fill('*');
                             }
                         }
                     }
@@ -219,6 +220,5 @@
             });
         });
     </script>
-
 
 @endsection()
