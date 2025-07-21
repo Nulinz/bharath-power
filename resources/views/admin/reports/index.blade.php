@@ -20,21 +20,18 @@
                             <form method="GET" action="{{ route('admin.reports.index') }}" class="d-flex flex-wrap gap-2">
                                 <div class="flex-fill">
                                     <label for="start_date" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control" name="start_date"
-                                        value="{{ request('start_date') }}">
+                                    <input type="date" class="form-control" name="start_date" value="{{ request('start_date') }}">
                                 </div>
                                 <div class="flex-fill">
                                     <label for="end_date" class="form-label">End Date</label>
-                                    <input type="date" class="form-control" name="end_date"
-                                        value="{{ request('end_date') }}">
+                                    <input type="date" class="form-control" name="end_date" value="{{ request('end_date') }}">
                                 </div>
                                 <div class="flex-fill">
                                     <label for="product_group" class="form-label">Product Group</label>
                                     <select class="form-control" name="product_group">
                                         <option value="">All</option>
                                         @foreach ($groups as $id => $name)
-                                            <option value="{{ $id }}"
-                                                {{ request('product_group') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('product_group') == $id ? 'selected' : '' }}>{{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -44,8 +41,7 @@
                                     <select class="form-control" name="product_id">
                                         <option value="">All</option>
                                         @foreach ($products as $id => $name)
-                                            <option value="{{ $id }}"
-                                                {{ request('product_id') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('product_id') == $id ? 'selected' : '' }}>{{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -55,22 +51,18 @@
                                     <select class="form-control" name="assign_to">
                                         <option value="">All</option>
                                         @foreach ($users as $id => $name)
-                                            <option value="{{ $id }}"
-                                                {{ request('assign_to') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('assign_to') == $id ? 'selected' : '' }}>{{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="flex-fill">
                                     <label for="enq_no" class="form-label">Enq No</label>
-                                    <input type="text" class="form-control" name="enq_no"
-                                        value="{{ request('enq_no') }}">
+                                    <input type="text" class="form-control" name="enq_no" value="{{ request('enq_no') }}">
                                 </div>
                                 <div class="d-flex flex-fill align-items-end gap-2">
-                                    <button type="submit" class="btn btn-primary w-100"><i
-                                            class="fa fa-filter"></i></button>
-                                    <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary w-100"><i
-                                            class="fa fa-undo"></i></a>
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter"></i></button>
+                                    <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary w-100"><i class="fa fa-undo"></i></a>
                                 </div>
                             </form>
 
@@ -97,8 +89,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($enquiry as $eq)
-                                        <tr onclick="window.location='{{ route('admin.enquiry.enquiry_view', $eq->id) }}'"
-                                            style="cursor: pointer;">
+                                        <tr onclick="window.location='{{ route('admin.enquiry.enquiry_view', $eq->id) }}'" style="cursor: pointer;">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $eq->enq_no }}</td>
                                             <td>{{ $eq->name }}</td>
@@ -124,7 +115,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
 
                         </div>
                     </div>

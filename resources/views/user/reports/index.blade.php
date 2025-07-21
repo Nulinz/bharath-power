@@ -20,14 +20,12 @@
                             <form method="GET" action="{{ route('user.reports.index') }}" class="d-flex flex-wrap gap-2">
                                 <div class="flex-fill">
                                     <label for="start_date" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control w-100" name="start_date"
-                                        value="{{ request('start_date') }}">
+                                    <input type="date" class="form-control w-100" name="start_date" value="{{ request('start_date') }}">
                                 </div>
 
                                 <div class="flex-fill">
                                     <label for="end_date" class="form-label">End Date</label>
-                                    <input type="date" class="form-control w-100" name="end_date"
-                                        value="{{ request('end_date') }}">
+                                    <input type="date" class="form-control w-100" name="end_date" value="{{ request('end_date') }}">
                                 </div>
 
                                 <div class="flex-fill">
@@ -35,8 +33,7 @@
                                     <select class="form-control w-100" name="product_group">
                                         <option value="">All</option>
                                         @foreach ($groups as $id => $name)
-                                            <option value="{{ $id }}"
-                                                {{ request('product_group') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('product_group') == $id ? 'selected' : '' }}>{{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -47,8 +44,7 @@
                                     <select class="form-control w-100" name="product_id">
                                         <option value="">All</option>
                                         @foreach ($products as $id => $name)
-                                            <option value="{{ $id }}"
-                                                {{ request('product_id') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('product_id') == $id ? 'selected' : '' }}>{{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -56,15 +52,12 @@
 
                                 <div class="flex-fill">
                                     <label for="enq_no" class="form-label">Enquiry No</label>
-                                    <input type="text" class="form-control w-100" name="enq_no"
-                                        value="{{ request('enq_no') }}">
+                                    <input type="text" class="form-control w-100" name="enq_no" value="{{ request('enq_no') }}">
                                 </div>
 
                                 <div class="flex-fill d-flex align-self-end gap-2">
-                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter"
-                                            aria-hidden="true"></i></button>
-                                    <a href="{{ route('user.reports.index') }}" class="btn btn-secondary w-100"><i
-                                            class="fa fa-undo"></i></a>
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                                    <a href="{{ route('user.reports.index') }}" class="btn btn-secondary w-100"><i class="fa fa-undo"></i></a>
                                 </div>
                             </form>
                         </div>
@@ -91,8 +84,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($enquiry as $eq)
-                                        <tr onclick="window.location='{{ route('user.enquiry.enquiry_view', $eq->id) }}'"
-                                            style="cursor: pointer;">
+                                        <tr onclick="window.location='{{ route('user.enquiry.enquiry_view', $eq->id) }}'" style="cursor: pointer;">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $eq->enq_no }}</td>
                                             <td>{{ $eq->name }}</td>
@@ -118,7 +110,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
 
                         </div>
                     </div>
@@ -160,12 +151,14 @@
                 buttons: [{
                         extend: 'excelHtml5',
                         className: 'btn btn-success',
+                        title: 'Lead Management Report',
                         text: 'Export to Excel',
                         messageTop: filterInfo
                     },
                     {
                         extend: 'pdfHtml5',
                         className: 'btn btn-danger',
+                        title: 'Lead Management Report',
                         text: 'Export to PDF',
                         orientation: 'landscape',
                         pageSize: 'A4',
@@ -190,7 +183,5 @@
             });
         });
     </script>
-
-
 
 @endsection()

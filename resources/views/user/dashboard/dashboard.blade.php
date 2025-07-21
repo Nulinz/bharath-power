@@ -4,8 +4,9 @@
         <div class="container-fluid p-0">
             <div class="row mb-xl-3 mb-2">
                 <div class="d-flex align-items-center justify-content-between mb-xl-3 mb-2">
-                    <div class="">
-                        <h3><strong>Dashboard</strong></h3>
+                    <div class="d-flex align-items-center">
+                        <h3 class="m-0"><strong>Enquiry Dashboard</strong></h3>
+                        <a href="{{ route('user.service-dashboard') }}" class="btn btn-outline-dark ms-3">Service Dashboard</a>
                     </div>
 
                     <p class="fw-bold fs-4 mb-0"><span>Total Enquiry: </span>{{ $totalEnquiries }}</p>
@@ -17,8 +18,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #ff015d">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Enquiry Received']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Enquiry Received']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Enquiry Received</h5>
@@ -27,8 +27,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/cover-letter.png') }}" height="55px"
-                                            alt="">
+                                        <img src="{{ asset('assets/icons/cover-letter.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -39,8 +38,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #fec000;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Initial Contact']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Initial Contact']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Initial Contact</h5>
@@ -48,8 +46,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/contact-information.png') }}" height="55px"
-                                            alt="">
+                                        <img src="{{ asset('assets/icons/contact-information.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -60,8 +57,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #11a9b4">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Requirement Gathering']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Requirement Gathering']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Requirement Gathering</h5>
@@ -70,8 +66,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/requirement.png') }}" height="55px"
-                                            alt="">
+                                        <img src="{{ asset('assets/icons/requirement.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -82,8 +77,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #683ab7;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Product Selection']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Product Selection']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Product & Specs</h5>
@@ -92,8 +86,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/inspection.png') }}" height="55px"
-                                            alt="">
+                                        <img src="{{ asset('assets/icons/inspection.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -103,8 +96,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #ff9a00;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Quotation Preparation']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Quotation Preparation']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Quotation Preparation</h5>
@@ -124,8 +116,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #e7522d;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Quotation']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Quotation']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Quotation Submission</h5>
@@ -144,8 +135,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #9f22b2 ;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Follow-up']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Follow-up']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Follow-up</h5>
@@ -161,12 +151,10 @@
                     </div>
                 </div>
 
-
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #2dc60d;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Order confimred']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Order confimred']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Order confimred </h5>
@@ -186,8 +174,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #7a5548;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Material supplied partially']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Material supplied partially']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Material supplied – partially </h5>
@@ -207,8 +194,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #3d50b6;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Material supplied final-full']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Material supplied final-full']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Material supplied – final/full </h5>
@@ -228,8 +214,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #00988b;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Payment received partial']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Payment received partial']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Payment received partial </h5>
@@ -249,8 +234,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #0a813c;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Payment received final-full']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Payment received final-full']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Payment received final/full </h5>
@@ -270,8 +254,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #ed3799;">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Final Decision']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Final Decision']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Final Decision</h5>
@@ -280,8 +263,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/decision-making.png') }}" height="55px"
-                                            alt="">
+                                        <img src="{{ asset('assets/icons/decision-making.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -292,8 +274,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #e6151f">
                         <div class="card-body">
-                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Cancelled']) }}"
-                                class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Cancelled']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Cancelled</h5>
@@ -342,8 +323,7 @@
                                         </tr>
                                     @endforeach --}}
                                     @foreach ($todayTasks as $task)
-                                        <tr style="cursor: pointer;"
-                                            onclick="window.location='{{ route('user.enquiry.enquiry_view', $task->enq_id) }}'">
+                                        <tr style="cursor: pointer;" onclick="window.location='{{ route('user.enquiry.enquiry_view', $task->enq_id) }}'">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $task->enq_no }}</td>
                                             <td>{{ $task->lead_cycle }}</td>
@@ -366,9 +346,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                {{-- </div>  --}}
 
-        </div>
+            </div>
     </main>
     <script>
         document.addEventListener("DOMContentLoaded", function() {

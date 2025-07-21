@@ -177,12 +177,13 @@ class EnquiryController extends Controller
                         return back()->withErrors(['message_error' => 'Task already completed.']);
                 }
 
-
+                $filenames = [];
                 if ($req->hasFile('quote')) {
-                        $image = $req->file('quote');
-                        $filename = time() . '_' . $image->getClientOriginalName();
-
-                        $image->move(public_path('assets/quote_files'), $filename);
+                        foreach ($req->file('quote') as $file) {
+                                $filename = time() . '_' . $file->getClientOriginalName();
+                                $file->move(public_path('assets/quote_files'), $filename);
+                                $filenames[] = $filename;
+                        }
                 } else {
                         $filename = null; // no file uploaded
                 }
@@ -213,7 +214,7 @@ class EnquiryController extends Controller
                         'user_id' =>  $newAssignee,
                         'remarks' => $req->remarks,
                         'lead_cycle' => $req->lead_cycle,
-                        'quote' => $filename,
+                        'quote' => implode(',', $filenames),
                         'cancel_reason' => $req->cancel,
                         'cancel_upload' => $can_filename,
                         'purchase_group' => $req->Purchase_group,

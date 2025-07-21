@@ -44,13 +44,9 @@
                                 </div>
                             </div>
 
-                            <a href="{{ route('admin.enquiry.add_enquiry') }}" class="btn btn-primary btn-md"><i
-                                    class="fa fa-fw fa-plus align-middle"></i> Add Enquiry</a>
-
+                            <a href="{{ route('admin.enquiry.add_enquiry') }}" class="btn btn-primary btn-md"><i class="fa fa-fw fa-plus align-middle"></i> Add Enquiry</a>
 
                         </div>
-
-
 
                         <div class="card-body">
                             <table id="datatables-reponsive" class="table-striped table" style="width:100%">
@@ -72,9 +68,10 @@
                                     </tr>
                                 </thead>
                                 <tbody class="">
+
                                     @foreach ($enquiry as $eq)
-                                        <tr onclick="window.location='{{ route('admin.enquiry.enquiry_view', $eq->id) }}'"
-                                            style="cursor: pointer;">
+                                        <tr onclick="window.location='{{ route('admin.enquiry.enquiry_view', $eq->id) }}'" style="cursor: pointer;">
+
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $eq->enq_no }}</td>
                                             <td>{{ $eq->name }}</td>
@@ -96,16 +93,18 @@
                                                 @endif
                                             </td>
                                             <td>{{ date('d-m-Y', strtotime($eq->created_at)) }}</td>
-                                            {{-- <td><i class="fs-4 text-dark fa fa-external-link-alt"></i></td> --}}
+                                            {{-- <td>
+                                               
+
+                                                {{-- <a href="del_enquiry"> --}}
+                                            {{-- <i class="fa fa-arrow-up-right-from-square  text-dark ms-2"></i></a> --}}
+                                            {{-- </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-
-
 
                 </div>
             </div>
@@ -153,6 +152,5 @@
             });
         });
     </script>
-
 
 @endsection()

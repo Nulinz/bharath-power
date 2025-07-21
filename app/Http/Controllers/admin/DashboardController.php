@@ -62,6 +62,7 @@ class DashboardController extends Controller
                 'users.name as assign_to'
             )
             ->whereDate('task.callback', $today)
+            ->whereNotIn('task.status', ['completed', 'cancelled'])
             ->get();
 
         return view('admin.dashboard.dashboard', ['leadCycleCounts' => $leadCycleCounts, 'todayTasks' => $todayTasks, 'totalEnquiries' => $totalEnquiries]);

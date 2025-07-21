@@ -25,6 +25,8 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
 
     // dashboard
     Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard.dashboard');
+    // dashboard lead cycle
+    Route::get('/enquiries/lead-cycle/{cycle}', 'EnquiryController@showByLeadCycle')->name('enquiry.byCycle');
 
     // enquiry
     // Route::get('/show_not', 'DashboardController@dashboard_noti')->name('dashboard_noti');
@@ -45,10 +47,13 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
     Route::post('/submit_task', 'EnquiryController@store_quote')->name('enquiry.submit_task');
     // update enquiry
     Route::post('/enquiry/update/{id}', 'EnquiryController@update')->name('enquiry.update');
+    // enquiry delete
+    // Route::post('/del_enquiry/{id}', 'EnquiryController@del_enquiry')->name('del_enquiry');
+    Route::post('/del_enquiry/{id}', 'EnquiryController@del_enquiry')->name('del_enquiry');
+
 
     // settings
     // Route::get('/settings/{tab?}','SettingsController@settings')->name('settings.settings');
-
     Route::get('/settings', 'SettingsController@settings')->name('settings.settings');
 
     // Route::get('/settings','SettingsController@product_view')->name('settings.settings');
@@ -68,7 +73,6 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
     Route::get('/edit_group/{id}', 'SettingsController@group_edit')->name('settings.edit_group');
     // group_update
     Route::post('/group_update', 'SettingsController@group_update')->name('settings.group_update');
-
     // add user
     Route::get('/add_user', 'SettingsController@add_user')->name('settings.add_users');
     // edit user
@@ -82,13 +86,32 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
     // reports
     Route::get('/reports', 'ReportsController@view_report')->name('reports.index');
 
+    // services dashboard
+    Route::get('/service-dashboard', 'ServiceDashboard@index')->name('service-dashboard');
+    // dashboard lead cycle
+    Route::get('/service_enquiries/lead-cycle/{cycle}', 'ServiceEnquiryController@showByLeadCycle')->name('service.enquiry.byCycle');
+    // services enquiry/
+    Route::get('/service_enquiry_list', 'ServiceEnquiryController@enquiry_list')->name('service.enquiry.enquiry_list');
+    // services add enquiry
+    Route::get('/service_add_enquiry', 'ServiceEnquiryController@add_enquiry')->name('service.enquiry.add_enquiry');
+    // store enquiry
+    Route::post('/service_store_enquirey', 'ServiceEnquiryController@enquiry_store')->name('service.enquiry.store');
+    // view enquiry
+    Route::get('{id}/service_view_enquiry', 'ServiceEnquiryController@view_enquiry')->name('service.enquiry.enquiry_view');
+    // update enquiry
+    Route::post('/service_enquiry/update/{id}', 'ServiceEnquiryController@update')->name('service.enquiry.update');
+    // add task
+    Route::post('/service_submit_task', 'ServiceEnquiryController@store_quote')->name('service.enquiry.submit_task');
+    // del enquiry
+    Route::post('/service_del_enquiry/{id}', 'ServiceEnquiryController@del_enquiry')->name('service.del_enquiry');
 
-    Route::get('/enquiries/lead-cycle/{cycle}', 'EnquiryController@showByLeadCycle')->name('enquiry.byCycle');
+    // reports
+    Route::get('/service_reports', 'ServiceReportsController@view_report')->name('service.reports.index');
 });
 
 // user group
 
-Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->group(function () {
+Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->middleware('auth')->group(function () {
 
     // dashboard
     Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard.dashboard');
@@ -121,4 +144,24 @@ Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->gr
     Route::get('/reports', 'ReportController@view_report')->name('reports.index');
 
     Route::get('/enquiries/lead-cycle/{cycle}', 'EnquiryController@showByLeadCycle')->name('enquiry.byCycle');
+
+
+    // services dashboard
+    Route::get('/service-dashboard', 'ServiceDashboard@index')->name('service-dashboard');
+    // dashboard lead cycle
+    Route::get('/service_enquiries/lead-cycle/{cycle}', 'ServiceEnquiryController@showByLeadCycle')->name('service.enquiry.byCycle');
+    // services enquiry/
+    Route::get('/service_enquiry_list', 'ServiceEnquiryController@enquiry_list')->name('service.enquiry.enquiry_list');
+    // services add enquiry
+    Route::get('/service_add_enquiry', 'ServiceEnquiryController@add_enquiry')->name('service.enquiry.add_enquiry');
+    // store enquiry
+    Route::post('/service_store_enquirey', 'ServiceEnquiryController@enquiry_store')->name('service.enquiry.store');
+    // view enquiry
+    Route::get('{id}/service_view_enquiry', 'ServiceEnquiryController@view_enquiry')->name('service.enquiry.enquiry_view');
+    // update enquiry
+    Route::post('/service_enquiry/update/{id}', 'ServiceEnquiryController@update')->name('service.enquiry.update');
+    // add task
+    Route::post('/service_submit_task', 'ServiceEnquiryController@store_quote')->name('service.enquiry.submit_task');
+    // reports
+    Route::get('/service_reports', 'ServiceReportsController@view_report')->name('service.reports.index');
 });

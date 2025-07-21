@@ -225,12 +225,24 @@ class EnquiryController extends Controller
                 }
 
                 // Handle file uploads
-                $filename = null;
+                // $filename = null;
+                // if ($req->hasFile('quote')) {
+                //         $file = $req->file('quote');
+                //         $filename = time() . '_' . $file->getClientOriginalName();
+                //         $file->move(public_path('assets\quote_files'), $filename);
+                // }
+
+                $filenames = [];
                 if ($req->hasFile('quote')) {
-                        $file = $req->file('quote');
-                        $filename = time() . '_' . $file->getClientOriginalName();
-                        $file->move(public_path('assets/quote_files'), $filename);
+                        foreach ($req->file('quote') as $file) {
+                                $filename = time() . '_' . $file->getClientOriginalName();
+                                $file->move(public_path('assets/quote_files'), $filename);
+                                $filenames[] = $filename;
+                        }
                 }
+
+                // Convert array to JSON or comma-separated string (as per your DB structure)
+                $quoteFiles = json_encode($filenames); // or implode(',', $filenames)
 
                 $can_filename = null;
                 if ($req->hasFile('cancel_upload')) {
@@ -259,7 +271,7 @@ class EnquiryController extends Controller
                         'user_id' => $newAssignee,
                         'remarks' => $req->remarks,
                         'lead_cycle' => $req->lead_cycle,
-                        'quote' => $filename,
+                        'quote' => implode(',', $filenames),
                         'cancel_reason' => $req->cancel,
                         'cancel_upload' => $can_filename,
                         'purchase_group' => $req->Purchase_group,
@@ -343,31 +355,38 @@ class EnquiryController extends Controller
         public function showByLeadCycle($cycle)
         {
                 $enquiries = DB::table('enquiry as eq')
-        ->join('products  as pt', 'eq.product_category', '=', 'pt.id')
-        ->join('users     as us', 'eq.assign_to',       '=', 'us.id')
-        ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
-        ->select(
-            'eq.id',
-            'eq.enq_no',
-            'eq.name',
-            'eq.contact',          // change to phone_no if that’s your column
-            'eq.enq_address',
-            'eq.quantity',
-            'eq.lead_cycle',
-            'eq.status',
-            'eq.created_at',
+                        ->join('products  as pt', 'eq.product_category', '=', 'pt.id')
+                        ->join('users     as us', 'eq.assign_to',       '=', 'us.id')
+                        ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
+                        ->select(
+                                'eq.id',
+                                'eq.enq_no',
+                                'eq.name',
+                                'eq.contact',          // change to phone_no if that’s your column
+                                'eq.enq_address',
+                                'eq.quantity',
+                                'eq.lead_cycle',
+                                'eq.status',
+                                'eq.created_at',
 
-            'pt.name  as product_name',
-            'pg.group_name',
-            'us.name  as usr_name',
-        )
-        ->where('eq.lead_cycle', $cycle)
-        ->orderByDesc('eq.created_at')
-        ->get();
+                                'pt.name  as product_name',
+                                'pg.group_name',
+                                'us.name  as usr_name',
+                        )
+                        ->where('eq.lead_cycle', $cycle)
+                        ->orderByDesc('eq.created_at')
+                        ->get();
 
-    return view('admin.enquiry.byCycle', [
-        'cycle'     => $cycle,
-        'enquiries' => $enquiries,   // we’ll use this name in Blade
-    ]);
+                return view('admin.enquiry.byCycle', [
+                        'cycle'     => $cycle,
+                        'enquiries' => $enquiries,   // we’ll use this name in Blade
+                ]);
+        }
+
+        public function del_enquiry($id)
+        {
+                DB::table('enquiry')->where('id', $id)->delete();
+
+                return redirect()->route('admin.enquiry.enquiry_list')->with('message', 'Enquiry deleted successfully');
         }
 };

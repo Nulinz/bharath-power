@@ -15,13 +15,28 @@
                         <div class="card-header border-bottom pb-1">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="card-title text-dark">Basic Details</h5>
-                                <a href="" data-bs-toggle="modal" data-bs-target="#editEnquiryModal"
-                                    class="text-dark fs-4"><i class="fa fa-edit"></i></a>
+                                <div>
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#editEnquiryModal" class="text-dark fs-4"><i class="fa fa-edit"></i></a>
+
+                                    @if ($enquiry)
+                                        <form class="d-inline" action="{{ route('admin.del_enquiry', $enquiry->id) }}" method="POST">
+                                            @csrf
+                                            {{-- <button type="submit" onclick="confirm('Are you sure you want to Delete {{ $enquiry->enq_no }}')" class="ms-2 border-0 bg-transparent">
+                                                <i class="fa fa-trash-alt text-dark"></i>
+                                            </button> --}}
+                                            <button type="submit" onclick="return confirm('Are you sure you want to Delete {{ $enquiry->enq_no }}?')"
+                                                class="ms-2 border-0 bg-transparent"><i class="fa fa-trash-alt text-dark"></i>
+                                            </button>
+
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <h5 class="fs-6 text-muted fw-bold mb-0">Enquiry Number</h5>
+                                <h5 class="fs-6 text-muted fw-bold mb-0">Enquiry Number {{ $enquiry->id }}</h5>
+
                                 <p class="fs-6 text-dark mb-0">{{ $enquiry->enq_no ?? 'N/A' }}</p>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
@@ -96,8 +111,7 @@
                     </div>
 
                     <!-- Edit Enquiry Modal -->
-                    <div class="modal fade" id="editEnquiryModal" tabindex="-1" aria-labelledby="editEnquiryModalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="editEnquiryModal" tabindex="-1" aria-labelledby="editEnquiryModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <form action="{{ route('admin.enquiry.update', $enquiry->id) }}" method="POST">
                                 @csrf
@@ -105,21 +119,18 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Edit Enquiry Details</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
 
                                     <div class="modal-body row g-3">
                                         <div class="col-md-3">
                                             <label class="form-label">Name</label>
-                                            <input type="text" name="name" class="form-control"
-                                                value="{{ $enquiry->name }}">
+                                            <input type="text" name="name" class="form-control" value="{{ $enquiry->name }}">
                                         </div>
 
                                         <div class="col-md-3">
                                             <label class="form-label">Contact Number</label>
-                                            <input type="text" name="contact" class="form-control"
-                                                value="{{ $enquiry->contact }}" maxlength="10" minlength="10"
+                                            <input type="text" name="contact" class="form-control" value="{{ $enquiry->contact }}" maxlength="10" minlength="10"
                                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                         </div>
 
@@ -128,8 +139,7 @@
                                             <select class="form-select" name="enq_pro_group" id="enq_pro_group" required>
                                                 <option disabled>Select Option</option>
                                                 @foreach ($add_group as $ag)
-                                                    <option value="{{ $ag->id }}"
-                                                        {{ $enquiry->enq_pro_group == $ag->id ? 'selected' : '' }}>
+                                                    <option value="{{ $ag->id }}" {{ $enquiry->enq_pro_group == $ag->id ? 'selected' : '' }}>
                                                         {{ $ag->group_name }}
                                                     </option>
                                                 @endforeach
@@ -170,20 +180,17 @@
 
                                         <div class="col-md-3">
                                             <label class="form-label">Quantity</label>
-                                            <input type="number" name="quantity" class="form-control"
-                                                value="{{ $enquiry->quantity }}">
+                                            <input type="number" name="quantity" class="form-control" value="{{ $enquiry->quantity }}">
                                         </div>
 
                                         <div class="col-md-3">
                                             <label class="form-label">UOM</label>
-                                            <input type="text" name="enq_uom" class="form-control"
-                                                value="{{ $enquiry->enq_uom }}">
+                                            <input type="text" name="enq_uom" class="form-control" value="{{ $enquiry->enq_uom }}">
                                         </div>
 
                                         <div class="col-md-3">
                                             <label class="form-label">Capacity</label>
-                                            <input type="text" name="enq_capacity" class="form-control"
-                                                value="{{ $enquiry->enq_capacity }}">
+                                            <input type="text" name="enq_capacity" class="form-control" value="{{ $enquiry->enq_capacity }}">
                                         </div>
 
                                         <div class="col-md-3">
@@ -193,73 +200,55 @@
 
                                         <div class="col-md-3">
                                             <label class="form-label">Location</label>
-                                            <input type="text" name="location" class="form-control"
-                                                value="{{ $enquiry->location }}">
+                                            <input type="text" name="location" class="form-control" value="{{ $enquiry->location }}">
                                         </div>
 
                                         <div class="col-md-3 mb-3">
                                             <label class="form-label fw-bold">Source</label>
                                             <select class="form-select" name="source" required>
-                                                <option value="" disabled
-                                                    {{ $enquiry->source == '' ? 'selected' : '' }}>Select Option</option>
-                                                <option value="Existing Customer"
-                                                    {{ $enquiry->source == 'Existing Customer' ? 'selected' : '' }}>
+                                                <option value="" disabled {{ $enquiry->source == '' ? 'selected' : '' }}>Select Option</option>
+                                                <option value="Existing Customer" {{ $enquiry->source == 'Existing Customer' ? 'selected' : '' }}>
                                                     Existing Customer</option>
-                                                <option value="Customer reference"
-                                                    {{ $enquiry->source == 'Customer reference' ? 'selected' : '' }}>
+                                                <option value="Customer reference" {{ $enquiry->source == 'Customer reference' ? 'selected' : '' }}>
                                                     Customer reference</option>
-                                                <option value="India Mart"
-                                                    {{ $enquiry->source == 'India Mart' ? 'selected' : '' }}>India Mart
+                                                <option value="India Mart" {{ $enquiry->source == 'India Mart' ? 'selected' : '' }}>India Mart
                                                 </option>
-                                                <option value="Exhibhition"
-                                                    {{ $enquiry->source == 'Exhibhition' ? 'selected' : '' }}>Exhibhition
+                                                <option value="Exhibhition" {{ $enquiry->source == 'Exhibhition' ? 'selected' : '' }}>Exhibhition
                                                 </option>
-                                                <option value="Website"
-                                                    {{ $enquiry->source == 'Website' ? 'selected' : '' }}>Website</option>
-                                                <option value="Telemarketing"
-                                                    {{ $enquiry->source == 'Telemarketing' ? 'selected' : '' }}>
+                                                <option value="Website" {{ $enquiry->source == 'Website' ? 'selected' : '' }}>Website</option>
+                                                <option value="Telemarketing" {{ $enquiry->source == 'Telemarketing' ? 'selected' : '' }}>
                                                     Telemarketing</option>
-                                                <option value="Advertisement"
-                                                    {{ $enquiry->source == 'Advertisement' ? 'selected' : '' }}>
+                                                <option value="Advertisement" {{ $enquiry->source == 'Advertisement' ? 'selected' : '' }}>
                                                     Advertisement</option>
-                                                <option value="Tender"
-                                                    {{ $enquiry->source == 'Tender' ? 'selected' : '' }}>Tender</option>
-                                                <option value="Empanelled Channel"
-                                                    {{ $enquiry->source == 'Empanelled Channel' ? 'selected' : '' }}>
+                                                <option value="Tender" {{ $enquiry->source == 'Tender' ? 'selected' : '' }}>Tender</option>
+                                                <option value="Empanelled Channel" {{ $enquiry->source == 'Empanelled Channel' ? 'selected' : '' }}>
                                                     Empanelled Channel</option>
-                                                <option value="Instagram"
-                                                    {{ $enquiry->source == 'Instagram' ? 'selected' : '' }}>Instagram
+                                                <option value="Instagram" {{ $enquiry->source == 'Instagram' ? 'selected' : '' }}>Instagram
                                                 </option>
-                                                <option value="Other"
-                                                    {{ $enquiry->source == 'Other' ? 'selected' : '' }}>Other</option>
+                                                <option value="Other" {{ $enquiry->source == 'Other' ? 'selected' : '' }}>Other</option>
                                             </select>
                                         </div>
 
-
                                         <div class="col-md-3">
                                             <label class="form-label">Referred Name</label>
-                                            <input type="text" name="enq_ref_name" class="form-control"
-                                                value="{{ $enquiry->enq_ref_name }}">
+                                            <input type="text" name="enq_ref_name" class="form-control" value="{{ $enquiry->enq_ref_name }}">
                                         </div>
 
                                         <div class="col-md-3">
                                             <label class="form-label">Reference Contact</label>
-                                            <input type="text" name="enq_ref_contact" class="form-control"
-                                                value="{{ $enquiry->enq_ref_contact }}" maxlength="10" minlength="10"
-                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                            <input type="text" name="enq_ref_contact" class="form-control" value="{{ $enquiry->enq_ref_contact }}" maxlength="10"
+                                                minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                         </div>
                                     </div>
 
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">Update</button>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-
 
                     <div class="card">
                         <div class="card-header border-bottom pb-1">
@@ -268,38 +257,26 @@
                         <div class="card-body">
                             @foreach ($task as $t)
                                 @if ($t->quote)
-                                    <article
-                                        class="d-flex justify-content-between align-items-center bg-light rounded-3 qc-card my-2 border p-2">
-                                        <div>
-                                            <h5 class="card-title text-muted fw-bold mb-0">{{ $t->quote }}</h5>
-                                            <p class="text-muted fw-semibold mb-0 mt-1"><span>Value: </span>
-                                                {{ $t->value }}</p>
-                                            <p class="mb-0">
-                                                <small>{{ \Carbon\Carbon::parse($t->created_at)->format('d/m/Y') }}</small>
-                                            </p>
-                                        </div>
-                                        <a href="{{ asset('assets/quote_files/' . $t->quote) }}" target="_blank">
-                                            <i class="text-success fs-3 fa fa-fw fa-download"></i>
-                                        </a>
-                                    </article>
-                                @endif
+                                    @php
+                                        $quoteFiles = explode(',', $t->quote);
+                                    @endphp
 
-                                @if ($t->cancel_upload)
-                                    <article
-                                        class="d-flex justify-content-between align-items-center bg-light rounded-3 qc-card my-2 border p-2">
-                                        <div>
-                                            <h5 class="card-title text-muted fw-bold mb-0">{{ $t->cancel_upload }}</h5>
-                                            <p class="mb-0">
-                                                <small>{{ \Carbon\Carbon::parse($t->created_at)->format('d/m/Y') }}</small>
-                                            </p>
-                                        </div>
-                                        <a href="{{ asset('assets/quote_files/' . $t->quote) }}" target="_blank">
-                                            <i class="text-success fs-3 fa fa-fw fa-download"></i>
-                                        </a>
-                                    </article>
+                                    @foreach ($quoteFiles as $file)
+                                        <article class="d-flex justify-content-between align-items-center bg-light rounded-3 qc-card my-2 border p-2">
+                                            <div>
+                                                <h5 class="card-title text-muted fw-bold mb-0">{{ $file }}</h5>
+                                                <p class="text-muted fw-semibold mb-0 mt-1"><span>Value: </span>{{ $t->value }}</p>
+                                                <p class="mb-0">
+                                                    <small>{{ \Carbon\Carbon::parse($t->created_at)->format('d/m/Y') }}</small>
+                                                </p>
+                                            </div>
+                                            <a href="{{ asset('assets/quote_files/' . $file) }}" target="_blank">
+                                                <i class="text-success fs-3 fa fa-fw fa-download"></i>
+                                            </a>
+                                        </article>
+                                    @endforeach
                                 @endif
                             @endforeach
-
                         </div>
                     </div>
 
@@ -320,20 +297,16 @@
                                         <li class="timeline-item">
                                             <div class="tl-bg d-flex justify-content-between align-items-center p-2">
                                                 <strong class="text-white">{{ $tak->lead_cycle }}</strong>
-                                                <span
-                                                    class="fw-bold text-sm text-white">{{ date('d-m-Y', strtotime($tak->created_at)) }}</span>
+                                                <span class="fw-bold text-sm text-white">{{ date('d-m-Y', strtotime($tak->created_at)) }}</span>
                                             </div>
                                             <div class="card-body p-3">
                                                 <!-- task details -->
-                                                <p class="fw-bold mb-0">Assigned to: <span
-                                                        class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span>
+                                                <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span>
                                                 </p>
 
-                                                <p class="fw-bold mb-0">Remarks: <span
-                                                        class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span>
+                                                <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span>
                                                 </p>
-                                                <p class="fw-bold mb-0">Created by: <span
-                                                        class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
+                                                <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
                                                 </p>
 
                                             </div>
@@ -352,8 +325,7 @@
                             <h5 class="card-title text-dark">Task</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('admin.enquiry.submit_task') }}" method="POST" id="myForm"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('admin.enquiry.submit_task') }}" method="POST" id="myForm" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="enqid" value="{{ $enquiry->enq_id }}">
                                 <input type="hidden" name="enqno" value="{{ $enquiry->enq_no }}">
@@ -365,8 +337,7 @@
                                     <select name="assign_to" class="form-select" required>
                                         <option selected disabled>Select Option</option>
                                         @foreach ($users as $user)
-                                            <option value="{{ $user->id }}"
-                                                {{ $user->id == $enquiry->assign_to ? 'selected' : '' }}>
+                                            <option value="{{ $user->id }}" {{ $user->id == $enquiry->assign_to ? 'selected' : '' }}>
                                                 {{ $user->name }}
                                             </option>
                                         @endforeach
@@ -402,7 +373,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Attach file</label>
-                                    <input type="file" name="quote" class="form-control">
+                                    <input type="file" name="quote[]" class="form-control" multiple>
                                 </div>
 
                                 <div class="inter-cal mb-3" style="display: none;">
@@ -420,7 +391,6 @@
                                     <input type="text" name="quote_value" class="form-control">
                                 </div>
 
-
                                 <div class="inputs inter-det mb-3" style="display: none;">
                                     <label class="form-label fw-bold">Purchase Group</label>
                                     <select class="form-select" name="Purchase_group" id="inter">
@@ -433,9 +403,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Callback</label>
-                                    <input type="date" class="form-control" name="callback" min={{ date('Y-m-d') }}
-                                        placeholder="" required>
+                                    <label class="form-label fw-bold">Date</label>
+                                    <input type="date" class="form-control" name="callback" min={{ date('Y-m-d') }} placeholder="" required>
                                 </div>
 
                                 <button type="submit" id="submitBtn" class="btn btn-primary w-100 mt-2">Submit</button>
@@ -513,14 +482,12 @@
     @if (session('message'))
         <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 1100;">
             <div class="toast-container position-fixed end-0 top-0 p-3">
-                <div class="toast align-items-center text-bg-success show border-0" role="alert" aria-live="assertive"
-                    aria-atomic="true">
+                <div class="toast align-items-center text-bg-success show border-0" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
                         <div class="toast-body">
                             {{ session('message') }}
                         </div>
-                        <button type="button" class="btn-close btn-close-white m-auto me-2" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-white m-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                 </div>
             </div>
@@ -531,14 +498,12 @@
     @if ($errors->has('message_error'))
         <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 1100;">
             <div class="toast-container position-fixed end-0 top-0 p-3">
-                <div class="toast align-items-center text-bg-danger show border-0" role="alert" aria-live="assertive"
-                    aria-atomic="true">
+                <div class="toast align-items-center text-bg-danger show border-0" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
                         <div class="toast-body">
                             {{ $errors->first('message_error') }}
                         </div>
-                        <button type="button" class="btn-close btn-close-white m-auto me-2" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-white m-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                 </div>
             </div>

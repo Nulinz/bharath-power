@@ -1,0 +1,106 @@
+@extends('user.service.layouts.app')
+@section('title', 'Enquiry List')
+@section('content')
+    <main class="content">
+        <div class="container-fluid p-0">
+            <div class="row mb-xl-3 mb-2">
+                <div class="d-none d-sm-block col-auto">
+                    <h3><strong>Service Enquiry List</strong></h3>
+                </div>
+            </div>
+
+            <div class="row">
+                {{-- report tabs --}}
+                <div class="col-md-12 col-xl-12">
+                    {{-- Acting driver Details --}}
+                    <div class="card mb-3">
+                        <div class="d-flex align-items-center justify-content-between border-bottom p-3">
+                            <h5 class="card-title mb-0">Enquiry</h5>
+                            <a href="{{ route('user.service.enquiry.add_enquiry') }}" class="btn btn-primary btn-md"><i class="fa fa-fw fa-plus align-middle"></i> Add Enquiry</a>
+                        </div>
+                        <div class="card-body">
+                            <table id="datatables-reponsive" class="table-striped table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Enq no</th>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Address</th>
+                                        <th>Group</th>
+                                        <th>Product</th>
+                                        <th>Qty</th>
+                                        <th>Lead Cycle</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        {{-- <th>Action</th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody class="">
+                                    @foreach ($enquiry as $eq)
+                                        <tr onclick="window.location='{{ route('user.service.enquiry.enquiry_view', $eq->id) }}'" style="cursor: pointer;">
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $eq->enq_no }}</td>
+                                            <td>{{ $eq->name }}</td>
+                                            <td>{{ $eq->contact }}</td>
+                                            <td>{{ $eq->enq_address }}</td>
+                                            <td>{{ $eq->group_name }}</td>
+                                            <td>{{ $eq->product_name }}</td>
+                                            <td>{{ $eq->quantity }}</td>
+                                            <td>{{ $eq->lead_cycle }}</td>
+                                            <td>
+
+                                                @if ($eq->status === 'completed')
+                                                    <span class="badge badge-success-light">Completed</span>
+                                                @elseif ($eq->status === 'cancelled')
+                                                    <span class="badge badge-danger-light">Cancelled</span>
+                                                @else
+                                                    <span class="badge badge-warning-light">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ date('d-m-Y', strtotime($eq->created_at)) }}</td>
+                                            {{-- <td><i class="fs-4 text-dark fa fa-external-link-alt"></i></td> --}}
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Datatables Responsive
+            $("#datatables-reponsive").DataTable({
+                responsive: true,
+                "ordering": false
+            });
+        });
+    </script>
+
+    @if (session('message'))
+        <div aria-live="polite" aria-atomic="true" class="position-relative" style="min-height: 100px;">
+            <div class="toast-container position-fixed end-0 top-0 p-3" style="z-index: 1100;">
+                <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body text-white">
+                            {{ session('message') }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white m-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var toastEl = document.getElementById('successToast');
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            });
+        </script>
+    @endif
+@endsection()
