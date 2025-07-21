@@ -163,7 +163,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/events.png') }}" height="55px" alt="">
+                                        <img src="{{ asset('assets/icons/booking.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -183,7 +183,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/events.png') }}" height="55px" alt="">
+                                        <img src="{{ asset('assets/icons/trolley.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -203,7 +203,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/events.png') }}" height="55px" alt="">
+                                        <img src="{{ asset('assets/icons/supply.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -223,7 +223,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/events.png') }}" height="55px" alt="">
+                                        <img src="{{ asset('assets/icons/payment.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -243,7 +243,7 @@
                                     </div>
 
                                     <div class="">
-                                        <img src="{{ asset('assets/icons/events.png') }}" height="55px" alt="">
+                                        <img src="{{ asset('assets/icons/hand.png') }}" height="55px" alt="">
                                     </div>
                                 </div>
                             </a>
@@ -289,7 +289,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             {{-- altert table --}}
             <div class="row">

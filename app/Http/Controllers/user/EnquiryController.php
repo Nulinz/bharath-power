@@ -99,7 +99,7 @@ class EnquiryController extends Controller
                         'product_id' => $req->enq_product,
                         'purchase_group' => $req->Purchase_group,
                         'user_id'  => $req->enq_assign_to,
-                        'remarks' => 'Enquiry Created',
+                        'remarks' =>  $req->enq_requirements ?? 'Enquiry Created',
                         'lead_cycle' => $req->enq_lead_cycle,
                         'quote' => $filename,
                         'value' =>  $req->quote_value,

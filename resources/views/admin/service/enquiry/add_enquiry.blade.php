@@ -108,17 +108,17 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-3 inputs inter-det1 mb-3" style="display: none;">
+                                {{-- <div class="col-md-3 inputs inter-det1 mb-3" style="display: none;">
                                     <label class="form-label fw-bold">Date of Service</label>
                                     <input type="date" name="serv_date" class="form-control">
-                                </div>
+                                </div> --}}
 
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Contact Number</label>
                                     <input type="text" name="enq_contact" class="form-control" placeholder="" maxlength="10" minlength="10"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                                 </div>
-                                
+
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Address</label>
                                     <textarea class="form-control" name="enq_address" id="" rows="1"></textarea>

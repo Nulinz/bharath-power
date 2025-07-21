@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controllerc
+class LoginController extends Controller
 {
     public function loginshow()
     {
