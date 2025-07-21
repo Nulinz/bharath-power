@@ -123,7 +123,7 @@ class ServiceEnquiryController extends Controller
             ->first();
 
         $task = DB::table('service_task as t')
-            ->leftJoin('users as u', 't.created_by', '=', 'u.id')
+            ->leftJoin('users as u', 't.created_by', '=', 'u.id', 't.attended_by', '=', 'u.id')
             ->where('t.enq_id', $id)
             ->select('t.*', 'u.name as created_by_name')
             ->orderBy('created_at', 'DESC')

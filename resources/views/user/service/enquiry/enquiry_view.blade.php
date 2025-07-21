@@ -286,17 +286,35 @@
                                                 <strong class="text-white">{{ $tak->lead_cycle }}</strong>
                                                 <span class="fw-normal text-sm text-white">{{ date('d-m-Y', strtotime($tak->created_at)) }}</span>
                                             </div>
-                                            <div class="card-body p-3">
-                                                <!-- task details -->
-                                                <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span>
-                                                </p>
 
-                                                <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span>
-                                                </p>
-                                                <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
-                                                </p>
+                                            @if ($tak->lead_cycle == 'Service Entry')
+                                                <div class="card-body p-3">
+                                                    <!-- task details -->
+                                                    <p class="fw-bold mb-0">Service Value: <span class="fw-normal ms-1">{{ $tak->service_value }}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-0">Attended by: <span class="fw-normal ms-1">{{ $tak->created_by_name }}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span>
+                                                    </p>
 
-                                            </div>
+                                                    <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
+                                                    </p>
+
+                                                </div>
+                                            @else
+                                                <div class="card-body p-3">
+                                                    <!-- task details -->
+                                                    <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span>
+                                                    </p>
+
+                                                    <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
+                                                    </p>
+
+                                                </div>
                                         </li>
                                     @endforeach
                                 @endif
