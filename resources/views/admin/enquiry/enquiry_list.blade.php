@@ -1,11 +1,18 @@
 @extends('admin.layouts.app')
 @section('title', 'Enquiry List')
 @section('content')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        .dropdown-menu {
+            width: 250px !important;
+        }
+    </style>
     <main class="content">
         <div class="container-fluid p-0">
             <div class="row mb-xl-3 mb-2">
                 <div class="d-none d-sm-block col-auto">
-                    <h3><strong>Enquiry List</strong></h3>
+                    <h3><strong>Sales Enquiry List</strong></h3>
                 </div>
             </div>
 
@@ -30,12 +37,22 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Lead Cycle</label>
-                                    <select id="leadCycleFilter" class="form-select">
-                                        <option value="">All</option>
-                                        @foreach ($enquiry->pluck('lead_cycle')->unique() as $cycle)
-                                            <option value="{{ $cycle }}">{{ $cycle }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="dropdown filter-dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle text-start" style="border: 1px solid #dee2e6"  type="button" id="leadCycleDropdown" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            Select Lead Cycle
+                                        </button>
+                                        <ul class="dropdown-menu p-2" aria-labelledby="leadCycleDropdown" style="max-height: 250px; overflow-y: auto;">
+                                            @foreach ($enquiry->pluck('lead_cycle')->unique() as $cycle)
+                                                <li>
+                                                    <label class="form-check d-flex align-items-center mx-2">
+                                                        <input class="form-check-input lead-cycle-option fs-4 me-2" type="checkbox" value="{{ $cycle }}">
+                                                        {{ $cycle }}
+                                                    </label>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-4">
@@ -110,44 +127,49 @@
             </div>
         </div>
     </main>
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Datatables Responsive
-            $("#datatables-reponsive").DataTable({
-                responsive: true,
-                "ordering": true
-            });
-        });
-    </script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let table = $('#datatables-reponsive').DataTable({
-                responsive: true,
+                responsive: false,
                 ordering: true
             });
 
-            // Custom filtering function
-            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                let assign = $('#assignFilter').val().toLowerCase();
-                let lead = $('#leadCycleFilter').val().toLowerCase();
-                let filterDate = $('#dateFilter').val(); // yyyy-mm-dd
+            // Prevent dropdown from closing when clicking inside
+            $('#leadCycleDropdown').siblings('.dropdown-menu').on('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // DataTables custom filter
+            $.fn.dataTable.ext.search.push(function(settings, data) {
+                let assign = $('#assignFilter').val()?.toLowerCase() || '';
+                let leadArray = $('.lead-cycle-option:checked').map(function() {
+                    return $(this).val().toLowerCase();
+                }).get();
+                let filterDate = $('#dateFilter').val();
+
                 let rowAssign = data[8]?.toLowerCase() || '';
                 let rowLead = data[9]?.toLowerCase() || '';
-                let rowDate = data[11]?.trim(); // dd-mm-yyyy
+                let rowDate = data[11]?.trim();
 
-                // Convert dd-mm-yyyy → yyyy-mm-dd
                 let parts = rowDate.split('-');
                 let rowDateFormatted = parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : '';
 
                 let assignMatch = !assign || rowAssign === assign;
-                let leadMatch = !lead || rowLead === lead;
+                let leadMatch = leadArray.length === 0 || leadArray.includes(rowLead);
                 let dateMatch = !filterDate || rowDateFormatted === filterDate;
 
                 return assignMatch && leadMatch && dateMatch;
             });
 
-            // Trigger redraw on change
-            $('#assignFilter, #leadCycleFilter, #dateFilter').on('change', function() {
+            // Event: When filters change, redraw table
+            $('#assignFilter, #dateFilter').on('change', function() {
+                table.draw();
+            });
+
+            // Event: When lead cycle checkboxes change (no text update, keep static)
+            $('.lead-cycle-option').on('change', function() {
                 table.draw();
             });
         });

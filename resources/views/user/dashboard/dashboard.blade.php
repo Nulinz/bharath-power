@@ -5,7 +5,7 @@
             <div class="row mb-xl-3 mb-2">
                 <div class="d-flex align-items-center justify-content-between mb-xl-3 mb-2">
                     <div class="d-flex align-items-center">
-                        <h3 class="m-0"><strong>Enquiry Dashboard</strong></h3>
+                        <h3 class="m-0"><strong>Sales Dashboard</strong></h3>
                         <a href="{{ route('user.service-dashboard') }}" class="btn btn-outline-dark ms-3">Service Dashboard</a>
                     </div>
 

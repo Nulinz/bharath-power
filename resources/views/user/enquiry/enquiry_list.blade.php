@@ -5,7 +5,7 @@
         <div class="container-fluid p-0">
             <div class="row mb-2 mb-xl-3">
                 <div class="col-auto d-none d-sm-block">
-                    <h3><strong>Enquiry List</strong></h3>
+                    <h3><strong>Sales Enquiry List</strong></h3>
                 </div>
             </div>
 

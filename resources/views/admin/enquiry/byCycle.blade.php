@@ -5,7 +5,7 @@
         <div class="container-fluid p-0">
             <div class="row mb-xl-3 mb-2">
                 <div class="d-none d-sm-block col-auto">
-                    <h3><strong>Lead Cycle </strong></h3>
+                    <h3><strong>Sales Lead Cycle </strong></h3>
                 </div>
             </div>
 
@@ -39,8 +39,7 @@
                                 </thead>
                                 <tbody class="">
                                     @foreach ($enquiries as $eq)
-                                        <tr onclick="window.location='{{ route('admin.enquiry.enquiry_view', $eq->id) }}'"
-                                            style="cursor: pointer;">
+                                        <tr onclick="window.location='{{ route('admin.enquiry.enquiry_view', $eq->id) }}'" style="cursor: pointer;">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $eq->enq_no }}</td>
                                             <td>{{ $eq->name }}</td>
@@ -69,9 +68,6 @@
                             </table>
                         </div>
                     </div>
-
-
-
 
                 </div>
             </div>

@@ -5,7 +5,7 @@
         <div class="container-fluid p-0">
             <div class="row mb-xl-3 mb-2">
                 <div class="d-none d-sm-block col-auto">
-                    <h3><strong>Add Enquiry</strong></h3>
+                    <h3><strong>Add Sales Enquiry</strong></h3>
                 </div>
             </div>
 
@@ -16,8 +16,7 @@
                         <h5 class="card-title mb-0">User Details</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.enquiry.store') }}" method="POST" id="myForm"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('admin.enquiry.store') }}" method="POST" id="myForm" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
@@ -46,7 +45,6 @@
                                     </select>
                                 </div> --}}
 
-
                                 <!-- Product Group Dropdown -->
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Product Group</label>
@@ -65,7 +63,6 @@
                                         <option selected disabled>Select Option</option>
                                     </select>
                                 </div>
-
 
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Qty</label>
@@ -123,14 +120,12 @@
 
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Remarks</label>
-                                    <input type="text" name="enq_requirements" class="form-control" placeholder=""
-                                        required>
+                                    <input type="text" name="enq_requirements" class="form-control" placeholder="" required>
                                 </div>
 
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Contact Number</label>
-                                    <input type="text" name="enq_contact" class="form-control" placeholder=""
-                                        maxlength="10" minlength="10"
+                                    <input type="text" name="enq_contact" class="form-control" placeholder="" maxlength="10" minlength="10"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                                 </div>
                                 <div class="col-md-3 mb-3">
@@ -139,8 +134,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Location</label>
-                                    <input type="text" name="enq_location" class="form-control" placeholder=""
-                                        required>
+                                    <input type="text" name="enq_location" class="form-control" placeholder="" required>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Referred by Name</label>
@@ -148,8 +142,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Reference Contact</label>
-                                    <input type="text" name="enq_ref_contact" class="form-control" placeholder=""
-                                        maxlength="10" minlength="10"
+                                    <input type="text" name="enq_ref_contact" class="form-control" placeholder="" maxlength="10" minlength="10"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                                 <div class="col-md-3 mb-3">
@@ -228,7 +221,6 @@
             });
         });
     </script>
-
 
     <script src="{{ asset('assets/js/disable.js') }}"></script>
 @endsection()
