@@ -24,6 +24,12 @@
                  </a>
              </li>
 
+              <li class="sidebar-item {{ Route::is('admin.service.service_task-list') ? 'active' : ''}}">
+						<a class='sidebar-link fw-semibold' href='{{ route('admin.service.service_task-list') }}'>
+							<i class="align-middle" data-feather="file-text"></i> <span class="align-middle fw-semibold">Task List</span>
+						</a>
+			 </li>
+
              <li class="sidebar-item {{ Route::is('admin.service.reports.index') ? 'active' : '' }}">
                  <a class='sidebar-link fw-semibold' href='{{ route('admin.service.reports.index') }}'>
                      <i class="align-middle" data-feather="clipboard"></i> <span class="fw-semibold align-middle">Report</span>

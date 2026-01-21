@@ -50,4 +50,63 @@ class ServiceDashboard extends Controller
 
         return view('admin.service.dashboard.dashboard', ['leadCycleCounts' => $leadCycleCounts, 'todayTasks' => $todayTasks, 'totalEnquiries' => $totalEnquiries]);
     }
+
+    public function service_task_list()
+    {
+        $task_service = DB::table('task_service')
+        ->join('category', 'task_service.category', '=', 'category.id')
+        ->leftJoin('users as assign_user', 'task_service.assign_to', '=', 'assign_user.id')
+        
+        ->select(
+            'task_service.*',
+            'category.cat_name as category_name',
+            'assign_user.name as assigned_name'
+        )
+        ->get();
+
+    return view('admin.service.ser_task.service_task_list', compact('task_service'));
+       // return view('admin.service.ser_task.service_task_list');
+
+    }
+    public function add_service_task()
+    {
+      $category = DB::table('category')
+      ->where('status', 'Active')
+      ->get();
+      $users = DB::table('users')
+      ->where('user_status', 'Active')
+      ->get();
+  
+      return view('admin.service.ser_task.add_service_task',['category' => $category,'users' => $users]);
+      // return view('admin.settings.add_category', ['add_group' => $add_group]);
+    }
+    public function service_task_profile(Request $req)
+    {
+       // dd($req->all());
+       $task_service = DB::table('task_service')
+        ->leftJoin('category', 'task_service.category', '=', 'category.id')
+        ->leftJoin('users as assign_user', 'task_service.assign_to', '=', 'assign_user.id')
+        ->leftJoin('users as created_user', 'task_service.created_by', '=', 'created_user.id')
+        ->select(
+            'task_service.*',
+            'category.cat_name as category_name',
+            'assign_user.name as assigned_name',
+            'assign_user.designation as assigned_designation',
+            'created_user.name as created_name',
+             'created_user.designation as created_designation'
+        )
+        ->where('task_service.id', $req->id)
+        ->first();
+
+   
+   //dd($task_service);
+   //dd($task_service);
+
+
+        return view(
+            'admin.service.ser_task.service_task_profile',
+            compact('task_service')
+        );
+
+    }
 }

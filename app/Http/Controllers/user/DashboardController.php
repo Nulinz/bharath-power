@@ -83,4 +83,12 @@ class DashboardController extends Controller
             'totalEnquiries' => $totalEnquiries
         ]);
     }
+
+    public function task_index()
+    {
+        return view('user.task.task_index', [
+           
+        ]);
+
+    }
 }

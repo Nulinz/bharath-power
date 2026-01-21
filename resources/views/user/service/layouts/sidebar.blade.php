@@ -29,6 +29,7 @@
                      <i class="align-middle" data-feather="clipboard"></i> <span class="fw-semibold align-middle">Report</span>
                  </a>
              </li>
+             
          </ul>
      </div>
  </nav>

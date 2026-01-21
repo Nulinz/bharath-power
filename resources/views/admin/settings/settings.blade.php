@@ -23,6 +23,9 @@
                         <a data-bs-toggle="tab" href="#Users" role="tab" aria-selected="false" tabindex="-1">
                             Users
                         </a>
+                         <a data-bs-toggle="tab" href="#Category" role="tab" aria-selected="false" tabindex="-1">
+                            Category
+                        </a>
                     </div>
 
                     {{-- <div class="nav nav-tabs" role="tablist">
@@ -70,6 +73,9 @@
 
                     <div class="tab-pane fade" id="Users" role="tabpanel">
                         @include('admin.settings.user_list')
+                    </div>
+                       <div class="tab-pane fade" id="Category" role="tabpanel">
+                        @include('admin.settings.category_list')
                     </div>
 
 

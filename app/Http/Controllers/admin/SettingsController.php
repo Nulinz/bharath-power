@@ -13,6 +13,7 @@ class SettingsController extends Controller
 
     $users = DB::table('users')->get();
     $groups = DB::table('products_group')->get();
+    $category = DB::table('category')->get();
 
     $products = DB::table('products')
       ->leftJoin('products_group', 'products.group_id', '=', 'products_group.id')
@@ -22,7 +23,8 @@ class SettingsController extends Controller
     return view('admin.settings.settings', [
       'users' => $users,
       'products' => $products,
-      'groups' => $groups
+      'groups' => $groups,
+      'category' => $category
     ]);
   }
 
@@ -186,4 +188,59 @@ class SettingsController extends Controller
 
     // return view('admin.settings.edit_group');
   }
+
+    public function add_category()
+  {
+    $add_category = DB::table('category')->get();
+
+    return view('admin.settings.add_category');
+    // return view('admin.settings.add_category', ['add_group' => $add_group]);
+  }
+
+  public function category_store(Request $request)
+
+  {
+    DB::table('category')->insert([
+      // 'group_id' => $request->group_id,
+      'cat_name' => $request->cat_name,
+      'cat_desc'  => $request->cat_desc,
+      'status'  => $request->cat_status,
+      'created_at' => now(),
+      'updated_at' => now(),
+    ]);
+
+    return redirect()->route('admin.settings.settings')->with([
+      'status' => 'success',
+      'message' => 'Created Category',
+    ]);
+  }
+
+  public function edit_category($id)
+  {
+
+    $category_data  = DB::table('category')->where('id', $id)->first();
+
+    return view('admin.settings.edit_category', ['category_data' => $category_data]);
+  }
+
+ // update product
+ public function category_update(Request $request)
+ {
+
+   DB::table('category')->where('id', $request->edit_id)->update([
+     
+     'cat_name' => $request->category_name,
+     'cat_desc'  => $request->category_desc,
+     'status'  => $request->category_status,
+     'updated_at' => now(),
+
+   ]);
+
+   return redirect()->route('admin.settings.settings')->with([
+     'status' => 'Success',
+     'message' => 'Category updated successfully'
+   ]);
+ }
+
+
 }

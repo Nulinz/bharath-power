@@ -27,9 +27,11 @@
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label fw-bold">Designation</label>
                                     <select class="form-select" name="user_desig" id="" required>
+                                    
                                         <option value="" selected disabled>Select Option</option>
                                         <option value="Admin">Admin</option>
                                         <option value="Employee">Employee</option>
+                                        <option value="Manager">Manager</option>
                                     </select>
                                 </div>
                                  <div class="mb-3 col-md-3">

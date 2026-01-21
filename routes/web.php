@@ -1,8 +1,14 @@
 <?php
 
+use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\ServiceDashboard;
+use App\Http\Controllers\user\DashboardController as UserDasboardController;
+
+
 
 // login show
 Route::get('/', [LoginController::class, 'loginshow'])->name('login');
@@ -83,6 +89,17 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
     Route::post('/add_user', 'SettingsController@store_user')->name('settings.user_store');
     // user_view
 
+     // add category
+     Route::get('/add_category', 'SettingsController@add_category')->name('settings.add_category');
+     //add product store
+     Route::post('/category_store', 'SettingsController@category_store')->name('category_store');
+
+      // edit product
+    Route::get('/{id}/edit_category', 'SettingsController@edit_category')->name('settings.edit_category');
+
+     // update user
+     Route::post('/update_category', 'SettingsController@category_update')->name('settings.update_category');
+
     // reports
     Route::get('/reports', 'ReportsController@view_report')->name('reports.index');
 
@@ -107,7 +124,34 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
 
     // reports
     Route::get('/service_reports', 'ServiceReportsController@view_report')->name('service.reports.index');
-});
+    //
+     Route::get('/task_list', 'DashboardController@task_list')->name('admin.task.task_list');
+
+       // add category
+    Route::get('/add_task', 'DashboardController@add_task')->name('dash.add_task');
+
+        //add product store
+     Route::post('/task_store', 'DashboardController@task_store')->name('task_store');
+    //  Route::get('/service_task_list', 'ServiceController@task_list')->name('admin.ser_task.task_list');
+     Route::get('service_task_list', [ServiceDashboard::class,'service_task_list'])->name('service.service_task-list');
+     Route::get('/add_service_task', [ServiceDashboard::class,'add_service_task'])->name('service.add_service_task');
+     Route::get('/service_task_profile', [ServiceDashboard::class,'service_task_profile'])->name('service.service_task_profile');
+     Route::get('/sales_task_profile', [AdminDashboardController::class,'sales_task_profile'])->name('admin.sales_task_profile');
+     Route::post('/task_sale_store', [AdminDashboardController::class,'task_sale_store'])->name('admin.task_sale_store');
+     Route::post('/task_service_store', [AdminDashboardController::class,'task_service_store'])->name('admin.task_service_store');
+
+
+
+
+
+
+
+
+       
+
+// Route::get('/', [AdminDashboardController::class, 'Task'])->name('task_list');
+
+ });
 
 // user group
 
@@ -164,4 +208,7 @@ Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->mi
     Route::post('/service_submit_task', 'ServiceEnquiryController@store_quote')->name('service.enquiry.submit_task');
     // reports
     Route::get('/service_reports', 'ServiceReportsController@view_report')->name('service.reports.index');
+
+    Route::get('/add_task_dashboard', [UserDasboardController::class,'task_index'])->name('user.task_dashboard');
+
 });

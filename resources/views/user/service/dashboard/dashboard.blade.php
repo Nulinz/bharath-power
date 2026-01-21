@@ -8,6 +8,8 @@
                     <div class="d-flex align-items-center">
                         <h3 class="m-0"><strong>Service Dashboard</strong></h3>
                         <a href="{{ route('user.dashboard.dashboard') }}" class="btn btn-outline-dark ms-3">Enquiry Dashboard</a>
+                        <a href="{{ route('user.user.task_dashboard') }}" class="btn btn-outline-dark ms-3">Task Dashboard</a>
+
                     </div>
 
                     <p class="fw-bold fs-4 mb-0"><span>Total Enquiry: </span>{{ $totalEnquiries }}</p>

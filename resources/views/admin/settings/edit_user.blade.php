@@ -32,6 +32,8 @@
                                         <option value="" selected disabled>Select Option</option>
                                         <option value="Admin" {{ $user_data->designation == 'Admin' ? 'selected' : '' }}>Admin</option>
                                         <option value="Employee" {{ $user_data->designation == 'Employee' ? 'selected' : '' }}>Employee</option>
+                                        <option value="Employee" {{ $user_data->designation == 'Manager' ? 'selected' : '' }}>Manager</option>
+
                                     </select>
                                 </div>
                                  <div class="mb-3 col-md-3">
