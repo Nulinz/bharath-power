@@ -86,7 +86,8 @@
                                     </div>
 
 
-                                    <div class="mb-1">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+
                                         <span class="text-primary fw-bold">
                                            {{$task_sales->category_name}}
                                         </span>
@@ -94,8 +95,18 @@
                                         <span class="text-warning fw-bold">
                                             Cleaning & Store Maintenance
                                         </span> --}}
+                                        
+                                            @if($taskClosed)
+                                                <button class="listtdbtn bg-danger text-white ms-2 border-0"
+                                                    data-bs-toggle="modal" data-bs-target="#extPopup2"
+                                                    data-taskid2="{{ $task_sales->id }}"
+                                                    data-createdby="{{ $task_sales->created_by }}">
+                                                    Close  
+                                                </button>
+                                    {{-- @else --}}
+                                        {{-- <span class="badge bg-secondary">Already Closed</span> --}}
+                                    @endif
                                     </div>
-                                     
 
                                      <div class="fw-bold mb-2">
                                         {{$task_sales->description}}
@@ -152,10 +163,57 @@
                 </div>
                 <!-- END CARD -->
 
+                 <!--pop up-->
+                 <!-- Close Task Modal -->
+                <div class="modal fade" id="extPopup2" tabindex="-1" aria-labelledby="extPopup2Label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form id="closeTaskForm" method="POST" action="{{ route('admin.sales_task_close') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="task_id" id="modal_task_id">
+                    <input type="hidden" name="created_by" id="modal_created_by">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="extPopup2Label">Close Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="a_remarks" class="form-label">Remarks</label>
+                            <textarea name="a_remarks" id="a_remarks" class="form-control" required></textarea>
+                        </div>
+                        {{-- <div class="mb-3">
+                            <label for="attach" class="form-label">Attach File</label>
+                            <input type="file" name="attach" id="attach" class="form-control">
+                        </div> --}}
+                        </div>
+                        <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Submit Close Request</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                </div>
+
+                 <!--end pop up-->
+
             </div>
         </div>
 
     </div>
     </main>
+   <script>
+    var extModal = document.getElementById('extPopup2');
+    extModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var taskId = button.getAttribute('data-taskid2');
+        var createdBy = button.getAttribute('data-createdby');
+
+        // Set values in modal hidden fields
+        document.getElementById('modal_task_id').value = taskId;
+        document.getElementById('modal_created_by').value = createdBy;
+    });
+</script>
+
+    
 @endsection
 

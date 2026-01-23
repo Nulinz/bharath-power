@@ -101,11 +101,16 @@ class ServiceDashboard extends Controller
    
    //dd($task_service);
    //dd($task_service);
+   $taskClosed = DB::table('service_task_ext')
+   ->where('task_id', $req->id)
+   ->whereRaw('LOWER(TRIM(category)) = ?', [strtolower('close')])
+   ->exists();
+
 
 
         return view(
             'admin.service.ser_task.service_task_profile',
-            compact('task_service')
+            compact('task_service','taskClosed')
         );
 
     }

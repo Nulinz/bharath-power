@@ -27,7 +27,12 @@ class LoginController extends Controller
 
             if (strtolower($user->designation) === 'admin') {
                 return redirect()->route('admin.dashboard.dashboard');
-            } else {
+            }
+            if ($user->designation === 'Manager') {
+                return redirect()->route('user.dashboard.dashboard');
+            }
+            
+             else {
                 return redirect()->route('user.dashboard.dashboard');
             }
         }

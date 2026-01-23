@@ -142,10 +142,18 @@ class DashboardController extends Controller
     )
     ->where('task_sale.id', $req->id)
     ->first();
+   
+    //$taskId = (int) $req->id;
+    $taskClosed = DB::table('task_ext')
+    ->where('task_id', $req->id)
+    ->whereRaw('LOWER(TRIM(category)) = ?', [strtolower('close')])
+    ->exists();
+
+    //dd($taskClosed);
 
     return view(
       'admin.task.sales_task_profile',
-      compact('task_sales')
+      compact('task_sales','taskClosed')
   );
 
       // return view('admin.task.sales_task_profile');
@@ -232,6 +240,81 @@ class DashboardController extends Controller
       'message' => 'Created Task',
     ]);
   }
+
+  public function sales_task_close(Request $request)
+  {
+    //dd($request->all());
+      $request->validate([
+          'task_id' => 'required|integer',
+          'created_by' => 'required|integer',
+          'a_remarks' => 'nullable|string',
+          // 'attach' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx|ma', // 2MB limit
+      ]);
+  
+   
+      try {
+          DB::table('task_ext')
+              ->where('task_id', $request->task_id)
+              ->update([
+                  // 'attach' => $filename, // will be null if no file uploaded
+                  'status' => 'Closed',
+                  'a_remarks' => $request->a_remarks ?? 'nil',
+                  'category' => 'Closed',
+                  'c_by' => $request->created_by,
+                  'updated_at' => now(),
+              ]);
+
+              DB::table('task_sale')
+              ->where('id', $request->task_id)
+              ->update([
+                 
+                  'task_status' => 'Closed',
+                 
+              ]);
+      } catch (\Exception $e) {
+          dd('Update failed: '.$e->getMessage());
+      }
+  
+      return redirect()->back()->with('success', 'Task closed successfully.');
+  }
+
+  public function service_task_close(Request $request)
+  {
+    //dd($request->all());
+      $request->validate([
+          'task_id' => 'required|integer',
+          'created_by' => 'required|integer',
+          'a_remarks' => 'nullable|string',
+          // 'attach' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx|ma', // 2MB limit
+      ]);
+  
+   
+      try {
+          DB::table('service_task_ext')
+              ->where('task_id', $request->task_id)
+              ->update([
+                  // 'attach' => $filename, // will be null if no file uploaded
+                  'status' => 'Closed',
+                  'a_remarks' => $request->a_remarks ?? 'nil',
+                  'category' => 'Closed',
+                  // 'c_by' => $request->created_by,
+                  // 'updated_at' => now(),
+              ]);
+
+              DB::table('task_service')
+              ->where('id', $request->task_id)
+              ->update([
+                 
+                  'task_status' => 'Closed',
+                 
+              ]);
+      } catch (\Exception $e) {
+          dd('Update failed: '.$e->getMessage());
+      }
+  
+      return redirect()->back()->with('success', 'Task closed successfully.');
+  }
+  
 
     
 }

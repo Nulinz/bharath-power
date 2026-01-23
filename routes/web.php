@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ServiceDashboard;
 use App\Http\Controllers\user\DashboardController as UserDasboardController;
+use App\Http\Controllers\TaskController;
 
 
 
@@ -139,6 +140,10 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
      Route::get('/sales_task_profile', [AdminDashboardController::class,'sales_task_profile'])->name('admin.sales_task_profile');
      Route::post('/task_sale_store', [AdminDashboardController::class,'task_sale_store'])->name('admin.task_sale_store');
      Route::post('/task_service_store', [AdminDashboardController::class,'task_service_store'])->name('admin.task_service_store');
+     Route::post('/sales_task_close', [AdminDashboardController::class, 'sales_task_close'])->name('sales_task_close');
+     Route::post('/service_task_close', [AdminDashboardController::class, 'service_task_close'])->name('service_task_close');
+
+
 
 
 
@@ -210,5 +215,18 @@ Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->mi
     Route::get('/service_reports', 'ServiceReportsController@view_report')->name('service.reports.index');
 
     Route::get('/add_task_dashboard', [UserDasboardController::class,'task_index'])->name('user.task_dashboard');
+    Route::get('/update_task', [UserDasboardController::class,'updateTaskStatus'])->name('update.task');
+    Route::get('/add_service_task_dashboard', [UserDasboardController::class,'service_task_index'])->name('service_task_index');
+    Route::get('/update_service_status', [UserDasboardController::class,'update_service_status'])->name('update_service_status');
+    Route::match(['get','post'], '/task-ext', [UserDasboardController::class,'task_ext'])->name('task.ext');
+    Route::match(['get','post'], '/service_task_ext', [UserDasboardController::class,'service_task_ext'])->name('service_task_ext');
+
+
+
+
+
+
+
+
 
 });
