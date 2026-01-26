@@ -115,8 +115,11 @@ class EnquiryController extends Controller
                 ]);
         }
 
-        public function view_enquiry($id)
+        public function view_enquiry(Request $request,$id=null)
         {
+                if ($request->enq_id) {
+                        $id = $request->enq_id;
+                    }
 
                 $view_eq = DB::table('enquiry as enq')
                         ->leftJoin('users as ur', 'enq.assign_to', '=', 'ur.id')
@@ -152,6 +155,17 @@ class EnquiryController extends Controller
                 $add_group = DB::table('products_group')->where('status', 'Active')->get();
 
                 $users = DB::table('users')->where('user_status', 'Active')->get();
+
+                if ($request->header('Authorization')) {
+                        return response()->json([
+                            'success' => true,
+                            'enquiry' => $view_eq,
+                        'task' => $task,
+                        'user_id' => $user_id,
+                        'users' => $users,
+                        'add_group' => $add_group
+                        ], 200);
+                    }
 
                 return view('user.enquiry.enquiry_view', [
                         'enquiry' => $view_eq,
