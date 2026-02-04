@@ -115,11 +115,9 @@ class EnquiryController extends Controller
                 ]);
         }
 
-        public function view_enquiry(Request $request,$id=null)
+        public function view_enquiry(Request $request,$id)
         {
-                if ($request->enq_id) {
-                        $id = $request->enq_id;
-                    }
+               
 
                 $view_eq = DB::table('enquiry as enq')
                         ->leftJoin('users as ur', 'enq.assign_to', '=', 'ur.id')
@@ -243,7 +241,7 @@ class EnquiryController extends Controller
                 DB::table('enquiry')
                         ->where('id', $req->enqid)
                         ->update([
-                                'assign_to' => $newAssignee,
+                                'assign_to' => $newAssignee,    
                                 'lead_cycle' => $req->lead_cycle,
                                 'status' => $status,
                                 'updated_at' => now()
