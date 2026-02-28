@@ -230,6 +230,7 @@ class ApiServiceController extends Controller
                         DB::table('notification')->insert([
                             'assign_user_id' => $newAssignee,
                             'created_user_id' => Auth::id(),
+                            'enq_id'=> $req->enqid,
                             'type' => 'service_task',
                             'title' => 'New Task',
                             'body'   => "Hello {$activeCustomers->name}, you have a new Task assigned.",
@@ -534,6 +535,7 @@ public function service_enquiry_store(Request $req)
                 DB::table('notification')->insert([
                     'assign_user_id' => $req->enq_assign_to,
                     'created_user_id' => Auth::id(),
+                    'enq_id'=> $req->enqid,
                     'type' => 'sales_enquiry',
                     'title' => 'New Enquiry',
                     'body'   => "Hello {$activeCustomers->name}, you have a new enquiry assigned.",

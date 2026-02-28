@@ -59,7 +59,7 @@ class EnquiryController extends Controller
 
         public function enquiry_store(Request $req)
         {
-              //  dd($req->all());
+                dd($req->all());
                 $enq_no =    'ENQ' . rand(1000, 9999);
 
                 $status = $req->enq_lead_cycle === 'Final Decision' ? 'completed' : 'pending';
@@ -128,6 +128,7 @@ class EnquiryController extends Controller
                             DB::table('notification')->insert([
                                 'assign_user_id' => $req->enq_assign_to,
                                 'created_user_id' => Auth::id(),
+                                'enq_id'=> $insert_id,
                                 'type' => 'sales_enquiry',
                                 'title' => 'New Enquiry',
                                 'body'   => "Hello {$activeCustomers->name}, you have a new enquiry assigned.",
@@ -315,6 +316,7 @@ class EnquiryController extends Controller
                                     DB::table('notification')->insert([
                                         'assign_user_id' => $newAssignee,
                                         'created_user_id' => Auth::id(),
+                                        'enq_id'=> $req->enqid,
                                         'type' => 'sales_task',
                                         'title' => 'New Task',
                                         'body'   => "Hello {$activeCustomers->name}, you have a new task assigned.",

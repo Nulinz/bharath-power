@@ -116,6 +116,7 @@ class ServiceEnquiryController extends Controller
                 DB::table('notification')->insert([
                     'assign_user_id' => $req->enq_assign_to,
                     'created_user_id' => Auth::id(),
+                    'enq_id'=> $insert_id,
                     'type' => 'service_enquiry',
                     'title' => 'New Enquiry',
                     'body'   => "Hello {$activeCustomers->name}, you have a new enquiry assigned.",
@@ -285,6 +286,7 @@ class ServiceEnquiryController extends Controller
                 DB::table('notification')->insert([
                     'assign_user_id' => $newAssignee,
                     'created_user_id' => Auth::id(),
+                    'enq_id'=> $req->enqid,
                     'type' => 'service_task',
                     'title' => 'New Task',
                     'body'   => "Hello {$activeCustomers->name}, you have a new Task assigned.",

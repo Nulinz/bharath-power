@@ -70,6 +70,7 @@ Route::post('service_task_index', [ApiServiceController::class, 'service_task_in
 Route::post('service_task_status_update', [ApiServiceController::class, 'service_task_status_update']);
 Route::post('sales_task_ext', [ApiSalesController::class, 'sales_task_ext']);
 Route::post('service_task_ext', [ApiServiceController::class, 'service_task_ext']);
+Route::post('notification_list', [ApiLoginController::class, 'notification_list']);
 
 //Route::post('/add_product', 'SettingsController@product_store');
 

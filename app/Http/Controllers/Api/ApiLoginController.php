@@ -848,6 +848,41 @@ class ApiLoginController extends Controller
           ], 500);
       }
   }
+
+  public function notification_list(Request $req)
+  {
+    $userId = Auth::id();
+    $user = User::where('id', $userId)
+    ->where('user_status', 'Active')
+    ->first();
+
+    if (!$user) {
+     return response()->json([
+         'status' => 'error',
+         'message' => 'Access denied: user not found',
+     ], 403);
+ }
+      try {
+          $notifify = DB::table('notification')
+              ->where('assign_user_id', $user->id)
+            //   ->select('id', 'name')
+              ->orderBy('id', 'DESC')
+              ->get();
+  
+          return response()->json([
+              'status' => 'success',
+              'notification_list' => $notifify
+          ], 200);
+  
+      } catch (\Exception $e) {
+          return response()->json([
+              'status' => 'error',
+              'message' => 'Failed to fetch products',
+              'error' => $e->getMessage()
+          ], 500);
+      }
+  }
+  
   
 
   
