@@ -17,19 +17,20 @@
                                 <h5 class="card-title text-dark">Basic Details</h5>
                                 <div>
                                     <a href="" data-bs-toggle="modal" data-bs-target="#editEnquiryModal" class="text-dark fs-4"><i class="fa fa-edit"></i></a>
-
+                                       {{-- <button type="submit" onclick="confirm('Are you sure you want to Delete {{ $enquiry->enq_no }}')" class="ms-2 border-0 bg-transparent">
+                                                <i class="fa fa-trash-alt text-dark"></i>
+                                            </button> --}}
+{{-- 
                                     @if ($enquiry)
                                         <form class="d-inline" action="{{ route('admin.del_enquiry', $enquiry->id) }}" method="POST">
                                             @csrf
-                                            {{-- <button type="submit" onclick="confirm('Are you sure you want to Delete {{ $enquiry->enq_no }}')" class="ms-2 border-0 bg-transparent">
-                                                <i class="fa fa-trash-alt text-dark"></i>
-                                            </button> --}}
+                                         
                                             <button type="submit" onclick="return confirm('Are you sure you want to Delete {{ $enquiry->enq_no }}?')"
                                                 class="ms-2 border-0 bg-transparent"><i class="fa fa-trash-alt text-dark"></i>
                                             </button>
 
                                         </form>
-                                    @endif
+                                    @endif --}}
                                 </div>
                             </div>
                         </div>
@@ -95,6 +96,11 @@
                                 <h6 class="text-muted fw-bold mb-0">Reference Contact</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->enq_ref_contact ?? 'N/A' }}</p>
                             </div>
+                            <!--
+                             <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="text-muted fw-bold mb-0">Priority</h6>
+                            </div>
+                            -->
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="text-muted fw-bold mb-0">Status</h6>
                                 <p class="text-dark mb-0">
@@ -308,7 +314,44 @@
                                                 </p>
                                                 <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
                                                 </p>
+                                                <?php
+                                                if($tak->priority=="High"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                        Priority:
+                                                        <span class="badge bg-danger ms-1">
+                                                            {{ $tak->priority ?: 'N/A' }}
+                                                        </span>
+                                                    </p>
+                                                 <?php
+                                                }
+                                                 ?>
 
+                                                  <?php
+                                                if($tak->priority=="Medium"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    Priority:
+                                                    <span class="badge bg-warning  ms-1">
+                                                        {{ $tak->priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
+
+                                                <?php
+                                                if($tak->priority=="Low"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    Priority:
+                                                    <span class="badge bg-secondary ms-1">
+                                                        {{ $tak->priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
                                             </div>
                                         </li>
                                     @endforeach
@@ -370,6 +413,17 @@
                                         <option value="Cancelled">Cancelled</option>
                                     </select>
                                 </div>
+
+                                  
+                                  <div class="mb-3">
+                                    <label class="form-label fw-bold">Priority</label>
+                                    <select class="form-select" name="priority" id="priority" required>
+                                        <option selected disabled>Select Option</option>
+                                        <option value="High">High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
+                                    </select>
+                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Attach file</label>
@@ -516,5 +570,5 @@
             // var toast = new bootstrap.Toast(toastEl);
             // toast.show();
         });
-    </script>
+   </script>
 @endsection()

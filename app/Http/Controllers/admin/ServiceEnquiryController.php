@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Services\FirebaseService;
+
 
 class ServiceEnquiryController extends Controller
 {
@@ -38,6 +41,7 @@ class ServiceEnquiryController extends Controller
     }
     public function enquiry_store(Request $req)
     {
+        //dd($req->all());
         $enq_no =    'ENQ' . rand(1000, 9999);
 
         $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
@@ -53,8 +57,8 @@ class ServiceEnquiryController extends Controller
             'lead_cycle' => $req->enq_lead_cycle,
             'upload_quote' => $req->enq_quote,
             'requirements' => $req->enq_requirements,
-            'service_value' => $req->ser_value,
-            'attended_by' => $req->attn_name,
+            'service_value' => $req->ser_value,   //
+            'attended_by' => $req->attn_name,    //
             'service_date' => $req->serv_date,
             'contact' => $req->enq_contact,
             'location' => $req->enq_location,
@@ -62,6 +66,7 @@ class ServiceEnquiryController extends Controller
             'source' => $req->enq_source,
             'enq_ref_name' => $req->enq_ref_name,
             'enq_ref_contact' => $req->enq_ref_contact,
+           // 'enq_priority' => $req->priority,
             'status' => $status,
             'created_by' => Auth::id(),
             'assign_to' => $req->enq_assign_to,
@@ -78,7 +83,7 @@ class ServiceEnquiryController extends Controller
             $filename = null;
         }
 
-        DB::table('service_task')->insert([
+      $service_enq =  DB::table('service_task')->insert([
             'enq_id' => $insert_id,
             'enq_no' => $enq_no,
             'product_id' => $req->enq_product,
@@ -91,11 +96,59 @@ class ServiceEnquiryController extends Controller
             'service_value' => $req->ser_value,
             'attended_by' => $req->attn_name,
             'service_date' => $req->serv_date,
+            'priority' => $req->priority,
             'status' => $status,
             'created_by' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        if ($service_enq) {
+            // Get all active customers with their device tokens
+            $activeCustomers = DB::table('users')
+                ->where('user_status', 'Active')
+                ->where('device_token', '!=', '')  
+                ->where('id', '=', $req->enq_assign_to)  
+            // ->whereNotNull('device_token') // make sure token exists
+                ->select('id', 'device_token','name')
+                ->first();
+              if($activeCustomers){
+                DB::table('notification')->insert([
+                    'assign_user_id' => $req->enq_assign_to,
+                    'created_user_id' => Auth::id(),
+                    'type' => 'service_enquiry',
+                    'title' => 'New Enquiry',
+                    'body'   => "Hello {$activeCustomers->name}, you have a new enquiry assigned.",
+                    //'body' =>   "You have a new notification for " . ( 'enquiry'),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+                //$title="New Enquiry";
+               // $body= "Hello {$activeCustomers->name}, you have a new enquiry assigned.";
+               $title="Hello {$activeCustomers->name}-New Enquiry,";
+               $body = "You have a new enquiry assigned.\n"
+                                        . "⚠️ PRIORITY: {$req->priority}";
+
+        
+            try {
+                    
+                    app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
+                    [
+                        'title' => $title,
+                        'body'  => $body,
+                        'id'    => (string) $activeCustomers->id,
+                        'type'  => 'chat', // example custom data
+                        'sound' => 'default'
+                    ]
+                
+                );
+    
+                } catch (\Exception $e) {
+                    Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+                }
+              }
+    }
+          
 
         return redirect()->route('admin.service.enquiry.enquiry_list')->with([
             'status' => 'Success',
@@ -202,6 +255,7 @@ class ServiceEnquiryController extends Controller
             'attended_by' => $req->attn_name,
             'service_date' => $req->serv_date,
             'callback' => $req->callback,
+            'priority' => $req->priority,
             'value' => $req->quote_value,
             'status' => $status,
             'created_by' => Auth::id(),
@@ -210,12 +264,59 @@ class ServiceEnquiryController extends Controller
         ]);
 
         // Update enquiry table with latest assign_to and status
-        DB::table('service_enquiry')->where('id', $req->enqid)->update([
+      $update_servcie_enq =  DB::table('service_enquiry')->where('id', $req->enqid)->update([
             'assign_to' => $newAssignee,
             'lead_cycle' => $req->lead_cycle,
             'status' => $status,
             'updated_at' => now(),
         ]);
+
+        if ($update_servcie_enq) {
+            // Get all active customers with their device tokens
+            $activeCustomers = DB::table('users')
+                ->where('user_status', 'Active')
+                ->where('device_token', '!=', '')  
+                ->where('id', '=', $newAssignee)  
+            // ->whereNotNull('device_token') // make sure token exists
+                ->select('id', 'device_token','name')
+                ->first();
+              if($activeCustomers)
+              {
+                DB::table('notification')->insert([
+                    'assign_user_id' => $newAssignee,
+                    'created_user_id' => Auth::id(),
+                    'type' => 'service_task',
+                    'title' => 'New Task',
+                    'body'   => "Hello {$activeCustomers->name}, you have a new Task assigned.",
+                    //'body' =>   "You have a new notification for " . ( 'enquiry'),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+                $title="Hello {$activeCustomers->name} - New Task,";
+               // $body= "Hello {$activeCustomers->name}, you have a new Task assigned.";
+               $body = "You have a new task assigned.\n"
+                                        . "⚠️ PRIORITY: {$req->priority}";
+
+
+          try {
+                
+                app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
+                [
+                    'title' => $title,
+                    'body'  => $body,
+                    'id'    => (string) $activeCustomers->id,
+                    'type'  => 'chat', // example custom data
+                    'sound' => 'default'
+                ]
+               
+            );
+    
+            } catch (\Exception $e) {
+                Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+            }
+        }
+    }
+          
 
         return redirect()->route('admin.service.enquiry.enquiry_view', ['id' => $req->enqid])
             ->with(['status' => 'Success', 'message' => 'Task updated and reassigned successfully']);

@@ -12,17 +12,20 @@ use App\Models\Enquiry;
 use App\Models\ServiceEnquiry;
 use App\Models\Category;
 use App\Models\Products;
+use App\Services\FirebaseService;
+use Illuminate\Support\Facades\Log;
+
 
 class ApiServiceController extends Controller
 {
     //
      //
-     public function service_enquiry_list(Request $request)
+     public function service_lead_enquiry_list(Request $request)
      {
          $userId = Auth::id();
         // dd($userId);
         $user = User::where('id', $userId)
-     //    ->where('designation', 'Employee')
+         ->where('user_status', 'Active')
         ->first();
  
         if (!$user) {
@@ -37,7 +40,10 @@ class ApiServiceController extends Controller
              'products_group:id,group_name',
              'products:id,name'
          ])
-         ->where('assign_to', $user->id)
+        //  ->where('assign_to', $user->id)
+        ->when($user->designation !== 'Admin', function ($query) use ($user) {
+            $query->where('assign_to', $user->id);
+        })
          ->where('lead_cycle', $request->lead_cycle)
          ->get();
          
@@ -55,12 +61,13 @@ class ApiServiceController extends Controller
          $userId = Auth::id();
         // dd($userId);
         $user = User::where('id', $userId)
+        ->where('user_status', 'Active')
         ->first();
  
         if (!$user) {
          return response()->json([
              'status' => 'error',
-             'message' => 'Access denied: Not an employee',
+             'message' => 'Access denied: User Not Active',
          ], 403);
      }
  
@@ -82,11 +89,24 @@ class ApiServiceController extends Controller
             ->first();
 
         $task = DB::table('service_task as t')
-            ->leftJoin('users as u', 't.created_by', '=', 'u.id', 't.attended_by', '=', 'u.id')
+            // ->leftJoin('users as u', 't.created_by', '=', 'u.id', 't.attended_by', '=', 'u.id')
+            ->leftJoin('users as u', 't.created_by', '=', 'u.id')
+            ->leftJoin('users as ua', 't.user_id', '=', 'ua.id')
             ->where('t.enq_id', $request->enquiry_id)
-            ->select('t.*', 'u.name as created_by_name')
+            ->select('t.*', 'u.name as created_by_name','ua.name as assigned_by_name')
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->get()
+            ->map(function ($task) {
+
+                // Convert file name to full URL
+                if (!empty($task->quote)) {
+                    $task->file_url = asset('assets/quote_files/' . $task->quote);
+                } else {
+                    $task->file_url = null;
+                }
+
+                return $task;
+            });
 
         $user_id = Auth::id();
 
@@ -106,6 +126,20 @@ class ApiServiceController extends Controller
  
      public function service_task_store(Request $req)
      {
+
+        $userId = Auth::id();
+        // dd($userId);
+        $user = User::where('id', $userId)
+         ->where('user_status', 'Active')
+        ->first();
+ 
+        if (!$user) {
+         return response()->json([
+             'status' => 'error',
+             'message' => 'Access denied: User Not Active',
+         ], 403);
+     }
+ 
         // Stop if task already completed
         $alreadyCompleted = DB::table('service_task')
             ->where('enq_id', $req->enqid)
@@ -161,18 +195,19 @@ class ApiServiceController extends Controller
             'quote' => implode(',', $filenames),
             'cancel_reason' => $req->cancel,
             'cancel_upload' => $can_filename,
-            'service_value' => $req->ser_value,
-            'attended_by' => $req->attn_name,
+            'service_value' => $req->ser_value,   //
+            'attended_by' => $req->attn_name,   //
             'service_date' => $req->serv_date,
             'callback' => $req->callback,
             'value' => $req->quote_value,
+            'priority' => $req->priority,
             'status' => $status,
             'created_by' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        DB::table('service_enquiry')
+       $update_servcie_enq = DB::table('service_enquiry')
         ->where('id', $req->enqid)
         ->update([
                 'assign_to' => $newAssignee,
@@ -181,11 +216,57 @@ class ApiServiceController extends Controller
                 'updated_at' => now()
         ]);
 
-             return response()->json([
-                 'status' => 'success',
-                 'message' => 'Service Task stored successfully'
-                 
-             ], 200);
+        if ($update_servcie_enq) {
+            // Get all active customers with their device tokens
+            $activeCustomers = DB::table('users')
+                ->where('user_status', 'Active')
+                ->where('device_token', '!=', '')  
+                ->where('id', '=', $newAssignee)  
+            // ->whereNotNull('device_token') // make sure token exists
+                ->select('id', 'device_token','name')
+                ->first();
+              if($activeCustomers){
+
+                        DB::table('notification')->insert([
+                            'assign_user_id' => $newAssignee,
+                            'created_user_id' => Auth::id(),
+                            'type' => 'service_task',
+                            'title' => 'New Task',
+                            'body'   => "Hello {$activeCustomers->name}, you have a new Task assigned.",
+                            //'body' =>   "You have a new notification for " . ( 'enquiry'),
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+
+                        $title="Hello {$activeCustomers->name} - New Task,";
+                        // $body= "Hello {$activeCustomers->name}, you have a new Task assigned.";
+                        $body = "You have a new task assigned.\n"
+                                                 . "⚠️ PRIORITY: {$req->priority}";         
+                    try {
+                            
+                            app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
+                            [
+                                'title' => $title,
+                                'body'  => $body,
+                                'id'    => (string) $activeCustomers->id,
+                                'type'  => 'chat', // example custom data
+                                'sound' => 'default'
+                            ]
+                        
+                        );
+                
+                        } catch (\Exception $e) {
+                            Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+                        }
+                    }
+    
+    }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Service Task stored successfully'
+            
+        ], 200);
             
      }
 
@@ -195,6 +276,7 @@ class ApiServiceController extends Controller
             $userId = Auth::id();
             // dd($userId);
             $user = User::where('id', $userId)
+            ->where('user_status','Active')
             ->first();
     
             if (!$user) {
@@ -238,6 +320,7 @@ class ApiServiceController extends Controller
         $id = $req->enquiry_id;
         // dd($userId);
         $user = User::where('id', $userId)
+        ->where('user_status','Active')
         ->first();
 
         if (!$user) {
@@ -247,7 +330,7 @@ class ApiServiceController extends Controller
         ], 403);
         }
 
-        DB::table('service_enquiry')->where('id', $id)->update([
+        DB::table('service_enquiry')->where('id', $req->enquiry_id)->update([
             'name' => $req->name,
             'contact' => $req->contact,
             'enq_pro_group' => $req->enq_pro_group,
@@ -363,6 +446,20 @@ public function product_list(Request $req)
 //service enquiry store
 public function service_enquiry_store(Request $req)
 {
+
+    $userId = Auth::id();
+   
+    // dd($userId);
+    $user = User::where('id', $userId)
+    ->where('user_status','Active')
+    ->first();
+
+    if (!$user) {
+    return response()->json([
+        'status' => 'error',
+        'message' => 'Access denied: not active',
+    ], 403);
+    }
     $enq_no =    'ENQ' . rand(1000, 9999);
 
     $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
@@ -403,7 +500,7 @@ public function service_enquiry_store(Request $req)
         $filename = null;
     }
 
-    DB::table('service_task')->insert([
+    $task_store=DB::table('service_task')->insert([
         'enq_id' => $insert_id,
         'enq_no' => $enq_no,
         'product_id' => $req->enq_product,
@@ -417,10 +514,56 @@ public function service_enquiry_store(Request $req)
         'attended_by' => $req->attn_name,
         'service_date' => $req->serv_date,
         'status' => $status,
+        'priority' => $req->priority,
         'created_by' => Auth::id(),
         'created_at' => now(),
         'updated_at' => now(),
     ]);
+
+
+    if ($task_store) {
+                     
+            $activeCustomers = DB::table('users')
+                ->where('user_status', 'Active')
+                ->where('device_token', '!=', '')  
+                ->where('id', '=', $req->enq_assign_to)  
+                ->select('id', 'device_token','name')
+                ->first();
+                if($activeCustomers)
+                {
+                DB::table('notification')->insert([
+                    'assign_user_id' => $req->enq_assign_to,
+                    'created_user_id' => Auth::id(),
+                    'type' => 'sales_enquiry',
+                    'title' => 'New Enquiry',
+                    'body'   => "Hello {$activeCustomers->name}, you have a new enquiry assigned.",
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+                $title="Hello {$activeCustomers->name}-New Enquiry,";
+                $body = "You have a new enquiry assigned.\n"
+                                        . "⚠️ PRIORITY: {$req->priority}";
+
+                try {
+                        
+                        app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
+                        [
+                            'title' => $title,
+                            'body'  => $body,
+                            'id'    => (string) $activeCustomers->id,
+                            'type'  => 'chat', // example custom data
+                            'sound' => 'default'
+                        ]
+                       
+                    );
+
+                    } catch (\Exception $e) {
+                        Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+                    }
+                }
+    }
+               
+
 
     // return redirect()->route('user.service.enquiry.enquiry_list')->with([
     //     'status' => 'Success',
@@ -437,52 +580,66 @@ public function service_report_filter(Request $request)
 {
 
     $userId =  Auth::id(); // Get current user ID
+    $user = User::find($userId);
+    //dd($user->designation);
+
+    if (!$user) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Access denied: Not an employee',
+        ], 403);
+    }
 
     $query = DB::table('service_enquiry as eq')
-        ->join('products as pt', 'eq.product_category', '=', 'pt.id')
-        ->join('users as us', 'eq.assign_to', '=', 'us.id')
-        ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
-        ->select('eq.*', 'pt.name as product_name', 'us.name as usr_name', 'pg.group_name as group_name')
-        ->where('eq.assign_to', $userId) // Only assigned enquiries
-        ->where(function ($q) {
-            $q->where('eq.status', 'pending') // Include all pending
-                ->orWhere(function ($sub) {
-                    $sub->whereIn('eq.status', ['cancelled', 'completed']) // Only completed/cancelled from current month
-                        ->whereMonth('eq.created_at', date('m'))
-                        ->whereYear('eq.created_at', date('Y'));
-                });
-        })
-        ->orderBy('eq.created_at', 'DESC');
+    ->join('products as pt', 'eq.product_category', '=', 'pt.id')
+    ->join('users as us', 'eq.assign_to', '=', 'us.id')
+    ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
+    ->select('eq.*', 'pt.name as product_name', 'us.name as usr_name', 'pg.group_name as group_name')
+    ->when($user->designation !== 'Admin', function ($query) use ($user) {
+        $query->where('assign_to', $user->id);
+    })
+    ->where(function ($q) {
+        $q->where('eq.status', 'pending')
+            ->orWhere(function ($sub) {
+                $sub->whereIn('eq.status', ['completed', 'cancelled'])
+                    ->whereMonth('eq.created_at', date('m'))
+                    ->whereYear('eq.created_at', date('Y'));
+            });
+    });
+
+// Apply date filter
+if ($request->start_date && $request->end_date) {
+    $query->whereBetween(DB::raw('DATE(eq.created_at)'), [
+        $request->start_date,
+        $request->end_date
+    ]);
+}
+
+// Apply product group filter
+if ($request->product_group) {
+    $query->where('eq.enq_pro_group', $request->product_group);
+}
+
+// Apply product filter
+if ($request->product_id) {
+    $query->where('eq.product_category', $request->product_id);
+}
+
+// Apply enquiry number filter
+if ($request->enq_no) {
+    $query->where('eq.enq_no', 'like', '%' . $request->enq_no . '%');
+}
+
+// Apply assigned user filter
+if ($request->assign_to) {
+    $query->where('eq.assign_to', $request->assign_to);
+}
 
 
-    // Date filter
-    if ($request->start_date && $request->end_date) {
-        $query->whereBetween(DB::raw('DATE(eq.created_at)'), [
-            $request->start_date,
-            $request->end_date
-        ]);
-    }
 
-    // Product Group filter
-    if ($request->product_group) {
-        $query->where('eq.enq_pro_group', $request->product_group);
-    }
+$enquiry = $query->orderBy('eq.created_at', 'DESC')->get();
 
-    // Product filter
-    if ($request->product_id) {
-        $query->where('eq.product_category', $request->product_id);
-    }
 
-    // Enquiry number filter
-    if ($request->enq_no) {
-        $query->where('eq.enq_no', 'like', '%' . $request->enq_no . '%');
-    }
-
-    $enquiry = $query->orderBy('eq.created_at', 'DESC')->get();
-
-    // Dropdown data
-    $products = DB::table('products')->pluck('name', 'id');
-    $groups = DB::table('products_group')->pluck('group_name', 'id');
     return response()->json([
         'status' => 'success',
         'enquiry_list' => $enquiry,
@@ -491,6 +648,296 @@ public function service_report_filter(Request $request)
 
     //return view('user.service.reports.index', compact('enquiry', 'products', 'groups'));
 }
+
+public function ser_enquiry_list()
+{
+
+    $userId = Auth::id();
+    // dd($userId);
+    $user = User::where('id', $userId)
+   ->where('user_status', 'Active')
+    ->first();
+
+    if (!$user) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Access denied: Not an employee',
+        ], 403);
+    }
+
+    $enquiry = DB::table('service_enquiry as eq')
+    ->join('products as pt', 'eq.product_category', '=', 'pt.id')
+    ->join('users as us', 'eq.assign_to', '=', 'us.id')
+    ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
+    ->select('eq.*', 'pt.name as product_name', 'us.name as usr_name', 'pg.group_name as group_name')
+   // ->where('eq.assign_to', Auth::id()) // Filter by logged-in user
+   ->when($user->designation !== 'Admin', function ($query) use ($user) {
+    $query->where('assign_to', $user->id);
+})
+    ->where(function ($q) {
+        $q->where('eq.status', 'pending') // All pending
+            ->orWhere(function ($sub) {
+                $sub->whereIn('eq.status', ['cancelled', 'completed']) // Only completed/cancelled for current month
+                    ->whereMonth('eq.created_at', date('m'))
+                    ->whereYear('eq.created_at', date('Y'));
+            });
+    })
+    ->orderBy('eq.created_at', 'DESC')
+    ->get();
+
+    // return view('admin.service.enquiry.enquiry_list', ['enquiry' => $enquiry]);
+    return response()->json([
+        'status' => 'success',
+        'enquiry_list' => $enquiry,
+        
+    ], 200);
+}
+
+
+public function service_task_index()
+{
+    $authId = Auth::user()->id;
+    // dd($authId);
+
+    $user = Auth::user();
+
+
+    $tasks_todo = DB::table('task_service')
+    ->leftJoin('category', 'task_service.category', '=', 'category.id')
+ 
+    ->leftJoin('users as assign_user', 'task_service.assign_to', '=', 'assign_user.id')
+    ->leftJoin('users as created_user', 'task_service.created_by', '=', 'created_user.id')
+  
+    ->where('task_service.assign_to', $authId)
+    ->where('task_service.task_status', 'To Do')
+    ->select(
+        'task_service.*',
+        'category.cat_name as category_name',
+        'created_user.designation as assigned_role',
+        'created_user.name as assigned_user',
+        // 'assigned_by_user.name as assigned_by'
+    )
+    ->orderBy('task_service.id', 'DESC')
+    ->get();
+
+$tasks_todo_count = DB::table('task_service')
+    ->where('assign_to', $authId)
+    ->where('task_status', 'To Do')
+    ->count();
+
+
+    $tasks_inprogress = DB::table('task_service')
+    ->leftJoin('category', 'task_service.category', '=', 'category.id')
+ 
+    ->leftJoin('users as assign_user', 'task_service.assign_to', '=', 'assign_user.id')
+    ->leftJoin('users as created_user', 'task_service.created_by', '=', 'created_user.id')
+  
+    ->where('task_service.assign_to', $authId)
+    ->where('task_service.task_status', 'In Progress')
+    ->select(
+        'task_service.*',
+        'category.cat_name as category_name',
+        'created_user.designation as assigned_role',
+        'created_user.name as assigned_user',
+        // 'assigned_by_user.name as assigned_by'
+    )
+    ->orderBy('task_service.id', 'DESC')
+    ->get();
+
+    $tasks_inprogress_count = DB::table('task_service')
+    ->where('assign_to', $authId)
+    ->where('task_status', 'In Progress')
+    ->count();
+
+
+    $tasks_complete = DB::table('task_service')
+    ->leftJoin('category', 'task_service.category', '=', 'category.id')
+ 
+    ->leftJoin('users as assign_user', 'task_service.assign_to', '=', 'assign_user.id')
+    ->leftJoin('users as created_user', 'task_service.created_by', '=', 'created_user.id')
+  
+    ->where('task_service.assign_to', $authId)
+    ->where('task_service.task_status', 'Completed')
+    ->select(
+        'task_service.*',
+        'category.cat_name as category_name',
+        'created_user.designation as assigned_role',
+        'created_user.name as assigned_user',
+        // 'assigned_by_user.name as assigned_by'
+    )
+    ->orderBy('task_service.id', 'DESC')
+    ->get();
+
+    $tasks_complete_count = DB::table('task_service')
+    ->where('assign_to', $authId)
+    ->where('task_status', 'Completed')
+    ->count();
+
+    
+    return response()->json([
+        'status' => 'success',
+        'tasks_todo' => $tasks_todo,
+        'tasks_todo_count' => $tasks_todo_count,
+        'tasks_inprogress' => $tasks_inprogress, 
+        'tasks_inprogress_count' => $tasks_inprogress_count,
+        'tasks_complete' => $tasks_complete, 
+        'tasks_complete_count' => $tasks_complete_count
+       
+        
+    ], 200);
+// dd ($tasks_todo_count);
+    // return view('user.task.service_task_index',  ['tasks_todo' => $tasks_todo, 'tasks_todo_count' => $tasks_todo_count,'tasks_inprogress' => $tasks_inprogress,'tasks_inprogress_count' => $tasks_inprogress_count, 'tasks_complete_count' => $tasks_complete_count,'tasks_complete' => $tasks_complete,]);
+
+}
+
+public function service_task_status_update(Request $request)
+{
+    //Log::info($request->all());
+    //dd($request->all());
+    $taskId = $request->id;
+    $newStatus = $request->status;
+
+    $authId = Auth::user()->id;
+
+    $task =  DB::table('task_service')
+    ->where('id',$taskId)
+    ->first();
+
+    // if ($request->status == 'Close') {
+
+        //$first = DB::table('task_sale')->where('f_id', $task->f_id)->orderBy('id', 'asc')->first();
+
+        if ($task) {
+           
+        //         DB::table('task_sale')
+        // ->where('id', $taskId)
+        // ->update([
+        //     'task_status' => $newStatus
+        // ]);
+        DB::table('task_service')
+        ->where('id', $taskId)
+        ->update([
+            'task_status' => $newStatus
+        ]);
+        }
+   // }
+    // } elseif ($request->status == 'Completed') {
+       
+    //     if ($task) {
+    //         $task->task_status = $newStatus;
+    //         $task->task_completed = now();
+    //         $task->save();
+    //     }
+    // } else {
+       
+    //     if ($task) {
+    //         $task->task_status = $newStatus;
+    //         $task->save();
+    //     }
+    // }
+
+    $tasks_todo_count = DB::table('task_service')
+        ->where('assign_to', $authId)
+        ->where('task_status', 'To Do')
+        ->count();
+
+    $tasks_inprogress_count = DB::table('task_service')
+        ->where('assign_to', $authId)
+        ->where('task_status', 'In Progress')
+        ->count();
+
+
+    $tasks_complete_count = DB::table('task_service')
+        ->where('assign_to', $authId)
+        ->where('task_status', 'Completed')
+        ->count();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Task status updated',
+        'taskCounts' => [
+            'todo' => $tasks_todo_count,
+            'inprogress' => $tasks_inprogress_count,
+            //'onhold' => $tasks_onhold_count,
+             'complete' => $tasks_complete_count,
+        ],
+    ],200);
+
+    return response()->json(['success' => false, 'message' => 'Task not found']);
+}
+
+public function service_task_ext(Request $req)
+{
+
+    $user = Auth::user();
+   // $task = Task::findOrFail($req->task_id);
+   $task =  DB::table('task_service')
+   ->where('id',$req->task_id)
+   ->first();
+
+   //  $task1 = Task::findOrFail($task->f_id);
+
+    if ($req->category == 'close') {
+
+       $filename = null;
+       if ($req->hasFile('close_attach')) {
+         $image = $req->file('close_attach');
+         $filename = time() . '_' . $image->getClientOriginalName();
+         $image->move(public_path('image/task_service_file'), $filename);
+     }
+   
+
+        // Handle file upload
+       //  if ($req->hasFile('close_attach')) {
+       //      $image = $req->file('close_attach');
+
+       //      if ($image->isValid()) {
+       //          $filename = time().'_'.$image->getClientOriginalName();
+       //          $image->move('assets/image/task_sale_file', $filename);
+       //      } else {
+       //          return back()->with('error', 'Uploaded file is invalid.');
+       //      }
+       //  } else {
+       //      return back()->with('error', 'Please upload a file to close the task.');
+       //  }
+
+        // Insert close request
+        DB::table('service_task_ext')->insert([
+            'task_id' => $req->task_id,
+            'request_for' => $req->assined_by ?? null,
+             'attach' => $filename,
+            'status' => 'Close Request',
+            'c_remarks' => $req->remarks,
+            'category' => $req->category,
+            'c_by' => $user->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    } else {
+        // Insert extend request
+        DB::table('service_task_ext')->insert([
+            'task_id' => $req->task_id,
+            'request_for' => $req->assined_by ?? null,
+            'extend_date' => $req->extend_date,
+            'status' => 'Pending',
+            'c_remarks' => $req->remarks,
+            'category' => $req->category,
+            'c_by' => $user->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
+    // return redirect()->back()->with('success', 'Task end date updated successfully.');
+        return response()->json([
+            'status' => 'success',
+            'message'=>'Task end date updated successfully.'
+        
+            
+        ], 200);
+}
+
+
 
 
         

@@ -19,12 +19,13 @@
 						</a>
 					</li>
 
-						
+					<!--
 					 <li class="sidebar-item {{ Route::is('admin.task.task_list') ? 'active' : ''}}">
 						<a class='sidebar-link fw-semibold' href='{{ route('admin.admin.task.task_list') }}'>
 							<i class="align-middle" data-feather="file-text"></i> <span class="align-middle fw-semibold">Task List</span>
 						</a>
 					</li>
+					-->
 
 
 

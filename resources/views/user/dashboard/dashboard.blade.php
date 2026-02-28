@@ -7,7 +7,7 @@
                     <div class="d-flex align-items-center">
                         <h3 class="m-0"><strong>Sales Dashboard</strong></h3>
                         <a href="{{ route('user.service-dashboard') }}" class="btn btn-outline-dark ms-3">Service Dashboard</a>
-                        <a href="{{ route('user.user.task_dashboard') }}" class="btn btn-outline-dark ms-3">Task Dashboard</a>
+                        <!--<a href="{{ route('user.user.task_dashboard') }}" class="btn btn-outline-dark ms-3">Task Dashboard</a>-->
 
                     </div>
                     
@@ -300,7 +300,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #ff015d">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Enquiry Received']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Enquiry Received']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Enquiry Received</h5>
@@ -320,7 +320,9 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #fec000;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Initial Contact']) }}" class="text-decoration-none">
+                            {{-- <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Initial Contact']) }}" class="text-decoration-none"> --}}
+
+                             <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Initial Contact']) }}" class="text-decoration-none"> 
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Initial Contact</h5>
@@ -339,7 +341,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #11a9b4">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Requirement Gathering']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Requirement Gathering']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Requirement Gathering</h5>
@@ -359,7 +361,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #683ab7;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Product Selection']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Product Selection']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Product & Specs</h5>
@@ -378,7 +380,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #ff9a00;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Quotation Preparation']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Quotation Preparation']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Quotation Preparation</h5>
@@ -398,7 +400,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #e7522d;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Quotation']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Quotation']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Quotation Submission</h5>
@@ -417,7 +419,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #9f22b2 ;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Follow-up']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Follow-up']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Follow-up</h5>
@@ -436,7 +438,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #2dc60d;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Order confimred']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Order confimred']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Order confimred </h5>
@@ -456,7 +458,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #7a5548;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Material supplied partially']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Material supplied partially']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Material supplied – partially </h5>
@@ -476,7 +478,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #3d50b6;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Material supplied final-full']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Material supplied final-full']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Material supplied – final/full </h5>
@@ -496,7 +498,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #00988b;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Payment received partial']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Payment received partial']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Payment received partial </h5>
@@ -516,7 +518,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #0a813c;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Payment received final-full']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Payment received final-full']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Payment received final/full </h5>
@@ -536,7 +538,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #ed3799;">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Final Decision']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Final Decision']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Final Decision</h5>
@@ -556,7 +558,7 @@
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card flex-fill" style="background-color: #e6151f">
                         <div class="card-body">
-                            <a href="{{ route('admin.enquiry.byCycle', ['cycle' => 'Cancelled']) }}" class="text-decoration-none">
+                            <a href="{{ route('user.enquiry.byCycle', ['cycle' => 'Cancelled']) }}" class="text-decoration-none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mb-2">
                                         <h5 class="card-title mb-0 text-white">Cancelled</h5>

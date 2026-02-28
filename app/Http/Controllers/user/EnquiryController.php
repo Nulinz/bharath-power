@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Services\FirebaseService;
+use Illuminate\Support\Facades\Log;
+
 
 class EnquiryController extends Controller
 {
@@ -56,9 +59,10 @@ class EnquiryController extends Controller
 
         public function enquiry_store(Request $req)
         {
+              //  dd($req->all());
                 $enq_no =    'ENQ' . rand(1000, 9999);
 
-                $status = $req->lead_cycle === 'Final Decision' ? 'completed' : 'pending';
+                $status = $req->enq_lead_cycle === 'Final Decision' ? 'completed' : 'pending';
 
                 $insert_id =   DB::table('enquiry')->insertGetId([
                         'enq_no' => $enq_no,
@@ -93,7 +97,7 @@ class EnquiryController extends Controller
                         $filename = null;
                 }
 
-                DB::table('task')->insert([
+              $task_store=  DB::table('task')->insert([
                         'enq_id' => $insert_id,
                         'enq_no' => $enq_no,
                         'product_id' => $req->enq_product,
@@ -104,10 +108,60 @@ class EnquiryController extends Controller
                         'quote' => $filename,
                         'value' =>  $req->quote_value,
                         'status' => $status,
+                        'priority'=> $req->priority,
                         'created_by' => Auth::id(),
                         'created_at' => now(),
                         'updated_at' => now(),
                 ]);
+
+
+                if ($task_store) {
+                     
+                        $activeCustomers = DB::table('users')
+                            ->where('user_status', 'Active')
+                            ->where('device_token', '!=', '')  
+                            ->where('id', '=', $req->enq_assign_to)  
+                            ->select('id', 'device_token','name')
+                            ->first();
+                          if($activeCustomers)
+                          {
+                            DB::table('notification')->insert([
+                                'assign_user_id' => $req->enq_assign_to,
+                                'created_user_id' => Auth::id(),
+                                'type' => 'sales_enquiry',
+                                'title' => 'New Enquiry',
+                                'body'   => "Hello {$activeCustomers->name}, you have a new enquiry assigned.",
+                                'created_at' => now(),
+                                'updated_at' => now()
+                            ]);
+
+                            $title="Hello {$activeCustomers->name}-New Enquiry,";
+                            $body = "You have a new enquiry assigned.\n"
+                                        . "⚠️ PRIORITY: {$req->priority}";
+  
+                            try {
+                                    
+                                    app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
+                                    [
+                                        'title' => $title,
+                                        'body'  => $body,
+                                        'id'    => (string) $activeCustomers->id,
+                                        'type'  => 'chat', // example custom data
+                                        'sound' => 'default'
+                                    ]
+                                   
+                                );
+            
+                                } catch (\Exception $e) {
+                                    Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+                                }
+
+                          }
+            
+                }
+               
+                
+
 
                 return redirect()->route('user.enquiry.enquiry_list')->with([
                         'status' => 'Success',
@@ -233,12 +287,13 @@ class EnquiryController extends Controller
                         'callback' => $req->callback,
                         'value' => $req->quote_value,
                         'status' => $status,
+                        'priority' => $req->priority,
                         'created_by' => Auth::id(),
                         'created_at' => now(),
                         'updated_at' => now(),
                 ]);
 
-                DB::table('enquiry')
+             $task_update = DB::table('enquiry')
                         ->where('id', $req->enqid)
                         ->update([
                                 'assign_to' => $newAssignee,    
@@ -246,6 +301,58 @@ class EnquiryController extends Controller
                                 'status' => $status,
                                 'updated_at' => now()
                         ]);
+
+                        if ($task_update) {
+                                // Get all active customers with their device tokens
+                                $activeCustomers = DB::table('users')
+                                    ->where('user_status', 'Active')
+                                    ->where('device_token', '!=', '')  
+                                    ->where('id', '=', $newAssignee)  
+                                // ->whereNotNull('device_token') // make sure token exists
+                                    ->select('id', 'device_token','name')
+                                    ->first();
+                                  if($activeCustomers){
+                                    DB::table('notification')->insert([
+                                        'assign_user_id' => $newAssignee,
+                                        'created_user_id' => Auth::id(),
+                                        'type' => 'sales_task',
+                                        'title' => 'New Task',
+                                        'body'   => "Hello {$activeCustomers->name}, you have a new task assigned.",
+                                        //'body' =>   "You have a new notification for " . ( 'enquiry'),
+                                        'created_at' => now(),
+                                        'updated_at' => now()
+                                    ]);
+                                    $title="Hello {$activeCustomers->name}-New Task,";
+                                    $body = "You have a new enquiry assigned.\n"
+                                    . "⚠️ PRIORITY: {$req->priority}";
+                
+                    
+                                    
+                                    try {
+                                            
+                                            app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
+                                        //     $title,
+                                        //     $body
+                                        [
+                                                'title' => $title,
+                                                'body'  => $body,
+                                                'id'    => (string) $activeCustomers->id,
+                                                'type'  => 'chat', // example custom data
+                                                'sound' => 'default'
+                                            ]
+                                           
+                                        );
+                    
+                                        } catch (\Exception $e) {
+                                            Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+                                        }
+                    
+                                  }
+                        }
+                       
+                        
+        
+
 
                 return redirect()->route('user.enquiry.enquiry_view', ['id' => $req->enqid])->with([
                         'status' => 'Success',

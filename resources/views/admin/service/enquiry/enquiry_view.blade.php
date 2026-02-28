@@ -92,6 +92,12 @@
                                 <h6 class="text-muted fw-bold mb-0">Reference Contact</h6>
                                 <p class="text-dark mb-0">{{ $enquiry->enq_ref_contact ?? 'N/A' }}</p>
                             </div>
+                            <!--
+                             <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="text-muted fw-bold mb-0">Priority</h6>
+                              
+                            </div>
+                            -->
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="text-muted fw-bold mb-0">Status</h6>
                                 <p class="text-dark mb-0">
@@ -300,6 +306,45 @@
                                                     <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
                                                     </p>
 
+                                                    <?php
+                                                    if($tak->priority=="High"){
+                                                    ?>
+                                                        <p class="fw-bold mb-0">
+                                                                Priority:
+                                                                <span class="badge bg-danger ms-1">
+                                                                    {{ $tak->priority ?: 'N/A' }}
+                                                                </span>
+                                                         </p>
+                                                    <?php
+                                                     }
+                                                    ?>
+
+                                                  <?php
+                                                if($tak->priority=="Medium"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    Priority:
+                                                    <span class="badge bg-warning  ms-1">
+                                                        {{ $tak->priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
+
+                                                <?php
+                                                if($tak->priority=="Low"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    Priority:
+                                                    <span class="badge bg-secondary ms-1">
+                                                        {{ $tak->priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
+
                                                 </div>
                                             @else
                                                 <div class="card-body p-3">
@@ -310,6 +355,48 @@
                                                     </p>
                                                     <p class="fw-bold mb-0">Created by: <span class="fw-normal ms-1">{{ $tak->created_by_name ?? 'NA' }}</span>
                                                     </p>
+                                                      <p class="fw-bold mb-0">Priority: <span class="fw-normal ms-1">{{ $tak->priority ?: 'N/A' }}</span>
+                                                    </p>
+
+                                                       <?php
+                                                    if($tak->priority=="High"){
+                                                    ?>
+                                                        <p class="fw-bold mb-0">
+                                                                Priority:
+                                                                <span class="badge bg-danger ms-1">
+                                                                    {{ $tak->priority ?: 'N/A' }}
+                                                                </span>
+                                                         </p>
+                                                    <?php
+                                                     }
+                                                    ?>
+
+                                                  <?php
+                                                if($tak->priority=="Medium"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    Priority:
+                                                    <span class="badge bg-warning  ms-1">
+                                                        {{ $tak->priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
+
+                                                <?php
+                                                if($tak->priority=="Low"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    Priority:
+                                                    <span class="badge bg-secondary ms-1">
+                                                        {{ $tak->priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
+
 
                                                 </div>
                                             @endif
@@ -372,6 +459,16 @@
                                         <option value="Payment received final-full">Payment received final/full </option>
                                         <option value="Final Decision">Final Decision</option>
                                         <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Priority</label>
+                                    <select class="form-select" name="priority" id="priority" required>
+                                        <option selected disabled>Select Option</option>
+                                        <option value="High">High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
                                     </select>
                                 </div>
 

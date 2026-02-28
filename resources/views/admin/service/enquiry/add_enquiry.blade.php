@@ -164,6 +164,15 @@
                                     </select>
                                 </div>
 
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label fw-bold">Priority</label>
+                                    <select class="form-select" name="priority" id="priority" required>
+                                        <option selected disabled>Select Option</option>
+                                        <option value="High">High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2 mt-2">

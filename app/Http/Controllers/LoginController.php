@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class LoginController extends Controller
 {
@@ -24,6 +26,13 @@ class LoginController extends Controller
 
         if ($user && $request->password === $user->password) {
             $user_id = Auth::loginUsingId($user->id);
+
+            // $token = Str::random(60);
+            // DB::table('users')
+            // ->where('id', $user->id)
+            // ->update(['remember_token' => $token]);
+    
+
 
             if (strtolower($user->designation) === 'admin') {
                 return redirect()->route('admin.dashboard.dashboard');

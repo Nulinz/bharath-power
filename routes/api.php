@@ -5,7 +5,9 @@ use App\Http\Controllers\Api\ApiLoginController;
 use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiSalesController;
 use App\Http\Controllers\Api\ApiServiceController;
-use App\Http\Controllers\UserDasboardController;
+use App\Http\Controllers\Api\ApiSettingsController;
+
+use App\Http\Controllers\user\UserDasboardController as user;
 
 
 
@@ -16,13 +18,35 @@ use App\Http\Controllers\user\EnquiryController as enqController;
 Route::match(['get','post'], 'login', [ApiLoginController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('sales_dashboard', [ApiLoginController::class, 'sales_dashboard']);
-Route::post('sales_enquiry_list', [ApiSalesController::class, 'sales_enquiry_list']);
+Route::post('sales_lead_enquiry_list', [ApiSalesController::class, 'sales_lead_enquiry_list']);
 Route::post('sales_enquiry_profile', [ApiSalesController::class, 'sales_enquiry_profile']);
+Route::post('users_list', [ApiLoginController::class, 'users_list']);
+Route::post('add_product', [ApisettingsController::class, 'add_product']);
+Route::post('edit_product', [ApisettingsController::class, 'edit_product']);
+Route::post('update_product', [ApisettingsController::class, 'update_product']);
+Route::post('add_group', [ApisettingsController::class, 'add_group']);
+Route::post('edit_product', [ApisettingsController::class, 'edit_product']);
+Route::post('edit_group', [ApisettingsController::class, 'edit_group']);
+Route::post('update_group', [ApisettingsController::class, 'update_group']);
+Route::post('add_user', [ApisettingsController::class, 'add_user']);
+Route::post('edit_user', [ApisettingsController::class, 'edit_user']);
+Route::post('update_user', [ApisettingsController::class, 'update_user']);
+Route::post('add_category', [ApisettingsController::class, 'add_category']);
+Route::post('edit_category', [ApisettingsController::class, 'edit_category']);
+Route::post('update_category', [ApisettingsController::class, 'update_category']);
+
+
+
+
+
+Route::post('setting_fetch_list', [ApisettingsController::class, 'setting_fetch_list']);
+Route::post('product_filter_list', [ApiLoginController::class, 'product_filter_list']);
+
 // Route::get('{id}/view_enquiry', 'EnquiryController@view_enquiry');
 // Route::match(['get','post'], 'view_enquiry/{id?}', [enqController::class, 'view_enquiry']);
-Route::post('sales_task_store', [ApiSalesController::class, 'sales_task_store']);
+// Route::post('sales_task_store', [ApiSalesController::class, 'sales_task_store']);
 Route::post('service_dashboard', [ApiLoginController::class, 'service_dashboard']);
-Route::post('service_enquiry_list', [ApiServiceController::class, 'service_enquiry_list']);
+Route::post('service_lead_enquiry_list', [ApiServiceController::class, 'service_lead_enquiry_list']);
 Route::post('service_enquiry_profile', [ApiServiceController::class, 'service_enquiry_profile']);
 Route::post('sales_task_store', [ApiSalesController::class, 'sales_task_store']);
 Route::post('service_task_store', [ApiServiceController::class, 'service_task_store']);
@@ -38,6 +62,26 @@ Route::post('sales_enquiry_store', [ApiSalesController::class, 'sales_enquiry_st
 Route::post('sales_report_filter', [ApiSalesController::class, 'sales_report_filter']);
 Route::post('service_enquiry_store', [ApiServiceController::class, 'service_enquiry_store']);
 Route::post('service_report_filter', [ApiServiceController::class, 'service_report_filter']);
+Route::post('sale_enquiry_list', [ApiSalesController::class, 'sale_enquiry_list']);
+Route::post('ser_enquiry_list', [ApiServiceController::class, 'ser_enquiry_list']);
+Route::post('sales_task_index', [ApiSalesController::class, 'sales_task_index']);
+Route::post('sale_task_status_update', [ApiSalesController::class, 'sale_task_status_update']);
+Route::post('service_task_index', [ApiServiceController::class, 'service_task_index']);
+Route::post('service_task_status_update', [ApiServiceController::class, 'service_task_status_update']);
+Route::post('sales_task_ext', [ApiSalesController::class, 'sales_task_ext']);
+Route::post('service_task_ext', [ApiServiceController::class, 'service_task_ext']);
+
+//Route::post('/add_product', 'SettingsController@product_store');
+
+
+
+
+
+
+
+
+
+
 
 
 
