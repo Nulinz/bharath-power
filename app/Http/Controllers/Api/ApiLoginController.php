@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 
 
@@ -30,7 +32,12 @@ class ApiLoginController extends Controller
         //     ], 422);
         // }
 
-        $user = User::where('contact_number', $request->contact_number)->first();
+    //     $user = User::where('contact_number', $request->contact_number)
+    //    -> where('user_status','Active')
+    //     ->first();
+    $user = User::where('contact_number', $request->contact_number)
+            ->where('user_status', 'Active')
+            ->first();
 
         
         if (!$user || $request->password !== $user->password) {
@@ -884,10 +891,42 @@ class ApiLoginController extends Controller
   }
   
   
+  //contact
+
+public function contact_exist(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'contact' => 'required|string|regex:/^[0-9]{10}$/',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 'error',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    // $user = UserDetail::where('number', $request->bio_contact)->first();
+
+
+            $user = DB::table('users') // your actual table name
+            ->where('contact_number', $request->contact)
+            ->where('user_status', 'Active')
+            ->first();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => $user ? 'Contact Exists' : 'Contact does not exist',
+        'data' => $user ? 1 : 0,
+
+    ], 200);
+}
+
 
   
     
 }
+
 
 
 

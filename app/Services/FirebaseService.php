@@ -51,15 +51,13 @@ class FirebaseService
         $payload = [
             'message' => [
                 'token' => $token,
-                'notification' => [
-                    'title' => $data['title'] ?? '',
-                    'body' => $data['body'] ?? '',
-                ],
+                // 'notification' => [
+                //     'title' => $data['title'] ?? '',
+                //     'body' => $data['body'] ?? '',
+                // ],
                 'data' => [
                     'title' => $data['title'] ?? '',
                     'body' => $data['body'] ?? '',
-                    // 'link' => $data['link'] ?? 'https://onstru.com/',
-                    // 'id' => (string) ($data['id'] ?? ''),
                 ],
             ],
         ];

@@ -35,10 +35,6 @@ Route::post('add_category', [ApisettingsController::class, 'add_category']);
 Route::post('edit_category', [ApisettingsController::class, 'edit_category']);
 Route::post('update_category', [ApisettingsController::class, 'update_category']);
 
-
-
-
-
 Route::post('setting_fetch_list', [ApisettingsController::class, 'setting_fetch_list']);
 Route::post('product_filter_list', [ApiLoginController::class, 'product_filter_list']);
 
@@ -71,6 +67,8 @@ Route::post('service_task_status_update', [ApiServiceController::class, 'service
 Route::post('sales_task_ext', [ApiSalesController::class, 'sales_task_ext']);
 Route::post('service_task_ext', [ApiServiceController::class, 'service_task_ext']);
 Route::post('notification_list', [ApiLoginController::class, 'notification_list']);
+Route::post('contact_exist', [ApiLoginController::class, 'contact_exist']);
+
 
 //Route::post('/add_product', 'SettingsController@product_store');
 
