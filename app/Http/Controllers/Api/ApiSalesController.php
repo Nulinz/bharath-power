@@ -232,23 +232,30 @@ class ApiSalesController extends Controller
                     ->first();
 
                     if($activeCustomers){
+                        
+                        $body = "Your task is currently in {$req->lead_cycle} stage.\n"
+                        . "⚠️ Priority: {$req->priority}";
+
+                          $title="New Task-{$req->enqno}";
+
+                          $body1 = "Your task is currently in {$req->lead_cycle} stage.\n"
+                          . "Priority: {$req->priority}";
+                          
+                          //$title = "Hi {$activeCustomers->name}, Check Out Your New Enquiry ({$req->enqno})";
+                       //   $title = "New Enquiry Assigned to {$activeCustomers->name} | Enquiry No: {$req->enqno}";
+                      // $title = "Hello {$activeCustomers->name}, Please Review Your New Enquiry: {$req->enqno}";
+                      //$title = "Hello {$activeCustomers->name}, Please Review Your New Enquiry: {$req->enqno}";
                             DB::table('notification')->insert([
                                 'assign_user_id' => $newAssignee,
                                 'created_user_id' => Auth::id(),
                                 'enq_id'=>$req->enqid,
-                                'type' => 'sales_task',
-                                'title' => 'New Task',
-                                'body'   => "Hello , you have a new enquiry assigned.",
-                                //'body' =>   "You have a new notification for " . ( 'enquiry'),
-                                'body'   => "Hello {$activeCustomers->name}, you have a new task assigned.",
+                                'type' => "sales_task",
+                                'title' => $title,
+                                'body'   => $body1,
                                 'created_at' => now(),
                                 'updated_at' => now()
                             ]);
 
-                            $body = "You have a new enquiry assigned.\n"
-                            . "⚠️ PRIORITY: {$req->priority}";
-
-                            $title="Hello {$activeCustomers->name}-New Enquiry,";
                             // $body= "Hello , you have a new Task assigned.";
             
                             try {
@@ -561,20 +568,23 @@ public function sales_enquiry_store(Request $req)
                 ->select('id', 'device_token','name')
                 ->first();
                     if($activeCustomers){
+                        $body = "Your enquiry is currently in {$req->enq_lead_cycle} stage.\n"
+                        . "⚠️ Priority: {$req->priority}";
+                          $title="New Enquiry-{$enq_no}";
+                        $body1 = "Your enquiry is currently in {$req->enq_lead_cycle} stage.\n"
+                          . "Priority: {$req->priority}";
+                          
                         DB::table('notification')->insert([
                             'assign_user_id' => $req->enq_assign_to,
                             'created_user_id' => Auth::id(),
                             'enq_id'=> $insert_id,
                             'type' => 'sales_enquiry',
-                            'title' => 'New Enquiry',
-                            'body'   => "Hello {$activeCustomers->name}, you have a new enquiry assigned.",
+                            'title' => $title,
+                            'body'   => $body1,
                             'created_at' => now(),
                             'updated_at' => now()
                         ]);
-                        $title="Hello {$activeCustomers->name}-New Enquiry,";
-                        $body = "You have a new enquiry assigned.\n"
-                                        . "⚠️ PRIORITY: {$req->priority}";
-            
+                      
                         try {
                                 
                                 app(FirebaseService::class)->sendNotification($activeCustomers->device_token,

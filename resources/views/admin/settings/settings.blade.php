@@ -23,9 +23,10 @@
                         <a data-bs-toggle="tab" href="#Users" role="tab" aria-selected="false" tabindex="-1">
                             Users
                         </a>
+                        <!--
                          <a data-bs-toggle="tab" href="#Category" role="tab" aria-selected="false" tabindex="-1">
                             Category
-                        </a>
+                        </a>-->
                     </div>
 
                     {{-- <div class="nav nav-tabs" role="tablist">
