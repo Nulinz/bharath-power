@@ -548,7 +548,7 @@ public function service_enquiry_store(Request $req)
                     'assign_user_id' => $req->enq_assign_to,
                     'created_user_id' => Auth::id(),
                     'enq_id'=> $insert_id,
-                    'type' => 'sales_enquiry',
+                    'type' => 'service_enquiry',
                     'title' => $title,
                     'body'   => $body1,
                     'created_at' => now(),
