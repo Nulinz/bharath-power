@@ -307,7 +307,7 @@
                                             </div>
                                             <div class="card-body p-3">
                                                 <!-- task details -->
-                                                <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $enquiry->assigned_user_name }}</span>
+                                                <p class="fw-bold mb-0">Assigned to: <span class="fw-normal ms-1">{{ $tak->assigned_by_name }}</span>
                                                 </p>
 
                                                 <p class="fw-bold mb-0">Remarks: <span class="fw-normal ms-1">{{ $tak->remarks ?? 'Not added' }}</span>
@@ -415,7 +415,7 @@
                                 </div>
 
                                   
-                                  <div class="mb-3">
+                                <div class="mb-3">
                                     <label class="form-label fw-bold">Priority</label>
                                     <select class="form-select" name="priority" id="priority" required>
                                         <option selected disabled>Select Option</option>
@@ -423,7 +423,7 @@
                                         <option value="Medium">Medium</option>
                                         <option value="Low">Low</option>
                                     </select>
-                                 </div>
+                                </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Attach file</label>

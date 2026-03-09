@@ -32,6 +32,7 @@
                                         <th>Qty</th>
                                         <th>Assign to</th>
                                         <th>Lead Cycle</th>
+                                        <th>Priority</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                         {{-- <th>Action</th> --}}
@@ -50,6 +51,44 @@
                                             <td>{{ $eq->quantity }}</td>
                                             <td>{{ $eq->usr_name }}</td>
                                             <td>{{ $eq->lead_cycle }}</td>
+                                               <td>
+                                             <?php
+                                                if($eq->enq_priority=="High"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                        <span class="badge bg-danger ms-1">
+                                                            {{ $eq->enq_priority ?: 'N/A' }}
+                                                        </span>
+                                                    </p>
+                                                 <?php
+                                                }
+                                                 ?>
+
+                                                  <?php
+                                                if($eq->enq_priority=="Medium"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    <span class="badge bg-warning  ms-1">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
+
+                                                <?php
+                                                if($eq->enq_priority=="Low"){
+                                                    ?>
+                                                <p class="fw-bold mb-0">
+                                                    <span class="badge bg-secondary ms-1">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
+                                                </p>
+                                                 <?php
+                                                }
+                                                 ?>
+                                            </td>
+                                            
                                             <td>
 
                                                 @if ($eq->status === 'completed')

@@ -153,7 +153,7 @@
                                     </select>
                                 </div>
 
-                                 <div class="col-md-3 mb-3">
+                            <div class="col-md-3 mb-3">
                                     <label class="form-label fw-bold">Priority</label>
                                     <select class="form-select" name="priority" id="priority" required>
                                         <option selected disabled>Select Option</option>
@@ -161,7 +161,7 @@
                                         <option value="Medium">Medium</option>
                                         <option value="Low">Low</option>
                                     </select>
-                                 </div>
+                            </div>
 
                             </div>
                             <div class="row">

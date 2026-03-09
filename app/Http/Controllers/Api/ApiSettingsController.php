@@ -66,7 +66,7 @@ class ApiSettingsController extends Controller
    }
     $users = DB::table('users')->get();
     $groups = DB::table('products_group')->get();
-    $category = DB::table('category')->get();
+    // $category = DB::table('category')->get();
 
     $products = DB::table('products')
       ->leftJoin('products_group', 'products.group_id', '=', 'products_group.id')
@@ -77,7 +77,7 @@ class ApiSettingsController extends Controller
       'users' => $users,
       'products' => $products,
       'groups' => $groups,
-      'category' => $category
+      // 'category' => $category
     ]);
 }
 

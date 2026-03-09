@@ -81,6 +81,7 @@ class EnquiryController extends Controller
                         'source' => $req->enq_source,
                         'enq_ref_name' => $req->enq_ref_name,
                         'enq_ref_contact' => $req->enq_ref_contact,
+                        'enq_priority'=> $req->priority,
                         'status' => $status,
                         'created_by' => Auth::id(),
                         'assign_to' => $req->enq_assign_to,
@@ -304,6 +305,7 @@ class EnquiryController extends Controller
                         ->update([
                                 'assign_to' => $newAssignee,    
                                 'lead_cycle' => $req->lead_cycle,
+                                'enq_priority' => $req->priority,
                                 'status' => $status,
                                 'updated_at' => now()
                         ]);
@@ -433,6 +435,7 @@ class EnquiryController extends Controller
 
         public function showByLeadCycle($cycle)
         {
+               // dd(Auth::id());
                 $enquiries = DB::table('enquiry as eq')
                         ->join('products as pt', 'eq.product_category', '=', 'pt.id')
                         ->join('users as us', 'eq.assign_to', '=', 'us.id')
@@ -449,6 +452,7 @@ class EnquiryController extends Controller
                                 'eq.lead_cycle',
                                 'eq.status',
                                 'eq.created_at',
+                                'eq.enq_priority',
                                 'pt.name as product_name',
                                 'pg.group_name',
                                 'us.name as usr_name'

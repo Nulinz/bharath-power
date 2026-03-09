@@ -31,6 +31,7 @@
                                                 <th>Product</th>
                                                 <th>Qty</th>
                                                 <th>Lead Cycle</th>
+                                                 <th>priority</th>
                                                 <th>Status</th>
                                                 <th>Date</th>
                                                 {{-- <th>Action</th> --}}
@@ -48,6 +49,21 @@
                                                 <td>{{ $eq->product_name }}</td>
                                                 <td>{{ $eq->quantity }}</td>
                                                 <td>{{ $eq->lead_cycle }}</td>
+                                             <td>  
+                                               @if ($eq->enq_priority === 'High')
+                                                 <span class="badge bg-danger">
+                                                            {{ $eq->enq_priority ?: 'N/A' }}
+                                                </span>
+                                                @elseif ($eq->enq_priority === 'Medium')
+                                                   <span class="badge bg-warning  ms-1">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
+                                                @elseif ($eq->enq_priority === 'Low')
+                                                   <span class="badge bg-secondary ms-1">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
+                                                 @endif
+                                            </td>
                                                 <td>
 
                                                 @if ($eq->status === 'completed')

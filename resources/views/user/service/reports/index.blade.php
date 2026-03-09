@@ -77,6 +77,7 @@
                                         <th>UOM</th>
                                         <th>Assign to</th>
                                         <th>Lead Cycle</th>
+                                        <th>Priority</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                     </tr>
@@ -95,6 +96,21 @@
                                             <td>{{ $eq->enq_uom }}</td>
                                             <td>{{ $eq->usr_name }}</td>
                                             <td>{{ $eq->lead_cycle }}</td>
+                                            <td>  
+                                               @if ($eq->enq_priority === 'High')
+                                                 <span class="badge bg-danger">
+                                                            {{ $eq->enq_priority ?: 'N/A' }}
+                                                </span>
+                                                @elseif ($eq->enq_priority === 'Medium')
+                                                   <span class="badge bg-warning  ms-1">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
+                                                @elseif ($eq->enq_priority === 'Low')
+                                                   <span class="badge bg-secondary ms-1">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
+                                                 @endif
+                                            </td>
                                             <td>
                                                 @if ($eq->status === 'completed')
                                                     <span class="badge bg-success">Completed</span>

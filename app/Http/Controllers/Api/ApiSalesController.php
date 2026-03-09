@@ -216,6 +216,7 @@ class ApiSalesController extends Controller
                ->update([
                        'assign_to' => $newAssignee,
                        'lead_cycle' => $req->lead_cycle,
+                       'enq_priority' => $req->priority,
                        'status' => $status,
                        'updated_at' => now()
                ]);
@@ -527,6 +528,7 @@ public function sales_enquiry_store(Request $req)
                 'source' => $req->enq_source,
                 'enq_ref_name' => $req->enq_ref_name,
                 'enq_ref_contact' => $req->enq_ref_contact,
+                'enq_priority' => $req->priority,
                 'status' => $status,
                 'created_by' => Auth::id(),
                 'assign_to' => $req->enq_assign_to,

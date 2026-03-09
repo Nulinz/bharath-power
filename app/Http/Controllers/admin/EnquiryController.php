@@ -65,6 +65,7 @@ class EnquiryController extends Controller
                         'source' => $req->enq_source,
                         'enq_ref_name' => $req->enq_ref_name,
                         'enq_ref_contact' => $req->enq_ref_contact,
+                        'enq_priority' => $req->priority,
                         'status' => $status,
                         'created_by' => Auth::id(),
                         'assign_to' => $req->enq_assign_to,
@@ -181,8 +182,11 @@ class EnquiryController extends Controller
 
                 $task = DB::table('task as t')
                         ->leftJoin('users as u', 't.created_by', '=', 'u.id')
+                        ->leftJoin('users as as', 't.user_id', '=', 'as.id')
+
                         ->where('t.enq_id', $id)
-                        ->select('t.*', 'u.name as created_by_name')
+                        ->select('t.*', 'u.name as created_by_name','as.name as assigned_by_name')
+                        
                         ->orderBy('created_at', 'DESC')
                         ->get();
 
@@ -364,6 +368,7 @@ class EnquiryController extends Controller
              $update_enq=   DB::table('enquiry')->where('id', $req->enqid)->update([
                         'assign_to' => $newAssignee,
                         'lead_cycle' => $req->lead_cycle,
+                        'enq_priority' => $req->priority,
                         'status' => $status,
                         'updated_at' => now(),
                 ]);
@@ -509,7 +514,7 @@ class EnquiryController extends Controller
                                 'eq.lead_cycle',
                                 'eq.status',
                                 'eq.created_at',
-
+                                'eq.enq_priority',
                                 'pt.name  as product_name',
                                 'pg.group_name',
                                 'us.name  as usr_name',
