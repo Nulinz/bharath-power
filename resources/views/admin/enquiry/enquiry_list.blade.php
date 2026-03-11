@@ -79,7 +79,7 @@
                                         <th>Qty</th>
                                         <th>Assign to</th>
                                         <th>Lead Cycle</th>
-                                         <th>Priority</th>
+                                        <th>Priority</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                         {{-- <th>Action</th> --}}
