@@ -51,6 +51,11 @@ class ReportController extends Controller
             $query->where('eq.product_category', $request->product_id);
         }
 
+        // Priority filter
+        if ($request->filled('priority')) {
+            $query->where('eq.enq_priority', $request->priority);
+        }
+
         // Enquiry number filter
         if ($request->enq_no) {
             $query->where('eq.enq_no', 'like', '%' . $request->enq_no . '%');

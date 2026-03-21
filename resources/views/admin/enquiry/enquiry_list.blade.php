@@ -25,7 +25,7 @@
                         <div class="d-flex align-items-center justify-content-between border-bottom p-3">
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="form-label">Assign To</label>
                                     <select id="assignFilter" class="form-select">
                                         <option value="">All</option>
@@ -35,11 +35,11 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="form-label">Lead Cycle</label>
                                     <div class="dropdown filter-dropdown">
-                                        <button class="btn btn-outline-secondary dropdown-toggle text-start" style="border: 1px solid #dee2e6"  type="button" id="leadCycleDropdown" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
+                                        <button class="btn btn-outline-secondary dropdown-toggle text-start" style="border: 1px solid #dee2e6" type="button" id="leadCycleDropdown"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
                                             Select Lead Cycle
                                         </button>
                                         <ul class="dropdown-menu p-2" aria-labelledby="leadCycleDropdown" style="max-height: 250px; overflow-y: auto;">
@@ -55,7 +55,17 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <label class="form-label">Priority</label>
+                                    <select id="priorityFilter" class="form-select">
+                                        <option value="">All</option>
+                                        <option value="High">High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
                                     <label class="form-label">Date</label>
                                     <input type="date" id="dateFilter" class="form-control">
                                 </div>
@@ -100,20 +110,20 @@
                                             <td>{{ $eq->quantity }}</td>
                                             <td>{{ $eq->usr_name }}</td>
                                             <td>{{ $eq->lead_cycle }}</td>
-                                            <td>  
-                                               @if ($eq->enq_priority === 'High')
-                                                 <span class="badge bg-danger">
-                                                            {{ $eq->enq_priority ?: 'N/A' }}
-                                                </span>
+                                            <td>
+                                                @if ($eq->enq_priority === 'High')
+                                                    <span class="badge bg-danger">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
                                                 @elseif ($eq->enq_priority === 'Medium')
-                                                   <span class="badge bg-warning  ms-1">
+                                                    <span class="badge bg-warning ms-1">
                                                         {{ $eq->enq_priority ?: 'N/A' }}
                                                     </span>
                                                 @elseif ($eq->enq_priority === 'Low')
-                                                   <span class="badge bg-secondary ms-1">
+                                                    <span class="badge bg-secondary ms-1">
                                                         {{ $eq->enq_priority ?: 'N/A' }}
                                                     </span>
-                                                 @endif
+                                                @endif
                                             </td>
                                             <td>
                                                 @if ($eq->status === 'completed')
@@ -158,24 +168,31 @@
 
             // DataTables custom filter
             $.fn.dataTable.ext.search.push(function(settings, data) {
+
                 let assign = $('#assignFilter').val()?.toLowerCase() || '';
                 let leadArray = $('.lead-cycle-option:checked').map(function() {
                     return $(this).val().toLowerCase();
                 }).get();
                 let filterDate = $('#dateFilter').val();
+                let priority = $('#priorityFilter').val()?.toLowerCase() || '';
 
                 let rowAssign = data[8]?.toLowerCase() || '';
                 let rowLead = data[9]?.toLowerCase() || '';
-                let rowDate = data[11]?.trim();
+
+                // ✅ FIXED HERE
+                let rowPriority = $('<div>').html(data[10]).text().trim().toLowerCase();
+
+                let rowDate = data[12]?.trim();
 
                 let parts = rowDate.split('-');
                 let rowDateFormatted = parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : '';
 
                 let assignMatch = !assign || rowAssign === assign;
                 let leadMatch = leadArray.length === 0 || leadArray.includes(rowLead);
+                let priorityMatch = !priority || rowPriority === priority;
                 let dateMatch = !filterDate || rowDateFormatted === filterDate;
 
-                return assignMatch && leadMatch && dateMatch;
+                return assignMatch && leadMatch && priorityMatch && dateMatch;
             });
 
             // Event: When filters change, redraw table
@@ -185,6 +202,10 @@
 
             // Event: When lead cycle checkboxes change (no text update, keep static)
             $('.lead-cycle-option').on('change', function() {
+                table.draw();
+            });
+
+            $('#priorityFilter').on('change', function() {
                 table.draw();
             });
         });

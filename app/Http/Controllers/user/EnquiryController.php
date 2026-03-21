@@ -15,16 +15,6 @@ class EnquiryController extends Controller
         public function enquiry_list()
         {
 
-                //   $enquiry = DB::table('enquiry as eq')
-                //                 ->join('products as pt', 'eq.product_category', '=', 'pt.id')
-                //                 ->join('users as us', 'eq.assign_to', '=', 'us.id')
-                //                 ->leftJoin('products_group as pg', 'eq.enq_pro_group', '=', 'pg.id')
-                //                 ->select('eq.*', 'pt.name as product_name', 'us.name as usr_name', 'pg.group_name as group_name')
-                //                 ->orderBy('created_at', 'DESC')
-                //                 ->where('assign_to', Auth::id())->get();
-
-
-
                 $enquiry = DB::table('enquiry as eq')
                         ->join('products as pt', 'eq.product_category', '=', 'pt.id')
                         ->join('users as us', 'eq.assign_to', '=', 'us.id')
@@ -81,7 +71,7 @@ class EnquiryController extends Controller
                         'source' => $req->enq_source,
                         'enq_ref_name' => $req->enq_ref_name,
                         'enq_ref_contact' => $req->enq_ref_contact,
-                        'enq_priority'=> $req->priority,
+                        'enq_priority' => $req->priority,
                         'status' => $status,
                         'created_by' => Auth::id(),
                         'assign_to' => $req->enq_assign_to,
@@ -98,7 +88,7 @@ class EnquiryController extends Controller
                         $filename = null;
                 }
 
-              $task_store=  DB::table('task')->insert([
+                $task_store =  DB::table('task')->insert([
                         'enq_id' => $insert_id,
                         'enq_no' => $enq_no,
                         'product_id' => $req->enq_product,
@@ -109,7 +99,7 @@ class EnquiryController extends Controller
                         'quote' => $filename,
                         'value' =>  $req->quote_value,
                         'status' => $status,
-                        'priority'=> $req->priority,
+                        'priority' => $req->priority,
                         'created_by' => Auth::id(),
                         'created_at' => now(),
                         'updated_at' => now(),
@@ -117,57 +107,54 @@ class EnquiryController extends Controller
 
 
                 if ($task_store) {
-                     
+
                         $activeCustomers = DB::table('users')
-                            ->where('user_status', 'Active')
-                            ->where('device_token', '!=', '')  
-                            ->where('id', '=', $req->enq_assign_to)  
-                            ->select('id', 'device_token','name')
-                            ->first();
-                          if($activeCustomers)
-                          {
+                                ->where('user_status', 'Active')
+                                ->where('device_token', '!=', '')
+                                ->where('id', '=', $req->enq_assign_to)
+                                ->select('id', 'device_token', 'name')
+                                ->first();
+                        if ($activeCustomers) {
 
                                 $body = "Your enquiry is currently in {$req->enq_lead_cycle} stage.\n"
-                                . "⚠️ Priority: {$req->priority}";
-                                $title="New Enquiry-{$enq_no}";
+                                        . "⚠️ Priority: {$req->priority}";
+                                $title = "New Enquiry-{$enq_no}";
                                 $body1 = "Your enquiry is currently in {$req->enq_lead_cycle} stage.\n"
-                                . "Priority: {$req->priority}";                                            
+                                        . "Priority: {$req->priority}";
 
-                            DB::table('notification')->insert([
-                                'assign_user_id' => $req->enq_assign_to,
-                                'created_user_id' => Auth::id(),
-                                'enq_id'=> $insert_id,
-                                'type' => 'sales_enquiry',
-                                'title' => $title,
-                                'body'   => $body1,
-                                'created_at' => now(),
-                                'updated_at' => now()
-                            ]);
-
-                          
-  
-                            try {
-                                    
-                                    app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
-                                    [
+                                DB::table('notification')->insert([
+                                        'assign_user_id' => $req->enq_assign_to,
+                                        'created_user_id' => Auth::id(),
+                                        'enq_id' => $insert_id,
+                                        'type' => 'sales_enquiry',
                                         'title' => $title,
-                                        'body'  => $body,
-                                        'id'    => (string) $activeCustomers->id,
-                                        'type'  => 'chat', // example custom data
-                                        'sound' => 'default'
-                                    ]
-                                   
-                                );
-            
-                                } catch (\Exception $e) {
-                                    Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
-                                }
+                                        'body'   => $body1,
+                                        'created_at' => now(),
+                                        'updated_at' => now()
+                                ]);
 
-                          }
-            
+
+
+                                try {
+
+                                        app(FirebaseService::class)->sendNotification(
+                                                $activeCustomers->device_token,
+                                                [
+                                                        'title' => $title,
+                                                        'body'  => $body,
+                                                        'id'    => (string) $activeCustomers->id,
+                                                        'type'  => 'chat', // example custom data
+                                                        'sound' => 'default'
+                                                ]
+
+                                        );
+                                } catch (\Exception $e) {
+                                        Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+                                }
+                        }
                 }
-               
-                
+
+
 
 
                 return redirect()->route('user.enquiry.enquiry_list')->with([
@@ -176,9 +163,9 @@ class EnquiryController extends Controller
                 ]);
         }
 
-        public function view_enquiry(Request $request,$id)
+        public function view_enquiry(Request $request, $id)
         {
-               
+
 
                 $view_eq = DB::table('enquiry as enq')
                         ->leftJoin('users as ur', 'enq.assign_to', '=', 'ur.id')
@@ -217,14 +204,14 @@ class EnquiryController extends Controller
 
                 if ($request->header('Authorization')) {
                         return response()->json([
-                            'success' => true,
-                            'enquiry' => $view_eq,
-                        'task' => $task,
-                        'user_id' => $user_id,
-                        'users' => $users,
-                        'add_group' => $add_group
+                                'success' => true,
+                                'enquiry' => $view_eq,
+                                'task' => $task,
+                                'user_id' => $user_id,
+                                'users' => $users,
+                                'add_group' => $add_group
                         ], 200);
-                    }
+                }
 
                 return view('user.enquiry.enquiry_view', [
                         'enquiry' => $view_eq,
@@ -300,73 +287,72 @@ class EnquiryController extends Controller
                         'updated_at' => now(),
                 ]);
 
-             $task_update = DB::table('enquiry')
+                $task_update = DB::table('enquiry')
                         ->where('id', $req->enqid)
                         ->update([
-                                'assign_to' => $newAssignee,    
+                                'assign_to' => $newAssignee,
                                 'lead_cycle' => $req->lead_cycle,
                                 'enq_priority' => $req->priority,
                                 'status' => $status,
                                 'updated_at' => now()
                         ]);
 
-                        if ($task_update) {
-                                // Get all active customers with their device tokens
-                                $activeCustomers = DB::table('users')
-                                    ->where('user_status', 'Active')
-                                    ->where('device_token', '!=', '')  
-                                    ->where('id', '=', $newAssignee)  
+                if ($task_update) {
+                        // Get all active customers with their device tokens
+                        $activeCustomers = DB::table('users')
+                                ->where('user_status', 'Active')
+                                ->where('device_token', '!=', '')
+                                ->where('id', '=', $newAssignee)
                                 // ->whereNotNull('device_token') // make sure token exists
-                                    ->select('id', 'device_token','name')
-                                    ->first();
-                                  if($activeCustomers){
+                                ->select('id', 'device_token', 'name')
+                                ->first();
+                        if ($activeCustomers) {
 
-                                        $body = "Your task is currently in {$req->lead_cycle} stage.\n"
-                                . "⚠️ Priority: {$req->priority}";
-                                $title="New Task-{$req->enqno}";
+                                $body = "Your task is currently in {$req->lead_cycle} stage.\n"
+                                        . "⚠️ Priority: {$req->priority}";
+                                $title = "New Task-{$req->enqno}";
                                 $body1 = "Your task is currently in {$req->lead_cycle} stage.\n"
-                                . "Priority: {$req->priority}";
-                                
+                                        . "Priority: {$req->priority}";
 
-                                    DB::table('notification')->insert([
+
+                                DB::table('notification')->insert([
                                         'assign_user_id' => $newAssignee,
                                         'created_user_id' => Auth::id(),
-                                        'enq_id'=> $req->enqid,
+                                        'enq_id' => $req->enqid,
                                         'type' => 'sales_task',
                                         'title' => $title,
                                         'body'   => $body1,
                                         //'body' =>   "You have a new notification for " . ( 'enquiry'),
                                         'created_at' => now(),
                                         'updated_at' => now()
-                                    ]);
-                                   
-                
-                    
-                                    
-                                    try {
-                                            
-                                            app(FirebaseService::class)->sendNotification($activeCustomers->device_token,
-                                        //     $title,
-                                        //     $body
-                                        [
-                                                'title' => $title,
-                                                'body'  => $body,
-                                                'id'    => (string) $activeCustomers->id,
-                                                'type'  => 'chat', // example custom data
-                                                'sound' => 'default'
-                                            ]
-                                           
+                                ]);
+
+
+
+
+                                try {
+
+                                        app(FirebaseService::class)->sendNotification(
+                                                $activeCustomers->device_token,
+                                                //     $title,
+                                                //     $body
+                                                [
+                                                        'title' => $title,
+                                                        'body'  => $body,
+                                                        'id'    => (string) $activeCustomers->id,
+                                                        'type'  => 'chat', // example custom data
+                                                        'sound' => 'default'
+                                                ]
+
                                         );
-                    
-                                        } catch (\Exception $e) {
-                                            Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
-                                        }
-                    
-                                  }
+                                } catch (\Exception $e) {
+                                        Log::error('Push notification failed for user ID ' . $activeCustomers->id . ': ' . $e->getMessage());
+                                }
                         }
-                       
-                        
-        
+                }
+
+
+
 
 
                 return redirect()->route('user.enquiry.enquiry_view', ['id' => $req->enqid])->with([
@@ -435,7 +421,7 @@ class EnquiryController extends Controller
 
         public function showByLeadCycle($cycle)
         {
-               // dd(Auth::id());
+                // dd(Auth::id());
                 $enquiries = DB::table('enquiry as eq')
                         ->join('products as pt', 'eq.product_category', '=', 'pt.id')
                         ->join('users as us', 'eq.assign_to', '=', 'us.id')

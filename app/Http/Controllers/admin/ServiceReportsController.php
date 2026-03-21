@@ -53,6 +53,10 @@ class ServiceReportsController extends Controller
             $query->where('eq.assign_to', $request->assign_to);
         }
 
+         // Priority filter
+        if ($request->filled('priority')) {
+            $query->where('eq.enq_priority', $request->priority);
+        }
 
 
         $enquiry = $query->orderBy('eq.created_at', 'DESC')->get();

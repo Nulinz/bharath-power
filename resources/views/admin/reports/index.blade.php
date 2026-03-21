@@ -16,56 +16,82 @@
                 <div class="col-md-12 col-xl-12">
                     {{-- Acting driver Details --}}
                     <div class="card mb-3">
-                        <div class="border-bottom p-3">
-                            <form method="GET" action="{{ route('admin.reports.index') }}" class="d-flex flex-wrap gap-2">
-                                <div class="flex-fill">
-                                    <label for="start_date" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control" name="start_date" value="{{ request('start_date') }}">
+                        <div class="border-bottom bg-white p-3">
+                            <form method="GET" action="{{ route('admin.reports.index') }}" class="row g-3 align-items-end">
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="start_date" class="form-label text-muted small fw-bold mb-1">Start Date</label>
+                                    <input type="date" class="form-control form-control-sm" name="start_date" value="{{ request('start_date') }}">
                                 </div>
-                                <div class="flex-fill">
-                                    <label for="end_date" class="form-label">End Date</label>
-                                    <input type="date" class="form-control" name="end_date" value="{{ request('end_date') }}">
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="end_date" class="form-label text-muted small fw-bold mb-1">End Date</label>
+                                    <input type="date" class="form-control form-control-sm" name="end_date" value="{{ request('end_date') }}">
                                 </div>
-                                <div class="flex-fill">
-                                    <label for="product_group" class="form-label">Product Group</label>
-                                    <select class="form-control" name="product_group">
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="product_group" class="form-label text-muted small fw-bold mb-1">Product Group</label>
+                                    <select class="form-select form-select-sm" name="product_group">
                                         <option value="">All</option>
                                         @foreach ($groups as $id => $name)
-                                            <option value="{{ $id }}" {{ request('product_group') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('product_group') == $id ? 'selected' : '' }}>
+                                                {{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="flex-fill">
-                                    <label for="product_id" class="form-label">Product</label>
-                                    <select class="form-control" name="product_id">
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="product_id" class="form-label text-muted small fw-bold mb-1">Product</label>
+                                    <select class="form-select form-select-sm" name="product_id">
                                         <option value="">All</option>
                                         @foreach ($products as $id => $name)
-                                            <option value="{{ $id }}" {{ request('product_id') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('product_id') == $id ? 'selected' : '' }}>
+                                                {{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="flex-fill">
-                                    <label for="assign_to" class="form-label">Assign To</label>
-                                    <select class="form-control" name="assign_to">
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="assign_to" class="form-label text-muted small fw-bold mb-1">Assign To</label>
+                                    <select class="form-select form-select-sm" name="assign_to">
                                         <option value="">All</option>
                                         @foreach ($users as $id => $name)
-                                            <option value="{{ $id }}" {{ request('assign_to') == $id ? 'selected' : '' }}>{{ $name }}
+                                            <option value="{{ $id }}" {{ request('assign_to') == $id ? 'selected' : '' }}>
+                                                {{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="flex-fill">
-                                    <label for="enq_no" class="form-label">Enq No</label>
-                                    <input type="text" class="form-control" name="enq_no" value="{{ request('enq_no') }}">
-                                </div>
-                                <div class="d-flex flex-fill align-items-end gap-2">
-                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter"></i></button>
-                                    <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary w-100"><i class="fa fa-undo"></i></a>
-                                </div>
-                            </form>
 
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label text-muted small fw-bold mb-1">Priority</label>
+                                    <select id="priorityFilter" class="form-select form-select-sm" name="priority">
+                                        <option value="">All</option>
+                                        <option value="High" {{ request('priority') == 'High' ? 'selected' : '' }}>High</option>
+                                        <option value="Medium" {{ request('priority') == 'Medium' ? 'selected' : '' }}>Medium</option>
+                                        <option value="Low" {{ request('priority') == 'Low' ? 'selected' : '' }}>Low</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="enq_no" class="form-label text-muted small fw-bold mb-1">Enq No</label>
+                                    <input type="text" class="form-control form-control-sm" name="enq_no" value="{{ request('enq_no') }}" placeholder="Enter No...">
+                                </div>
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary btn-sm w-100" title="Apply Filter">
+                                            <i class="fa fa-filter"></i> Filter
+                                        </button>
+                                        <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary btn-sm w-100" title="Reset Filters">
+                                            <i class="fa fa-undo"></i> Reset
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </form>
                         </div>
                         <div class="card-body">
 
@@ -102,20 +128,20 @@
                                             <td>{{ $eq->enq_uom }}</td>
                                             <td>{{ $eq->usr_name }}</td>
                                             <td>{{ $eq->lead_cycle }}</td>
-                                            <td>  
-                                               @if ($eq->enq_priority === 'High')
-                                                 <span class="badge bg-danger">
-                                                            {{ $eq->enq_priority ?: 'N/A' }}
-                                                </span>
+                                            <td>
+                                                @if ($eq->enq_priority === 'High')
+                                                    <span class="badge bg-danger">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
                                                 @elseif ($eq->enq_priority === 'Medium')
-                                                   <span class="badge bg-warning  ms-1">
+                                                    <span class="badge bg-warning ms-1">
                                                         {{ $eq->enq_priority ?: 'N/A' }}
                                                     </span>
                                                 @elseif ($eq->enq_priority === 'Low')
-                                                   <span class="badge bg-secondary ms-1">
+                                                    <span class="badge bg-secondary ms-1">
                                                         {{ $eq->enq_priority ?: 'N/A' }}
                                                     </span>
-                                                 @endif
+                                                @endif
                                             </td>
                                             <td>
                                                 @if ($eq->status === 'completed')

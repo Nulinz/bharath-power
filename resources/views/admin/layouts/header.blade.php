@@ -11,9 +11,8 @@
     <meta name="keywords" content="">
 
     <link rel="preconnect" href="https://fonts.gstatic.com/">
-    <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+    <link rel="shortcut icon" href="{{ asset('assets/images/bpe-tab.jpeg') }}" type="image/x-icon">
 
-    <link rel="canonical" href="dashboard-crypto-2.html" />
 
     <title>@yield('title')</title>
 
@@ -23,11 +22,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-
 
     <link href="{{ asset('assets/css/light.css') }}" rel="stylesheet">
     <style>

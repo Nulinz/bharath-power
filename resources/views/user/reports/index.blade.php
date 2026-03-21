@@ -17,19 +17,20 @@
                     {{-- Acting driver Details --}}
                     <div class="card mb-3">
                         <div class="border-bottom p-3">
-                            <form method="GET" action="{{ route('user.reports.index') }}" class="d-flex flex-wrap gap-2">
-                                <div class="flex-fill">
-                                    <label for="start_date" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control w-100" name="start_date" value="{{ request('start_date') }}">
+                            <form method="GET" action="{{ route('user.reports.index') }}" class="row g-3 align-items-end">
+
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="start_date" class="form-label text-muted small fw-bold mb-1">Start Date</label>
+                                    <input type="date" class="form-control form-control-sm" name="start_date" value="{{ request('start_date') }}">
                                 </div>
 
-                                <div class="flex-fill">
-                                    <label for="end_date" class="form-label">End Date</label>
-                                    <input type="date" class="form-control w-100" name="end_date" value="{{ request('end_date') }}">
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="end_date" class="form-label text-muted small fw-bold mb-1">End Date</label>
+                                    <input type="date" class="form-control form-control-sm" name="end_date" value="{{ request('end_date') }}">
                                 </div>
 
-                                <div class="flex-fill">
-                                    <label for="product_group" class="form-label">Product Group</label>
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="product_group" class="form-label text-muted small fw-bold mb-1">Product Group</label>
                                     <select class="form-control w-100" name="product_group">
                                         <option value="">All</option>
                                         @foreach ($groups as $id => $name)
@@ -39,8 +40,8 @@
                                     </select>
                                 </div>
 
-                                <div class="flex-fill">
-                                    <label for="product_id" class="form-label">Product</label>
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="product_id" class="form-label text-muted small fw-bold mb-1">Product</label>
                                     <select class="form-control w-100" name="product_id">
                                         <option value="">All</option>
                                         @foreach ($products as $id => $name)
@@ -50,14 +51,25 @@
                                     </select>
                                 </div>
 
-                                <div class="flex-fill">
-                                    <label for="enq_no" class="form-label">Enquiry No</label>
-                                    <input type="text" class="form-control w-100" name="enq_no" value="{{ request('enq_no') }}">
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label text-muted small fw-bold mb-1">Priority</label>
+                                    <select id="priorityFilter" class="form-select form-select-sm" name="priority">
+                                        <option value="">All</option>
+                                        <option value="High" {{ request('priority') == 'High' ? 'selected' : '' }}>High</option>
+                                        <option value="Medium" {{ request('priority') == 'Medium' ? 'selected' : '' }}>Medium</option>
+                                        <option value="Low" {{ request('priority') == 'Low' ? 'selected' : '' }}>Low</option>
+                                    </select>
                                 </div>
 
-                                <div class="flex-fill d-flex align-self-end gap-2">
-                                    <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter" aria-hidden="true"></i></button>
-                                    <a href="{{ route('user.reports.index') }}" class="btn btn-secondary w-100"><i class="fa fa-undo"></i></a>
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <label for="enq_no" class="form-label text-muted small fw-bold mb-1">Enq No</label>
+                                    <input type="text" class="form-control w-100" name="enq_no" value="{{ request('enq_no') }}">
+                                </div>
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary btn-sm w-100" title="Apply Filter"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                                        <a href="{{ route('user.reports.index') }}" class="btn btn-secondary btn-sm w-100"><i class="fa fa-undo"></i></a>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -97,20 +109,20 @@
                                             <td>{{ $eq->enq_uom }}</td>
                                             <td>{{ $eq->usr_name }}</td>
                                             <td>{{ $eq->lead_cycle }}</td>
-                                            <td>  
-                                               @if ($eq->enq_priority === 'High')
-                                                 <span class="badge bg-danger">
-                                                            {{ $eq->enq_priority ?: 'N/A' }}
-                                                </span>
+                                            <td>
+                                                @if ($eq->enq_priority === 'High')
+                                                    <span class="badge bg-danger">
+                                                        {{ $eq->enq_priority ?: 'N/A' }}
+                                                    </span>
                                                 @elseif ($eq->enq_priority === 'Medium')
-                                                   <span class="badge bg-warning  ms-1">
+                                                    <span class="badge bg-warning ms-1">
                                                         {{ $eq->enq_priority ?: 'N/A' }}
                                                     </span>
                                                 @elseif ($eq->enq_priority === 'Low')
-                                                   <span class="badge bg-secondary ms-1">
+                                                    <span class="badge bg-secondary ms-1">
                                                         {{ $eq->enq_priority ?: 'N/A' }}
                                                     </span>
-                                                 @endif
+                                                @endif
                                             </td>
                                             <td>
                                                 @if ($eq->status === 'completed')

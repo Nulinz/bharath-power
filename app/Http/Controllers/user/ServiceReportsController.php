@@ -54,6 +54,11 @@ class ServiceReportsController extends Controller
             $query->where('eq.enq_no', 'like', '%' . $request->enq_no . '%');
         }
 
+        // Priority filter
+        if ($request->filled('priority')) {
+            $query->where('eq.enq_priority', $request->priority);
+        }
+
         $enquiry = $query->orderBy('eq.created_at', 'DESC')->get();
 
         // Dropdown data
