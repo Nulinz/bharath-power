@@ -31,7 +31,7 @@ class LoginController extends Controller
             // DB::table('users')
             // ->where('id', $user->id)
             // ->update(['remember_token' => $token]);
-    
+
 
 
             if (strtolower($user->designation) === 'admin') {
@@ -39,9 +39,7 @@ class LoginController extends Controller
             }
             if ($user->designation === 'Manager') {
                 return redirect()->route('user.dashboard.dashboard');
-            }
-            
-             else {
+            } else {
                 return redirect()->route('user.dashboard.dashboard');
             }
         }
@@ -53,5 +51,15 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect('/');
+    }
+
+    public function privacy_policy()
+    {
+        return view('privacy_policy');
+    }
+
+    public function delete_account()
+    {
+        return view('delete_account');
     }
 }

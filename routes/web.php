@@ -26,6 +26,9 @@ Route::get('/get-products/{group_id}', function ($group_id) {
         ->get();
 });
 
+
+Route::get('/privacy-policy', [LoginController::class, 'privacy_policy'])->name('privacy.policy');
+Route::get('/delete-account', [LoginController::class, 'delete_account'])->name('delete.account');
 // admin group
 
 Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')->middleware('auth')->group(function () {
@@ -90,16 +93,16 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
     Route::post('/add_user', 'SettingsController@store_user')->name('settings.user_store');
     // user_view
 
-     // add category
-     Route::get('/add_category', 'SettingsController@add_category')->name('settings.add_category');
-     //add product store
-     Route::post('/category_store', 'SettingsController@category_store')->name('category_store');
+    // add category
+    Route::get('/add_category', 'SettingsController@add_category')->name('settings.add_category');
+    //add product store
+    Route::post('/category_store', 'SettingsController@category_store')->name('category_store');
 
-      // edit product
+    // edit product
     Route::get('/{id}/edit_category', 'SettingsController@edit_category')->name('settings.edit_category');
 
-     // update user
-     Route::post('/update_category', 'SettingsController@category_update')->name('settings.update_category');
+    // update user
+    Route::post('/update_category', 'SettingsController@category_update')->name('settings.update_category');
 
     // reports
     Route::get('/reports', 'ReportsController@view_report')->name('reports.index');
@@ -126,22 +129,22 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
     // reports
     Route::get('/service_reports', 'ServiceReportsController@view_report')->name('service.reports.index');
     //
-     Route::get('/task_list', 'DashboardController@task_list')->name('admin.task.task_list');
+    Route::get('/task_list', 'DashboardController@task_list')->name('admin.task.task_list');
 
-       // add category
+    // add category
     Route::get('/add_task', 'DashboardController@add_task')->name('dash.add_task');
 
-        //add product store
-     Route::post('/task_store', 'DashboardController@task_store')->name('task_store');
+    //add product store
+    Route::post('/task_store', 'DashboardController@task_store')->name('task_store');
     //  Route::get('/service_task_list', 'ServiceController@task_list')->name('admin.ser_task.task_list');
-     Route::get('service_task_list', [ServiceDashboard::class,'service_task_list'])->name('service.service_task-list');
-     Route::get('/add_service_task', [ServiceDashboard::class,'add_service_task'])->name('service.add_service_task');
-     Route::get('/service_task_profile', [ServiceDashboard::class,'service_task_profile'])->name('service.service_task_profile');
-     Route::get('/sales_task_profile', [AdminDashboardController::class,'sales_task_profile'])->name('admin.sales_task_profile');
-     Route::post('/task_sale_store', [AdminDashboardController::class,'task_sale_store'])->name('admin.task_sale_store');
-     Route::post('/task_service_store', [AdminDashboardController::class,'task_service_store'])->name('admin.task_service_store');
-     Route::post('/sales_task_close', [AdminDashboardController::class, 'sales_task_close'])->name('sales_task_close');
-     Route::post('/service_task_close', [AdminDashboardController::class, 'service_task_close'])->name('service_task_close');
+    Route::get('service_task_list', [ServiceDashboard::class, 'service_task_list'])->name('service.service_task-list');
+    Route::get('/add_service_task', [ServiceDashboard::class, 'add_service_task'])->name('service.add_service_task');
+    Route::get('/service_task_profile', [ServiceDashboard::class, 'service_task_profile'])->name('service.service_task_profile');
+    Route::get('/sales_task_profile', [AdminDashboardController::class, 'sales_task_profile'])->name('admin.sales_task_profile');
+    Route::post('/task_sale_store', [AdminDashboardController::class, 'task_sale_store'])->name('admin.task_sale_store');
+    Route::post('/task_service_store', [AdminDashboardController::class, 'task_service_store'])->name('admin.task_service_store');
+    Route::post('/sales_task_close', [AdminDashboardController::class, 'sales_task_close'])->name('sales_task_close');
+    Route::post('/service_task_close', [AdminDashboardController::class, 'service_task_close'])->name('service_task_close');
 
 
 
@@ -152,11 +155,11 @@ Route::prefix('admin')->name('admin.')->namespace('App\Http\Controllers\admin')-
 
 
 
-       
 
-// Route::get('/', [AdminDashboardController::class, 'Task'])->name('task_list');
 
- });
+    // Route::get('/', [AdminDashboardController::class, 'Task'])->name('task_list');
+
+});
 
 // user group
 
@@ -214,19 +217,10 @@ Route::prefix('user')->name('user.')->namespace('App\Http\Controllers\user')->mi
     // reports
     Route::get('/service_reports', 'ServiceReportsController@view_report')->name('service.reports.index');
 
-    Route::get('/add_task_dashboard', [UserDasboardController::class,'task_index'])->name('user.task_dashboard');
-    Route::get('/update_task', [UserDasboardController::class,'updateTaskStatus'])->name('update.task');
-    Route::get('/add_service_task_dashboard', [UserDasboardController::class,'service_task_index'])->name('service_task_index');
-    Route::get('/update_service_status', [UserDasboardController::class,'update_service_status'])->name('update_service_status');
-    Route::match(['get','post'], '/task-ext', [UserDasboardController::class,'task_ext'])->name('task.ext');
-    Route::match(['get','post'], '/service_task_ext', [UserDasboardController::class,'service_task_ext'])->name('service_task_ext');
-
-
-
-
-
-
-
-
-
+    Route::get('/add_task_dashboard', [UserDasboardController::class, 'task_index'])->name('user.task_dashboard');
+    Route::get('/update_task', [UserDasboardController::class, 'updateTaskStatus'])->name('update.task');
+    Route::get('/add_service_task_dashboard', [UserDasboardController::class, 'service_task_index'])->name('service_task_index');
+    Route::get('/update_service_status', [UserDasboardController::class, 'update_service_status'])->name('update_service_status');
+    Route::match(['get', 'post'], '/task-ext', [UserDasboardController::class, 'task_ext'])->name('task.ext');
+    Route::match(['get', 'post'], '/service_task_ext', [UserDasboardController::class, 'service_task_ext'])->name('service_task_ext');
 });

@@ -647,8 +647,6 @@ class ApiServiceController extends Controller
             $query->where('eq.assign_to', $request->assign_to);
         }
 
-
-
         $enquiry = $query->orderBy('eq.created_at', 'DESC')->get();
 
 
